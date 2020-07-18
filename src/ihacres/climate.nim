@@ -1,6 +1,7 @@
 import math
 
-proc calc_effective_rainfall(rainfall: float, cmd: float, Mf: float, d: float, d2: float, n: float=0.1): float = 
+proc calc_effective_rainfall*(rainfall: float, cmd: float, Mf: float, d: float, d2: float, n: float=0.1): 
+     float {.stdcall,exportc,dynlib.} = 
     ## Calculate effective rainfall
     ## 
     ## Parameters
@@ -42,7 +43,8 @@ proc calc_effective_rainfall(rainfall: float, cmd: float, Mf: float, d: float, d
 # # End calc_effective_rainfall2()
 
 
-proc calc_ET_from_T(e: float, T: float, interim_cmd: float, f: float, d: float): float =
+proc calc_ET_from_T*(e: float, T: float, interim_cmd: float, f: float, d: float): 
+     float {.stdcall,exportc,dynlib.} =
     ## Calculate evapotranspiration based on temperature data.
     ## 
     ## Parameters `f` and `d` are used to calculate `g`, the value of the CMD
@@ -68,7 +70,8 @@ proc calc_ET_from_T(e: float, T: float, interim_cmd: float, f: float, d: float):
 
 
 
-proc calc_ET(e: float, evap: float, interim_cmd: float, f: float, d: float): float =
+proc calc_ET*(e: float, evap: float, interim_cmd: float, f: float, d: float): 
+     float {.stdcall,exportc,dynlib.} =
     ## Calculate evapotranspiration.
     ## 
     ## Parameters

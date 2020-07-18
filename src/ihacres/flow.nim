@@ -1,7 +1,7 @@
 import math
 
 
-proc calc_flow(tau: float, flow: float, v: float, e_rainfall: float): float = 
+proc calc_flow*(tau: float, flow: float, v: float, e_rainfall: float): float {.stdcall,exportc,dynlib.} = 
     ## Common function to calculate quick and slow flows.
     ## 
     ## Parameters
@@ -25,8 +25,9 @@ proc calc_flow(tau: float, flow: float, v: float, e_rainfall: float): float =
 
 
 
-proc calc_flows(prev_flows: (float, float), v_s: float, 
-                e_rainfall: float, tau_q: float, tau_s: float): (float, float, float) =
+proc calc_flows*(prev_flows: (float, float), v_s: float, 
+                e_rainfall: float, tau_q: float, tau_s: float): 
+                (float, float, float)  {.stdcall,exportc,dynlib.} =
     ## Calculate quick and slow flow, and outflow.
     ##
     ## Calculates flows for current time step based on previous 
@@ -58,8 +59,9 @@ proc calc_flows(prev_flows: (float, float), v_s: float,
 
 
 
-proc routing(volume: float, storage_coef: float, inflow: float, flow: float, 
-            irrig_ext: float, gw_exchange: float = 0.0): (float, float) = 
+proc routing*(volume: float, storage_coef: float, inflow: float, flow: float, 
+            irrig_ext: float, gw_exchange: float = 0.0): 
+            (float, float) {.stdcall,exportc,dynlib.} = 
     ## Linear routing used to convert effective rainfall into streamflow 
     ## for a given time step.
     ##
@@ -89,7 +91,7 @@ proc routing(volume: float, storage_coef: float, inflow: float, flow: float,
     return (n_vol, outflow)
 
 
-proc calc_outflow(flow: float, extractions: float): float = 
+proc calc_outflow*(flow: float, extractions: float): float {.stdcall,exportc,dynlib.} = 
     ## Calculate streamflow of node taking into account extractions
     ##
     ## Parameters
@@ -103,9 +105,9 @@ proc calc_outflow(flow: float, extractions: float): float =
     return max(0.0, flow - extractions)
 
 
-proc calc_ft_flows(prev_quick: float, prev_slow: float, e_rain: float, recharge: float, 
+proc calc_ft_flows*(prev_quick: float, prev_slow: float, e_rain: float, recharge: float, 
                    area: float, a: float, b: float, 
-                   loss: float = 0.0): (float, float, float) =
+                   loss: float = 0.0): (float, float, float) {.stdcall,exportc,dynlib.} =
     ## Fortran port of flow calculation.
     ##
     ## Parameters

@@ -1,8 +1,9 @@
 from math import arctan, exp, log, PI, tan, pow, ln
 
 
-proc calc_cmd(prev_cmd: float, rainfall: float, et: float, 
-             effective_rainfall: float, recharge: float): float =
+proc calc_cmd*(prev_cmd: float, rainfall: float, et: float, 
+             effective_rainfall: float, recharge: float): 
+             float {.stdcall,exportc,dynlib.} =
     ## Calculate Catchment Moisture Deficit.
     ## 
     ## Min value of CMD is 0.0 and is in represented in mm depth.
@@ -13,7 +14,8 @@ proc calc_cmd(prev_cmd: float, rainfall: float, et: float,
     return max(0.0, cmd)
 
 
-proc calc_interim_cmd(cmd: float, param_d: float, rainfall: float): float =
+proc calc_interim_cmd*(cmd: float, param_d: float, rainfall: float): 
+     float {.stdcall,exportc,dynlib.} =
     ## Calculate interim CMD (M_{f}) in its linear form.
     ##
     ## Based on HydroMad implementation.
@@ -40,7 +42,8 @@ proc calc_interim_cmd(cmd: float, param_d: float, rainfall: float): float =
 # End calc_interim_cmd()
 
 
-proc calc_trig_interim_cmd(cmd: float, param_d: float, rainfall: float): float =
+proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float): 
+     float {.stdcall,exportc,dynlib.} =
     ## Calculate interim CMD (M_{f}) in its trigonometric form.
     ## 
     ## Based on HydroMad implementation.
@@ -68,7 +71,8 @@ proc calc_trig_interim_cmd(cmd: float, param_d: float, rainfall: float): float =
 # End calc_trig_interim_cmd()
 
 
-proc calc_ft_interim(cmd: float, rain: float, d: float, d2: float, alpha: float): (float, float, float) =
+proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float): 
+     (float, float, float) {.stdcall,exportc,dynlib.} =
     ## Direct port of original Fortran implementation to calculate interim CMD.
     ## 
     ## Parameters
