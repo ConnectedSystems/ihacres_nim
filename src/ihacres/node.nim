@@ -6,12 +6,15 @@ type
 
 type
     StreamNode* = ref object of NetworkNode
-        area: float64  # area in km^2
+        area*: float64  # area in km^2
 
         d*: float64
         d2*: float64
         e*: float64
         f*: float64
+        a*: float64
+        b*: float64
+        storage_coef*: float64
 
         storage*: seq[float64]
         quickflow: seq[float64]
@@ -27,10 +30,4 @@ proc set_calib_params*(s: var StreamNode, d: float64, d2: float64, e: float64, f
     s.d2 = d2
     s.e = e
     s.f = f
-
-
-var test_node* = StreamNode(
-    area:100, 
-    d: 0.1, d2: 0.1, e: 0.1, f: 0.1, 
-    storage: @[100.0])
 
