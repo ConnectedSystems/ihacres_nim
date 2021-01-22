@@ -26,12 +26,12 @@ proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: floa
 
     # other extractions are ignored for stream nodes, so only extract irrigation ext.
     var
-        mf: float
-        e_rainfall: float
-        recharge: float
-        quick_store: float
-        slow_store: float
-        outflow: float
+        mf: float64
+        e_rainfall: float64
+        recharge: float64
+        quick_store: float64
+        slow_store: float64
+        outflow: float64
 
     var arr_len = s_node.storage.len() - 1
     let current_store = s_node.storage[arr_len]
@@ -41,20 +41,10 @@ proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: floa
     var et: float64 = calc_ET(s_node.e, evap, mf, s_node.f, s_node.d)
     var cmd: float64 = calc_cmd(current_store, rain, et, e_rainfall, recharge)
 
-    # var inflow = 0.0
-    # for nid in s_node.prev_node:
-    #     inflow += s_node.prev_node[nid].run(timestep, rain_evap, ext)
-    # # End for
     s_node.inflow.add(inflow)
     (quick_store, slow_store, outflow) = calc_ft_flows(s_node.quickflow[arr_len], s_node.slowflow[arr_len],
                                                                     e_rainfall, recharge, s_node.area,
                                                                     s_node.a, s_node.b, loss=loss)
-
-    # if self.next_node:  # and ('dam' not in self.next_node.node_type):
-    #     cmd, outflow = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gamma=gw_exchange)
-    # else:
-    #     outflow = calc_outflow(outflow, ext)
-    # # End if
 
     (cmd, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
 
