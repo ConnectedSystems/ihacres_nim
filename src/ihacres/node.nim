@@ -1,5 +1,3 @@
-import sequtils
-
 
 type
     NetworkNode* = object of RootObj
