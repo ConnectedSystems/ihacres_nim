@@ -1,5 +1,15 @@
 ihacres_nim
 
+An experimental implementation of the IHACRES rainfall-runoff model written in [nim-lang](https://nim-lang.org/).
+
+Intended to provide a consistent stable base for use across language ecosystems.
+
+
+Compilation:
+
+From project root:
+
+`nim c --app:lib --opt:speed --outdir:./lib ./src/ihacres.nim`
 
 
 Examples
@@ -13,7 +23,7 @@ Julia pre-v1.5.3
 ccall((:calc_outflow, "./lib/ihacres.so"), Cdouble,(Cdouble, Cdouble), 1.0, 1.0)
 ```
 
-Julia v1.5.3 onwards - leverage available macro
+Julia v1.5.3 onwards can leverage the provided base `@ccall` macro.
 
 ```julia
 const ihacres = "./lib/ihacres.so"
