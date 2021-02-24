@@ -5,7 +5,6 @@ import ihacres/flow
 import ihacres/climate
 import ihacres/cmd
 
-# stream_run
 
 proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange=0.0, loss=0.0): float =
     #[ Run node to calculate outflow and update state.
@@ -42,24 +41,18 @@ proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: floa
     var cmd: float64 = calc_cmd(current_store, rain, et, e_rainfall, recharge)
 
     s_node.inflow.add(inflow)
-    (quick_store, slow_store, outflow) = calc_ft_flows(s_node.quickflow[arr_len], s_node.slowflow[arr_len],
+    var ret: array[3, float64] = [0.0, 0.0, 0.0]
+    calc_ft_flows(ret.addr, s_node.quickflow[arr_len], s_node.slowflow[arr_len],
                                                                     e_rainfall, recharge, s_node.area,
                                                                     s_node.a, s_node.b, loss=loss)
+    (quick_store, slow_store, outflow) = ret
 
-    (cmd, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
+    var cmd_ret: array[2, float64] = [0.0, 0.0]
+    routing(cmd_ret.addr, cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
+    (cmd, outflow) = cmd_ret
 
-    # TODO: Calc stream level
-    # if self.formula_type == 1:
-    #     waterlevel = 1.0 * np.exp
+    var level: float64 = calc_ft_level(outflow, s_node.level_params)
 
-    #       if (formula.eq.1) then
-    # c      write(*,*) 'i'
-    #        waterlevel=1.0d0
-    #      :  *exp(par(1))*(tmp_flow**par(2))
-    #      :  *1.0d0/((1.0d0+(tmp_flow/par(3))**par(4))**(par(5)/par(4)))
-    #      :  *exp(par(6)/(1+exp(-par(7)*par(8))*tmp_flow**par(7)))
-    #      :  +CTF
-
-    s_node.update_state(cmd, e_rainfall, et, quick_store, slow_store, outflow)
+    s_node.update_state(cmd, e_rainfall, et, quick_store, slow_store, outflow, level)
 
     return outflow
