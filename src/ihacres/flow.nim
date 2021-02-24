@@ -1,19 +1,22 @@
 import math
+import defines
+
 
 
 proc calc_flow*(tau: float64, flow: float64, v: float64, e_rainfall: float64): float64 {.stdcall,exportc,dynlib.} = 
-    ## Common function to calculate quick and slow flows.
-    ## 
-    ## Parameters
-    ## ----------
-    ## tau        : `tau` value for flow
-    ## flow       : proportional quick or slow flow in ML/day
-    ## v          : `v` parameter in the literature
-    ## e_rainfall : effective rainfall in mm (`E` parameter in the literature)
-    ##     
-    ## Returns
-    ## -------
-    ## float, adjusted quick or slow flow in ML/day
+    #[ Common function to calculate quick and slow flows.
+        
+        Parameters
+        ----------
+        tau        : `tau` value for flow
+        flow       : proportional quick or slow flow in ML/day
+        v          : `v` parameter in the literature
+        e_rainfall : effective rainfall in mm (`E` parameter in the literature)
+            
+        Returns
+        -------
+        float, adjusted quick or slow flow in ML/day
+    ]#
     
     # convert from 'tau' and 'v' to 'alpha' and 'beta'
     let alpha: float64 = exp(-1.0 / tau)
@@ -28,24 +31,25 @@ proc calc_flow*(tau: float64, flow: float64, v: float64, e_rainfall: float64): f
 proc calc_flows*(ret: ptr array[3, float64], prev_flows: (float64, float64), v_s: float64, 
                 e_rainfall: float64, tau_q: float64, tau_s: float64)
                 {.stdcall,exportc,dynlib.} =
-    ## Calculate quick and slow flow, and outflow.
-    ##
-    ## Calculates flows for current time step based on previous 
-    ## flows and current effective rainfall.
-    ## 
-    ## Parameters
-    ## ----------
-    ## prev_flows : previous quick and slow flow in ML/day
-    ## v_s        : proportional amount that goes to slow flow. v_s <= 1.0
-    ## e_rainfall : current and previous effective rainfall
-    ## taus       : Time constant, quick and slow flow tau variables.
-    ##              Represent the time required for the quickflow and slowflow
-    ##              responses to fall to :math:`1/e` of their initial values 
-    ##              after an impulse of rainfall.
-    ## 
-    ## Returns
-    ## -------
-    ## quickflow, slowflow, outflow in ML/day
+    #[ Calculate quick and slow flow, and outflow.
+        Calculates flows for current time step based on previous 
+        flows and current effective rainfall.
+        
+        Parameters
+        ----------
+        ret        : return array
+        prev_flows : previous quick and slow flow in ML/day
+        v_s        : proportional amount that goes to slow flow. v_s <= 1.0
+        e_rainfall : current and previous effective rainfall
+        taus       : Time constant, quick and slow flow tau variables.
+                     Represent the time required for the quickflow and slowflow
+                     responses to fall to :math:`1/e` of their initial values 
+                     after an impulse of rainfall.
+        
+        Returns
+        -------
+        quickflow, slowflow, outflow in ML/day
+    ]#
 
     let v_q: float64 = 1.0 - v_s  # proportional quick flow
     var prev_quick: float64 = prev_flows[0]
@@ -57,27 +61,28 @@ proc calc_flows*(ret: ptr array[3, float64], prev_flows: (float64, float64), v_s
     ret[0] = quick
     ret[1] = slow
     ret[2] = outflow
-    # return (quick, slow, outflow)
 
 
 proc routing*(ret: ptr array[2, float64], volume: float64, storage_coef: float64, inflow: float64, flow: float64, 
             irrig_ext: float64, gw_exchange: float64 = 0.0)
              {.stdcall,exportc,dynlib.} = 
-    ## Linear routing used to convert effective rainfall into streamflow 
-    ## for a given time step.
-    ##
-    ## Parameters
-    ## ----------
-    ## volume: float, representing catchment moisture deficit in mm
-    ## storage_coef: float, storage factor
-    ## inflow: float, incoming streamflow (flow from previous node)
-    ## flow: float, flow for the node (local flow)
-    ## irrig_ext: float, volume of irrigation extraction in ML
-    ## gw_exchange: float, groundwater flux. Defaults to 0.0
-    ##
-    ## Returns
-    ## -------
-    ## cmd in mm, and streamflow in ML/day
+    #[ Linear routing used to convert effective rainfall into streamflow 
+        for a given time step.
+        
+        Parameters
+        ----------
+        ret          : return array
+        volume       : representing catchment moisture deficit in mm
+        storage_coef : storage factor
+        inflow       : incoming streamflow (flow from previous node)
+        flow         : flow for the node (local flow)
+        irrig_ext    : volume of irrigation extraction in ML
+        gw_exchange  : groundwater flux. Defaults to 0.0
+        
+        Returns
+        -------
+        cmd in mm, and streamflow in ML/day
+    ]#
     var threshold: float64 = volume + (inflow + flow + gw_exchange) - irrig_ext
     var n_vol: float64  # new volume
     var outflow: float64
@@ -94,16 +99,18 @@ proc routing*(ret: ptr array[2, float64], volume: float64, storage_coef: float64
 
 
 proc calc_outflow*(flow: float64, extractions: float64): float64 {.stdcall,exportc,dynlib.} = 
-    ## Calculate streamflow of node taking into account extractions
-    ##
-    ## Parameters
-    ## ----------
-    ## flow : float, unmodified sum of quickflow and slowflow in ML/day
-    ## extractions : float, water extractions that occurred in ML/day
-    ## 
-    ## Returns
-    ## -------
-    ## flow - extractions, minimum possible is 0.0
+    #[ Calculate streamflow of node taking into account extractions
+
+        Parameters
+        ----------
+        flow        : unmodified sum of quickflow and slowflow in ML/day
+        extractions : water extractions that occurred in ML/day
+        
+        Returns
+        -------
+        flow - extractions, minimum possible is 0.0
+    ]#
+
     return max(0.0, flow - extractions)
 
 
@@ -112,22 +119,24 @@ proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: 
                     area: float64, a: float64, b: float64, 
                     loss: float64 = 0.0)
                     {.stdcall,exportc,dynlib.} =
-    ## Fortran port of flow calculation.
-    ##
-    ## Parameters
-    ## ----------
-    ## prev_quick : float, previous quickflow storage
-    ## prev_slow  : float, previous slowflow storage
-    ## e_rain     : float, effective rainfall in mm
-    ## recharge   : float, recharge amount in mm
-    ## area       : float, catchment area in km^2
-    ## a          : float, `a` factor controlling quickflow rate
-    ## b          : float, `b` factor controlling slowflow rate
-    ## loss       : float, losses in mm depth
-    ##
-    ## Returns
-    ## -------
-    ## quick store, slow store, outflow
+    #[ Fortran port of flow calculation.
+    
+        Parameters
+        ----------
+        ret        : return array
+        prev_quick : previous quickflow storage
+        prev_slow  : previous slowflow storage
+        e_rain     : effective rainfall in mm
+        recharge   : recharge amount in mm
+        area       : catchment area in km^2
+        a          : `a` factor controlling quickflow rate
+        b          : `b` factor controlling slowflow rate
+        loss       : losses in mm depth
+        
+        Returns
+        -------
+        quick store, slow store, outflow
+    ]#
     var a2: float64 = 0.5
     var quick_store, slow_store, outflow: float64
 
