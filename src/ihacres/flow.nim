@@ -146,9 +146,7 @@ proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: 
         quick_store = 1.0 / (1.0 + a) * sub_calc
         outflow = a * quick_store
     else:
-        if loss == 0.0:
-            a2 = 0.0
-        else:
+        if loss != 0.0:
             a2 = max(0.0, min(1.0, (tmp_calc / loss)))
 
         quick_store = tmp_calc - a2 * loss
@@ -159,12 +157,10 @@ proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: 
 
     let b2: float64 = 1.0 - a2
     tmp_calc = prev_slow + (recharge * area)
-    sub_calc = (tmp_calc - b2 * loss)
-    if (sub_calc > 0.0):
-        slow_store = 1.0 / (1.0 + b) * sub_calc
+    slow_store = (tmp_calc - b2 * loss)
+    if (slow_store > 0.0):
+        slow_store = 1.0 / (1.0 + b) * slow_store
         outflow = outflow + b * slow_store
-    else:
-        slow_store = sub_calc
     # End if
 
     assert outflow >= 0.0, "Calculating slow store: Outflow cannot be negative"
