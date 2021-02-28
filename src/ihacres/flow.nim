@@ -175,6 +175,8 @@ proc calc_ft_level*(outflow: float64, level_params: array[9, float64]):float64 {
     (p1, p2, p3, p4, p5, p6, p7, p8, CTF) := level_params
     
     var level: float64 
-    level = exp(p1) * pow(outflow, p2) * 1.0 / (1.0 + pow(pow((outflow / p3), p4), (p5/p4)) * exp(p6 / (1+exp(-p7*p8)) * pow(outflow, p7)))+CTF
+    level = exp(p1) * pow(outflow, p2) * 1.0 / (1.0 + pow(pow((outflow / p3), p4), (p5/p4)) * exp(p6 / (1.0+exp(-p7*p8)) * pow(outflow, p7)))
+    level = max(level, 0.0)
+    level = level + CTF  # add Cease to Flow (base height of stream in local datum)
 
     return level
