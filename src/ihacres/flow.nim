@@ -1,6 +1,6 @@
 import math
 import defines
-
+import strformat
 
 
 proc calc_flow*(tau: float64, flow: float64, v: float64, e_rainfall: float64): float64 {.stdcall,exportc,dynlib.} = 
@@ -170,13 +170,15 @@ proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: 
     ret[2] = outflow
 
 
-proc calc_ft_level*(outflow: float64, level_params: array[9, float64]):float64 {.stdcall,exportc,dynlib.} =
-    
+proc calc_ft_level*(outflow: float64, level_params: ptr array[9, float64]):float64 {.stdcall,exportc,dynlib.} =
+
     (p1, p2, p3, p4, p5, p6, p7, p8, CTF) := level_params
     
-    var level: float64 
+    var level: float64
     level = exp(p1) * pow(outflow, p2) * 1.0 / (1.0 + pow(pow((outflow / p3), p4), (p5/p4)) * exp(p6 / (1.0+exp(-p7*p8)) * pow(outflow, p7)))
     level = max(level, 0.0)
     level = level + CTF  # add Cease to Flow (base height of stream in local datum)
+
+    assert level >= 0.0, fmt"Stream level cannot be below 0.0, got {level}"
 
     return level
