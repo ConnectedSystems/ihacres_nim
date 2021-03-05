@@ -18,7 +18,7 @@ type
         storage_coef*: float64
         alpha*: float64
 
-        level_params*: array[8, float64]
+        level_params*: array[9, float64]
 
         storage*: seq[float64]
         quickflow*: seq[float64]

@@ -6,7 +6,7 @@ import ihacres/climate
 import ihacres/cmd
 
 
-proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange=0.0, loss=0.0): float =
+proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange=0.0, loss=0.0): tuple =
     #[ Run node to calculate outflow and update state.
  
         Parameters
@@ -55,4 +55,4 @@ proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: floa
 
     s_node.update_state(cmd, e_rainfall, et, quick_store, slow_store, outflow, level)
 
-    return outflow
+    return (outflow, level)
