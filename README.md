@@ -5,11 +5,11 @@ An experimental implementation of the IHACRES rainfall-runoff model written in [
 Intended to provide a consistent stable base for use across language ecosystems.
 
 
-Compilation:
+**Compilation**
 
 From project root:
 
-`nim c --app:lib --opt:speed --outdir:./lib ./src/ihacres.nim`
+`nim c --app:lib --opt:speed -d:release --outdir:./lib ./src/ihacres.nim`
 
 
 Examples
