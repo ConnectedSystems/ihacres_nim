@@ -9,7 +9,7 @@ env:
   APP_NAME: 'ihacres_nim'
   NIM_VERSION: 'stable'
   MAINTAINER: 'ConnectedSystems'
-  RELEASE_FILES: ihacres_nim LICENSE README.* ihacres.*
+  RELEASE_FILES: LICENSE.* README.* ihacres.*
 
 jobs:
   build-artifact:
