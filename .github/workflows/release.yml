@@ -25,6 +25,13 @@ jobs:
       - uses: jiro4989/setup-nim-action@v1
         with:
           nim-version: ${{ env.NIM_VERSION }}
+      # Fix SSL error with choosenim
+      - run: |
+          curl -fO https://curl.se/ca/cacert.pem
+          install cacert.pem ~/.nimble/bin
+          ls ~/.nimble/bin
+        shell: bash
+        if: runner.os == 'Windows'
       - run: nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./
       - name: Create artifact
         run: |
