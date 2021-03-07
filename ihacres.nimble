@@ -9,3 +9,4 @@ srcDir      = "src"
 # Deps
 
 requires "nim >= 1.2.0"
+requires "defines >= 0.5.1"
