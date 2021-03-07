@@ -9,7 +9,7 @@ env:
   APP_NAME: 'ihacres_nim'
   NIM_VERSION: 'stable'
   MAINTAINER: 'ConnectedSystems'
-  RELEASE_FILES: ihacres_nim LICENSE README.*
+  RELEASE_FILES: ihacres_nim LICENSE README.* ihacres.*
 
 jobs:
   build-artifact:
@@ -25,7 +25,7 @@ jobs:
       - uses: jiro4989/setup-nim-action@v1
         with:
           nim-version: ${{ env.NIM_VERSION }}
-      - run: nimble build -Y --app:lib -d:release
+      - run: nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./
       - name: Create artifact
         run: |
           assets="${{ env.APP_NAME }}_$(echo "${{ runner.os }}" | tr '[:upper:]' '[:lower:]')"
