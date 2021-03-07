@@ -3,7 +3,7 @@ name: release
 on:
   push:
     tags:
-      - 'v0.1'
+      - 'v*.*.*'
 
 env:
   APP_NAME: 'ihacres_nim'
