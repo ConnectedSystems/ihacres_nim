@@ -1,4 +1,4 @@
-ihacres_nim
+# ihacres_nim
 
 An experimental implementation of the IHACRES rainfall-runoff model written in [nim-lang](https://nim-lang.org/).
 
@@ -7,15 +7,16 @@ Intended to provide a consistent stable base for use across language ecosystems.
 
 **Compilation**
 
-From project root:
+Releases compile a library (downloads can be found [here](https://github.com/ConnectedSystems/ihacres_nim/releases))
+
+For local development/testing, run from the project root:
 
 `nim c --app:lib --opt:speed -d:release --outdir:./lib ./src/ihacres.nim`
 
 
-Examples
---------
+## Examples
 
-**Julia**
+### Julia
 
 Julia pre-v1.5.3
 
@@ -31,7 +32,7 @@ const ihacres = "./lib/ihacres.so"
 ```
 
 
-**Python**
+### Python
 
 ```python
 from ctypes import cdll
