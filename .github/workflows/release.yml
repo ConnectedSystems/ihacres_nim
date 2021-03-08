@@ -48,7 +48,7 @@ jobs:
           echo "compiling ihacres$ext..."
 
           mkdir -p "dist/$assets"
-          nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./dist/$assets --out:"ihacres$ext"
+          nimble c ./src/ihacres.nim -Y --app:lib -d:release --out:"./dist/$assets/ihacres$ext"
           cp -r ${{ env.RELEASE_FILES }} "dist/$assets/"
           ls ./dist/$assets
           (
