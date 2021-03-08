@@ -45,7 +45,7 @@ jobs:
               ext=".so"
           fi
 
-          echo "compiling $ext..."
+          echo "compiling ihacres$ext..."
 
           mkdir -p "dist/$assets"
           nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./dist/$assets --out:"ihacres$ext"
