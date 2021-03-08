@@ -45,8 +45,10 @@ jobs:
               ext=".so"
           fi
 
+          echo "compiling $ext..."
+
           mkdir -p "dist/$assets"
-          nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./dist/$assets --out:ihacres$ext
+          nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./dist/$assets --out:"ihacres$ext"
           cp -r ${{ env.RELEASE_FILES }} "dist/$assets/"
           ls ./dist/$assets
           (
