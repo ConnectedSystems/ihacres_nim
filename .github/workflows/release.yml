@@ -38,6 +38,7 @@ jobs:
           assets="${{ env.APP_NAME }}_$(echo "${{ runner.os }}" | tr '[:upper:]' '[:lower:]')"
           echo "$assets"
           mkdir -p "dist/$assets"
+          ls ./
           cp -r ${{ env.RELEASE_FILES }} "dist/$assets/"
           (
             cd dist
