@@ -9,7 +9,8 @@ env:
   APP_NAME: 'ihacres_nim'
   NIM_VERSION: 'stable'
   MAINTAINER: 'ConnectedSystems'
-  RELEASE_FILES: LICENSE.* README.* *ihacres.*
+  RELEASE_FILES: LICENSE.* README.* 
+  ASSETS: *ihacres.*
 
 jobs:
   build-artifact:
@@ -41,7 +42,8 @@ jobs:
           echo "$assets"
           mkdir -p "dist/$assets"
           ls ./
-          cp -r dist/${{ env.RELEASE_FILES }} "dist/$assets/"
+          cp -r ${{ env.RELEASE_FILES }} "dist/$assets/"
+          cp -r dist/${{ env.ASSETS }} "dist/$assets/"
           (
             cd dist
             if [[ "${{ runner.os }}" == Windows ]]; then
