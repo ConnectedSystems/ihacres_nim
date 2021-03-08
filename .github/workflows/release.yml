@@ -9,7 +9,7 @@ env:
   APP_NAME: 'ihacres_nim'
   NIM_VERSION: 'stable'
   MAINTAINER: 'ConnectedSystems'
-  RELEASE_FILES: LICENSE.* README.* ihacres.*
+  RELEASE_FILES: LICENSE.* README.* *ihacres.*
 
 jobs:
   build-artifact:
@@ -32,14 +32,16 @@ jobs:
           ls ~/.nimble/bin
         shell: bash
         if: runner.os == 'Windows'
-      - run: nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./
+      - run: |
+          mkdir dist
+          nimble c ./src/ihacres.nim -Y --app:lib -d:release --outdir:./dist
       - name: Create artifact
         run: |
           assets="${{ env.APP_NAME }}_$(echo "${{ runner.os }}" | tr '[:upper:]' '[:lower:]')"
           echo "$assets"
           mkdir -p "dist/$assets"
           ls ./
-          cp -r ${{ env.RELEASE_FILES }} "dist/$assets/"
+          cp -r dist/${{ env.RELEASE_FILES }} "dist/$assets/"
           (
             cd dist
             if [[ "${{ runner.os }}" == Windows ]]; then
