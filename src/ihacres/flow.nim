@@ -153,7 +153,7 @@ proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: 
         outflow = 0.0
     # End if
 
-    assert outflow >= 0.0, "Calculating quick store: Outflow cannot be negative"
+    assert outflow >= 0.0, fmt"Calculating quick store: Outflow cannot be negative: {outflow}"
 
     let b2: float64 = 1.0 - a2
     tmp_calc = prev_slow + (recharge * area)
@@ -163,7 +163,7 @@ proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: 
         outflow = outflow + b * slow_store
     # End if
 
-    assert outflow >= 0.0, "Calculating slow store: Outflow cannot be negative"
+    assert outflow >= 0.0, fmt"Calculating slow store: Outflow cannot be negative: {outflow}"
 
     ret[0] = quick_store
     ret[1] = slow_store
