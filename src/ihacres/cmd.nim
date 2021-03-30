@@ -4,11 +4,12 @@ from math import arctan, exp, log, PI, tan, pow, ln
 proc calc_cmd*(prev_cmd: float, rainfall: float, et: float, 
              effective_rainfall: float, recharge: float): 
              float {.stdcall,exportc,dynlib.} =
-    ## Calculate Catchment Moisture Deficit.
-    ## 
-    ## Min value of CMD is 0.0 and is in represented in mm depth.
-    ## A value of 0 indicates that the catchment is fully saturated.
-    ## A value greater than 0 means that there is a moisture deficit.
+    #[ Calculate Catchment Moisture Deficit.
+    
+        Min value of CMD is 0.0 and is in represented in mm depth.
+        A value of 0 indicates that the catchment is fully saturated.
+        A value greater than 0 means that there is a moisture deficit.
+    ]#
     var cmd: float = prev_cmd + et + effective_rainfall + recharge - rainfall  # units in mm
 
     return max(0.0, cmd)
@@ -16,19 +17,20 @@ proc calc_cmd*(prev_cmd: float, rainfall: float, et: float,
 
 proc calc_interim_cmd*(cmd: float, param_d: float, rainfall: float): 
      float {.stdcall,exportc,dynlib.} =
-    ## Calculate interim CMD (M_{f}) in its linear form.
-    ##
-    ## Based on HydroMad implementation.
-    ## 
-    ## Parameters
-    ## ----------
-    ## cmd: float, current Catchment Moisture Deficit (M_{k})
-    ## param_d: float, model parameter factor `d`
-    ## rainfall: float, rainfall for current time step in mm
-    ## 
-    ## Returns
-    ## ----------
-    ## float, interim CMD (M_{f})
+    #[ Calculate interim CMD (M_{f}) in its linear form.
+    
+        Based on HydroMad implementation.
+        
+        Parameters
+        ----------
+        cmd: float, current Catchment Moisture Deficit (M_{k})
+        param_d: float, model parameter factor `d`
+        rainfall: float, rainfall for current time step in mm
+        
+        Returns
+        ----------
+        float, interim CMD (M_{f})
+    ]#
     var Mf: float
     if cmd < param_d:
         Mf = cmd * exp(-rainfall / param_d)
@@ -44,19 +46,20 @@ proc calc_interim_cmd*(cmd: float, param_d: float, rainfall: float):
 
 proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float): 
      float {.stdcall,exportc,dynlib.} =
-    ## Calculate interim CMD (M_{f}) in its trigonometric form.
-    ## 
-    ## Based on HydroMad implementation.
-    ## 
-    ## Parameters
-    ## ----------
-    ## cmd: float, current Catchment Moisture Deficit (M_{k})
-    ## param_d: float, model parameter factor `d`
-    ## rainfall: float, rainfall for current time step in mm
-    ## 
-    ## Returns
-    ## -------
-    ## float, interim CMD (M_{f})
+    #[ Calculate interim CMD (M_{f}) in its trigonometric form.
+
+        Based on HydroMad implementation.
+        
+        Parameters
+        ----------
+        cmd: float, current Catchment Moisture Deficit (M_{k})
+        param_d: float, model parameter factor `d`
+        rainfall: float, rainfall for current time step in mm
+        
+        Returns
+        -------
+        float, interim CMD (M_{f})
+    ]#
     var Mf: float
     if cmd < param_d:
         Mf = 1.0 / tan((cmd / param_d) * (PI / 2.0))
@@ -73,19 +76,20 @@ proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float):
 
 proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float): 
      (float, float, float) {.stdcall,exportc,dynlib.} =
-    ## Direct port of original Fortran implementation to calculate interim CMD.
-    ## 
-    ## Parameters
-    ## ----------
-    ## cmd: float, Catchment Moisture Deficit
-    ## rain: float, rainfall for time step in mm
-    ## d: float, flow threshold value
-    ## d2: float, scaling factor applied to `d`
-    ## alpha: float, took value from IHACRESparams.csv file for 406219 for dev purposes only
-    ## 
-    ## Returns
-    ## ----------
-    ## tuple[float], interim CMD value, effective rainfall, recharge (all in mm)
+    #[ Direct port of original Fortran implementation to calculate interim CMD.
+    
+        Parameters
+        ----------
+        cmd: float, Catchment Moisture Deficit
+        rain: float, rainfall for time step in mm
+        d: float, flow threshold value
+        d2: float, scaling factor applied to `d`
+        alpha: float, scaling factor
+        
+        Returns
+        ----------
+        tuple[float], interim CMD value, effective rainfall, recharge (all in mm)
+    ]#
     var n_cmd: float  # new CMD value
     var tmp_rain: float
 
