@@ -28,8 +28,9 @@ proc calc_flow*(tau: float64, flow: float64, v: float64, e_rainfall: float64): f
 
 
 
-proc calc_flows*(ret: ptr array[3, float64], prev_flows: (float64, float64), v_s: float64, 
-                e_rainfall: float64, tau_q: float64, tau_s: float64)
+proc calc_flows*(prev_flows: (float64, float64), v_s: float64, 
+                e_rainfall: float64, tau_q: float64, tau_s: float64):
+                (float, float, float)
                 {.stdcall,exportc,dynlib.} =
     #[ Calculate quick and slow flow, and outflow.
         Calculates flows for current time step based on previous 
@@ -37,7 +38,6 @@ proc calc_flows*(ret: ptr array[3, float64], prev_flows: (float64, float64), v_s
         
         Parameters
         ----------
-        ret        : return array
         prev_flows : previous quick and slow flow in ML/day
         v_s        : proportional amount that goes to slow flow. v_s <= 1.0
         e_rainfall : current and previous effective rainfall
@@ -58,20 +58,18 @@ proc calc_flows*(ret: ptr array[3, float64], prev_flows: (float64, float64), v_s
     var slow: float64 = calc_flow(tau_s, prev_slow, v_s, e_rainfall)
     var outflow: float64 = (quick + slow)
 
-    ret[0] = quick
-    ret[1] = slow
-    ret[2] = outflow
+    return (quick, slow, outflow)
 
 
-proc routing*(ret: ptr array[2, float64], volume: float64, storage_coef: float64, inflow: float64, flow: float64, 
-            irrig_ext: float64, gw_exchange: float64 = 0.0)
-             {.stdcall,exportc,dynlib.} = 
+proc routing*(volume: float64, storage_coef: float64, inflow: float64, flow: float64, 
+              irrig_ext: float64, gw_exchange: float64 = 0.0):
+              (float, float)
+              {.stdcall,exportc,dynlib.} = 
     #[ Linear routing used to convert effective rainfall into streamflow 
         for a given time step.
         
         Parameters
         ----------
-        ret          : return array
         volume       : representing catchment moisture deficit in mm
         storage_coef : storage factor
         inflow       : incoming streamflow (flow from previous node)
@@ -94,8 +92,7 @@ proc routing*(ret: ptr array[2, float64], volume: float64, storage_coef: float64
         outflow = 0.0
     # End if
 
-    ret[0] = n_vol
-    ret[1] = outflow
+    return (n_vol, outflow)
 
 
 proc calc_outflow*(flow: float64, extractions: float64): float64 {.stdcall,exportc,dynlib.} = 
@@ -110,14 +107,14 @@ proc calc_outflow*(flow: float64, extractions: float64): float64 {.stdcall,expor
         -------
         flow - extractions, minimum possible is 0.0
     ]#
-
     return max(0.0, flow - extractions)
 
 
-proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: float64,
+proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
                     e_rain: float64, recharge: float64, 
                     area: float64, a: float64, b: float64, 
-                    loss: float64 = 0.0)
+                    loss: float64 = 0.0):
+                    (float64, float64, float64)
                     {.stdcall,exportc,dynlib.} =
     #[ Fortran port of flow calculation.
     
@@ -165,9 +162,7 @@ proc calc_ft_flows*(ret: ptr array[3, float64], prev_quick: float64, prev_slow: 
 
     assert outflow >= 0.0, fmt"Calculating slow store: Outflow cannot be negative: {outflow}"
 
-    ret[0] = quick_store
-    ret[1] = slow_store
-    ret[2] = outflow
+    return (quick_store, slow_store, outflow)
 
 
 proc calc_ft_level*(outflow: float64, level_params: ptr array[9, float64]):float64 {.stdcall,exportc,dynlib.} =
