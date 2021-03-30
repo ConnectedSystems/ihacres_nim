@@ -154,7 +154,7 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
 
     let b2: float64 = 1.0 - a2
     tmp_calc = prev_slow + (recharge * area)
-    slow_store = (tmp_calc - b2 * loss)
+    slow_store = max((tmp_calc - b2 * loss), 0.0)
     if (slow_store > 0.0):
         slow_store = 1.0 / (1.0 + b) * slow_store
         outflow = outflow + b * slow_store
