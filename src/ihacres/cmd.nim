@@ -119,14 +119,15 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
         var epsilon: float
         var gamma: float
 
-        d1a = d * (2.0 - exp(pow(-(rain / 50.0), 2)))
+        d1a = d * (2.0 - exp(-pow((rain / 50.0), 2)))
         if tmp_cmd > d1a:
             eps = d2 / (1.0 - alpha)
 
             # original comment: now get rainfall to reach cmd = d1a
             # amount of rain necessary to get to threshold `d`
             depth_to_d = eps * ln((alpha + tmp_cmd / eps) / (alpha + d1a / eps))
-            if depth_to_d > tmp_rain:
+
+            if depth_to_d >= tmp_rain:
                 lam = exp(tmp_rain * (1.0 - alpha) / d2)
                 epsilon = alpha * eps
 
@@ -139,7 +140,7 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
                 tmp_cmd = d1a
                 gamma = (alpha * d2 + (1.0 - alpha) * d1a) / (d1a * d2)
                 n_cmd = tmp_cmd * exp(-tmp_rain * gamma)
-                e_rain = alpha * (tmp_rain + 1.0 / d1a / gamma * (cmd - tmp_cmd))
+                e_rain = alpha * (tmp_rain + 1.0 / d1a / gamma * (n_cmd - tmp_cmd))
             # End if
         else:
             gamma = (alpha * d2 + (1.0 - alpha) * d1a) / (d1a * d2)

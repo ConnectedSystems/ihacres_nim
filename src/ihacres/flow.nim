@@ -120,7 +120,6 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
     
         Parameters
         ----------
-        ret        : return array
         prev_quick : previous quickflow storage
         prev_slow  : previous slowflow storage
         e_rain     : effective rainfall in mm
@@ -138,15 +137,17 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
     var quick_store, slow_store, outflow: float64
 
     var tmp_calc: float64 = prev_quick + (e_rain * area)
-    var sub_calc: float64 = (tmp_calc - 0.5 * loss)
-    if (sub_calc > 0.0) and not (sub_calc != 0.0):
+    var sub_calc: float64 = tmp_calc - (0.5 * loss)
+    if (sub_calc > 0.0):
         quick_store = 1.0 / (1.0 + a) * sub_calc
         outflow = a * quick_store
     else:
-        if loss != 0.0:
+        if loss == 0.0:
+            a2 = 0.0
+        else:
             a2 = max(0.0, min(1.0, (tmp_calc / loss)))
 
-        quick_store = tmp_calc - a2 * loss
+        quick_store = tmp_calc - (a2 * loss)
         outflow = 0.0
     # End if
 
@@ -154,7 +155,7 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
 
     let b2: float64 = 1.0 - a2
     tmp_calc = prev_slow + (recharge * area)
-    slow_store = (tmp_calc - b2 * loss)
+    slow_store = tmp_calc - (b2 * loss)
     if (slow_store > 0.0):
         slow_store = 1.0 / (1.0 + b) * slow_store
         outflow = outflow + b * slow_store
