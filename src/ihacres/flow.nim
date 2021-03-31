@@ -133,17 +133,19 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
         -------
         quick store, slow store, outflow
     ]#
-    var a2: float64 = 0.5
-    var quick_store, slow_store, outflow: float64
+    var a2: float = 0.5
+    var quick_store, slow_store, outflow: float
 
-    var tmp_calc: float64 = prev_quick + (e_rain * area)
-    var sub_calc: float64 = tmp_calc - (0.5 * loss)
+    var tmp_calc: float = prev_quick + (e_rain * area)
+    var sub_calc: float = tmp_calc - (0.5 * loss)
     if (sub_calc > 0.0):
         quick_store = 1.0 / (1.0 + a) * sub_calc
         outflow = a * quick_store
     else:
         if loss > 0.0:
             a2 = max(0.0, min(1.0, (tmp_calc / loss)))
+        else:
+            a2 = 0.0
 
         quick_store = tmp_calc - (a2 * loss)
         outflow = 0.0
