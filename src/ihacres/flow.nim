@@ -142,9 +142,7 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
         quick_store = 1.0 / (1.0 + a) * sub_calc
         outflow = a * quick_store
     else:
-        if loss == 0.0:
-            a2 = 0.0
-        else:
+        if loss > 0.0:
             a2 = max(0.0, min(1.0, (tmp_calc / loss)))
 
         quick_store = tmp_calc - (a2 * loss)
