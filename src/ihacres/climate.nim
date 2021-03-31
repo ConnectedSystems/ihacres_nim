@@ -89,6 +89,11 @@ proc calc_ET*(e: float, evap: float, interim_cmd: float, f: float, d: float):
     ]#
     let param_g: float = f * d
     var et: float = e * evap
-    et = et * min(1.0, exp(2.0 * (1.0 - (interim_cmd / param_g))))
+
+    if interim_cmd > param_g:
+        et = et * exp((1.0 - interim_cmd/param_g)*2.0)
+
+    if et < 0.0:
+        et = 0.0
 
     return et
