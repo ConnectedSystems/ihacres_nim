@@ -84,7 +84,7 @@ proc routing*(volume: float64, storage_coef: float64, inflow: float64, flow: flo
     var threshold: float64 = volume + (inflow + flow + gw_exchange) - irrig_ext
     var n_vol: float64  # new volume
     var outflow: float64
-    if (threshold > 0.0) and (threshold != 0.0):
+    if (threshold > 0.0):
         n_vol = 1.0 / (1.0 + storage_coef) * threshold
         outflow = storage_coef * volume
     else:
