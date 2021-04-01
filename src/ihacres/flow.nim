@@ -79,7 +79,7 @@ proc routing*(volume: float64, storage_coef: float64, inflow: float64, flow: flo
         
         Returns
         -------
-        cmd in mm, and streamflow in ML/day
+        volume and streamflow in ML/day
     ]#
     var threshold: float64 = volume + (inflow + flow + gw_exchange) - irrig_ext
     var n_vol: float64  # new volume
