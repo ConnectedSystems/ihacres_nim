@@ -76,7 +76,7 @@ proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float):
 
 proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float): 
      (float, float, float) {.stdcall,exportc,dynlib.} =
-    #[ Direct port of original Fortran implementation to calculate interim CMD.
+    #[ Direct port of original Fortran implementation to calculate interim CMD (M_{f}).
     
         Parameters
         ----------
@@ -90,7 +90,7 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
         ----------
         tuple[float], interim CMD value, effective rainfall, recharge (all in mm)
     ]#
-    var n_cmd: float  # new CMD value
+    var Mf: float  # new CMD value
     var tmp_rain: float
 
     var d2: float = d * d2
@@ -103,7 +103,7 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
 
     if tmp_cmd > (d2 + rain):
         # CMD never reaches d2, so all rain is effective
-        n_cmd = tmp_cmd - rain
+        Mf = tmp_cmd - rain
     else:
         if tmp_cmd > d2:
             tmp_rain = rain - (tmp_cmd - d2)  # leftover rain after reaching d2 threshold
@@ -131,7 +131,7 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
                 lam = exp(tmp_rain * (1.0 - alpha) / d2)
                 epsilon = alpha * eps
 
-                n_cmd = tmp_cmd / lam - epsilon * (1.0 - 1.0 / lam)
+                Mf = tmp_cmd / lam - epsilon * (1.0 - 1.0 / lam)
                 e_rain = 0.0
             else:
                 if (tmp_cmd > d1a):
@@ -139,16 +139,16 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
 
                 tmp_cmd = d1a
                 gamma = (alpha * d2 + (1.0 - alpha) * d1a) / (d1a * d2)
-                n_cmd = tmp_cmd * exp(-tmp_rain * gamma)
-                e_rain = alpha * (tmp_rain + 1.0 / d1a / gamma * (n_cmd - tmp_cmd))
+                Mf = tmp_cmd * exp(-tmp_rain * gamma)
+                e_rain = alpha * (tmp_rain + 1.0 / d1a / gamma * (Mf - tmp_cmd))
             # End if
         else:
             gamma = (alpha * d2 + (1.0 - alpha) * d1a) / (d1a * d2)
-            n_cmd = tmp_cmd * exp(-tmp_rain * gamma)
-            e_rain = alpha * (tmp_rain + 1.0 / d1a / gamma * (n_cmd - tmp_cmd))
+            Mf = tmp_cmd * exp(-tmp_rain * gamma)
+            e_rain = alpha * (tmp_rain + 1.0 / d1a / gamma * (Mf - tmp_cmd))
         # End if
 
-        recharge = rain - (tmp_cmd - n_cmd) - e_rain
+        recharge = rain - (cmd - Mf) - e_rain
     # End if
 
-    return (n_cmd, e_rain, recharge)
+    return (Mf, e_rain, recharge)
