@@ -3,7 +3,7 @@ import defines
 import strformat
 
 
-proc calc_flow*(tau: float64, flow: float64, v: float64, e_rainfall: float64): float64 {.stdcall,exportc,dynlib.} = 
+proc calc_flow*(tau: float, flow: float, v: float, e_rainfall: float): float {.stdcall,exportc,dynlib.} = 
     #[ Common function to calculate quick and slow flows.
         
         Parameters
@@ -19,17 +19,17 @@ proc calc_flow*(tau: float64, flow: float64, v: float64, e_rainfall: float64): f
     ]#
     
     # convert from 'tau' and 'v' to 'alpha' and 'beta'
-    let alpha: float64 = exp(-1.0 / tau)
-    let beta: float64 = v * (1.0 - alpha)
+    let alpha: float = exp(-1.0 / tau)
+    let beta: float = v * (1.0 - alpha)
 
-    var flow: float64 = (-alpha * flow) + (1.0 - alpha) * (beta * e_rainfall)
+    var flow: float = (-alpha * flow) + (1.0 - alpha) * (beta * e_rainfall)
 
     return flow
 
 
 
-proc calc_flows*(prev_flows: (float64, float64), v_s: float64, 
-                e_rainfall: float64, tau_q: float64, tau_s: float64):
+proc calc_flows*(prev_flows: (float, float), v_s: float, 
+                e_rainfall: float, tau_q: float, tau_s: float):
                 (float, float, float)
                 {.stdcall,exportc,dynlib.} =
     #[ Calculate quick and slow flow, and outflow.
@@ -51,18 +51,18 @@ proc calc_flows*(prev_flows: (float64, float64), v_s: float64,
         quickflow, slowflow, outflow in ML/day
     ]#
 
-    let v_q: float64 = 1.0 - v_s  # proportional quick flow
-    var prev_quick: float64 = prev_flows[0]
-    var prev_slow: float64 = prev_flows[1]
-    var quick:float64 = calc_flow(tau_q, prev_quick, v_q, e_rainfall)
-    var slow: float64 = calc_flow(tau_s, prev_slow, v_s, e_rainfall)
-    var outflow: float64 = (quick + slow)
+    let v_q: float = 1.0 - v_s  # proportional quick flow
+    var prev_quick: float = prev_flows[0]
+    var prev_slow: float = prev_flows[1]
+    var quick:float = calc_flow(tau_q, prev_quick, v_q, e_rainfall)
+    var slow: float = calc_flow(tau_s, prev_slow, v_s, e_rainfall)
+    var outflow: float = (quick + slow)
 
     return (quick, slow, outflow)
 
 
-proc routing*(volume: float64, storage_coef: float64, inflow: float64, flow: float64, 
-              irrig_ext: float64, gw_exchange: float64 = 0.0):
+proc routing*(volume: float, storage_coef: float, inflow: float, flow: float, 
+              irrig_ext: float, gw_exchange: float = 0.0):
               (float, float)
               {.stdcall,exportc,dynlib.} = 
     #[ Linear routing used to convert effective rainfall into streamflow 
@@ -81,9 +81,9 @@ proc routing*(volume: float64, storage_coef: float64, inflow: float64, flow: flo
         -------
         volume and streamflow in ML/day
     ]#
-    var threshold: float64 = volume + (inflow + flow + gw_exchange) - irrig_ext
-    var n_vol: float64  # new volume
-    var outflow: float64
+    var threshold: float = volume + (inflow + flow + gw_exchange) - irrig_ext
+    var n_vol: float  # new volume
+    var outflow: float
     if (threshold > 0.0):
         n_vol = 1.0 / (1.0 + storage_coef) * threshold
         outflow = storage_coef * volume
@@ -95,7 +95,7 @@ proc routing*(volume: float64, storage_coef: float64, inflow: float64, flow: flo
     return (n_vol, outflow)
 
 
-proc calc_outflow*(flow: float64, extractions: float64): float64 {.stdcall,exportc,dynlib.} = 
+proc calc_outflow*(flow: float, extractions: float): float {.stdcall,exportc,dynlib.} = 
     #[ Calculate streamflow of node taking into account extractions
 
         Parameters
@@ -110,11 +110,11 @@ proc calc_outflow*(flow: float64, extractions: float64): float64 {.stdcall,expor
     return max(0.0, flow - extractions)
 
 
-proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
-                    e_rain: float64, recharge: float64, 
-                    area: float64, a: float64, b: float64, 
-                    loss: float64 = 0.0):
-                    (float64, float64, float64)
+proc calc_ft_flows*(prev_quick: float, prev_slow: float,
+                    e_rain: float, recharge: float, 
+                    area: float, a: float, b: float, 
+                    loss: float = 0.0):
+                    (float, float, float)
                     {.stdcall,exportc,dynlib.} =
     #[ Fortran port of flow calculation.
     
@@ -153,7 +153,7 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
 
     assert outflow >= 0.0, fmt"Calculating quick store: Outflow cannot be negative: {outflow}"
 
-    let b2: float64 = 1.0 - a2
+    let b2: float = 1.0 - a2
     tmp_calc = prev_slow + (recharge * area)
     slow_store = tmp_calc - (b2 * loss)
     if (slow_store > 0.0):
@@ -166,11 +166,11 @@ proc calc_ft_flows*(prev_quick: float64, prev_slow: float64,
     return (quick_store, slow_store, outflow)
 
 
-proc calc_ft_level*(outflow: float64, level_params: ptr array[9, float64]):float64 {.stdcall,exportc,dynlib.} =
+proc calc_ft_level*(outflow: float, level_params: ptr array[9, float]):float {.stdcall,exportc,dynlib.} =
 
     (p1, p2, p3, p4, p5, p6, p7, p8, CTF) := level_params
     
-    var level: float64
+    var level: float
     level = exp(p1) * pow(outflow, p2) * 1.0 / (1.0 + pow(pow((outflow / p3), p4), (p5/p4)) * exp(p6 / (1.0+exp(-p7*p8)) * pow(outflow, p7)))
     level = max(level, 0.0)
     level = level + CTF  # add Cease to Flow (base height of stream in local datum)
