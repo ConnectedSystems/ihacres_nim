@@ -14,6 +14,13 @@ For local development/testing, run from the project root:
 `nim c --app:lib --opt:speed -d:release --outdir:./lib ./src/ihacres.nim`
 
 
+**Tests**
+
+Tests are invoked with the `testament` tool.
+
+`testament pattern "tests/*.nim"`
+
+
 ## Examples
 
 ### Julia
