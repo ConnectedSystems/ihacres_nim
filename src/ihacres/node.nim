@@ -7,37 +7,37 @@ type
 
 type
     StreamNode* = ref object of NetworkNode
-        area*: float64  # area in km^2
+        area*: float  # area in km^2
 
-        d*: float64
-        d2*: float64
-        e*: float64
-        f*: float64
-        a*: float64
-        b*: float64
-        storage_coef*: float64
-        alpha*: float64
+        d*: float
+        d2*: float
+        e*: float
+        f*: float
+        a*: float
+        b*: float
+        storage_coef*: float
+        alpha*: float
 
-        level_params*: array[9, float64]
+        level_params*: array[9, float]
 
-        storage*: seq[float64]
-        quickflow*: seq[float64]
-        slowflow*: seq[float64]
-        outflow*: seq[float64]
-        effective_rainfall*: seq[float64]
-        et*: seq[float64]
-        inflow*: seq[float64]
-        level*: seq[float64]
+        storage*: seq[float]
+        quickflow*: seq[float]
+        slowflow*: seq[float]
+        outflow*: seq[float]
+        effective_rainfall*: seq[float]
+        et*: seq[float]
+        inflow*: seq[float]
+        level*: seq[float]
 
 
-proc set_calib_params*(s: StreamNode, d: float64, d2: float64, e: float64, f: float64) =
+proc set_calib_params*(s: StreamNode, d, d2, e, f: float) =
     s.d = d
     s.d2 = d2
     s.e = e
     s.f = f
 
 
-proc update_state*(s: StreamNode, storage: float64, e_rainfall: float64, et: float64, qflow_store: float64, sflow_store: float64, outflow: float64, level: float64) =
+proc update_state*(s: StreamNode, storage, e_rainfall, et, qflow_store, sflow_store, outflow, level: float) =
     s.storage.add(storage)
     s.effective_rainfall.add(e_rainfall)
     s.et.add(et)
