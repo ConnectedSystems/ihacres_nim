@@ -43,7 +43,7 @@ proc calc_flows*(prev_flows: (float, float), v_s: float,
         e_rainfall : current and previous effective rainfall
         taus       : Time constant, quick and slow flow tau variables.
                      Represent the time required for the quickflow and slowflow
-                     responses to fall to :math:`1/e` of their initial values 
+                     responses to fall to $1/e$ of their initial values 
                      after an impulse of rainfall.
         
         Returns
