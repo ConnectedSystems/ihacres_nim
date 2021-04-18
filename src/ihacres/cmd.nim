@@ -77,6 +77,8 @@ proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float):
 proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float): 
      (float, float, float) {.stdcall,exportc,dynlib.} =
     #[ Direct port of original Fortran implementation to calculate interim CMD (M_{f}).
+
+       Calculates estimates of effective rainfall and recharge as a by-product.
     
         Parameters
         ----------

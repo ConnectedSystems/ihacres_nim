@@ -1,8 +1,8 @@
 import math
 
-proc calc_effective_rainfall*(rainfall: float, cmd: float, Mf: float, d: float, d2: float, n: float=0.1): 
+proc calc_effective_rainfall*(rainfall: float, cmd: float, d: float, d2: float, n: float=0.1): 
      float {.stdcall,exportc,dynlib.} = 
-    #[ Calculate effective rainfall
+    #[ Estimate effective rainfall.
     
         Parameters
         ----------
@@ -11,12 +11,19 @@ proc calc_effective_rainfall*(rainfall: float, cmd: float, Mf: float, d: float, 
         Mf, float, interim CMD value
         d: float, threshold value
         d2: float, scaling factor applied to `d`
-        n: float, scaling factor taken from Croke & Jakeman (2004).
-        `n` = 0.1 in suitable for most cases
+        n: float, scaling factor (default = 0.1)
+                  Default value is suitable for most cases (Croke & Jakeman, 2004)
         
         Returns
         ----------
         float : effective rainfall
+
+        References
+        ----------
+        .. [1] Croke, B.F.W., Jakeman, A.J. 2004
+            A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
+            Environmental Modelling & Software, 19(1), pp. 1–5. 
+            doi: 10.1016/j.envsoft.2003.09.001.
     ]#
     let d2: float = d * d2
     var e_rainfall: float
@@ -29,19 +36,6 @@ proc calc_effective_rainfall*(rainfall: float, cmd: float, Mf: float, d: float, 
         e_rainfall = rainfall * ((1.0 - n) * (1.0 - f1) + (n * (1.0 - f2)))
 
     return e_rainfall
-
-
-# def calc_effective_rainfall_orig(rainfall, cmd, Mf, d, d2):
-#     d2 = d * d2
-#     if cmd > d2:
-#         e_rainfall = rainfall
-#     else:
-#         # effective rainfall = rainfall - prev_cmd + (cmd before ET loss is accounted for)
-#         e_rainfall = max(0.0, rainfall - cmd + Mf)
-#     # End if
-
-#     return e_rainfall
-# # End calc_effective_rainfall2()
 
 
 proc calc_ET_from_T*(e: float, T: float, interim_cmd: float, f: float, d: float): 
