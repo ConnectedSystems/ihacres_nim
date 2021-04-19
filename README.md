@@ -1,5 +1,7 @@
 # IHACRES_nim
 
+![DOI](https://zenodo.org/badge/280612089.svg)
+
 An experimental implementation of the IHACRES rainfall-runoff model written in 
 [nim-lang](https://nim-lang.org/).
 
