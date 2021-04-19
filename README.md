@@ -1,21 +1,24 @@
-# ihacres_nim
+# IHACRES_nim
 
-An experimental implementation of the IHACRES rainfall-runoff model written in [nim-lang](https://nim-lang.org/).
+An experimental implementation of the IHACRES rainfall-runoff model written in 
+[nim-lang](https://nim-lang.org/).
 
-Intended to provide a consistent stable base for use across language ecosystems.
+This package provides a consistent stable set of functions for development and 
+experimentation across language ecosystems.
 
 
-**Compilation**
+## Compilation
 
-Releases compile a library (downloads can be found [here](https://github.com/ConnectedSystems/ihacres_nim/releases))
+Releases compile a dynamic library (downloads can be found [here](https://github.com/ConnectedSystems/ihacres_nim/releases))
 
 For local development/testing, run from the project root:
 
 `nim c --app:lib --opt:speed -d:release --outdir:./lib ./src/ihacres.nim`
 
 
-**Tests**
+## Tests
 
+Tests can be found under the `tests` directory, and are invoked with the `testament` tool.
 Tests are invoked with the `testament` tool.
 
 `testament pattern "tests/*.nim"`
@@ -34,8 +37,8 @@ ccall((:calc_outflow, "./lib/ihacres.so"), Cdouble,(Cdouble, Cdouble), 1.0, 1.0)
 Julia v1.5.3 onwards can leverage the provided base `@ccall` macro.
 
 ```julia
-const ihacres = "./lib/ihacres.so"
-@ccall ihacres.calc_outflow(10.0::Cdouble, 8.0::Cdouble)::Cdouble
+const IHACRES = "./lib/ihacres.so"
+@ccall IHACRES.calc_outflow(10.0::Cdouble, 8.0::Cdouble)::Cdouble
 ```
 
 
@@ -44,6 +47,25 @@ const ihacres = "./lib/ihacres.so"
 ```python
 from ctypes import cdll
 
-ihacres = cdll.LoadLibrary("./lib/ihacres.so")
-ihacres.calc_outflow(1.0, 1.0)
+IHACRES = cdll.LoadLibrary("./lib/ihacres.so")
+IHACRES.calc_outflow(1.0, 1.0)
 ```
+
+References
+----------
+    Croke, B.F.W., Jakeman, A.J. 2004
+      A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
+      Environmental Modelling & Software, 19(1), pp. 1–5. 
+      doi: 10.1016/j.envsoft.2003.09.001
+
+    Croke, B.F.W., Jakeman, A.J. 2005
+      Corrigendum to "A Catchment Moisture Deficit module for the IHACRES 
+      rainfall-runoff model [Environ. Model. Softw. 19 (1) (2004) 1–5]"
+      Environmental Modelling & Software, 20(7), p. 997.
+      doi: 10.1016/j.envsoft.2004.11.004
+
+    Jakeman, A.J., Littlewood, I.G., Whitehead, P.G.
+      Computation of the instantaneous unit hydrograph and identifiable component flows with application to two small upland catchments
+      Journal of Hydrology, 117(1), pp. 275-300.
+      doi: 10.1016/0022-1694(90)90097-H
+    
