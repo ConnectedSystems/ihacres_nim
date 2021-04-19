@@ -82,17 +82,17 @@ proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
         volume and streamflow in ML/day
     ]#
     var threshold: float = volume + (inflow + flow + gw_exchange) - irrig_ext
-    var n_vol: float  # new volume
+    var new_vol: float  # new volume
     var outflow: float
     if (threshold > 0.0):
-        n_vol = 1.0 / (1.0 + storage_coef) * threshold
+        new_vol = 1.0 / (1.0 + storage_coef) * threshold
         outflow = storage_coef * volume
     else:
-        n_vol = threshold
+        new_vol = threshold
         outflow = 0.0
     # End if
 
-    return (n_vol, outflow)
+    return (new_vol, outflow)
 
 
 proc calc_outflow*(flow: float, extractions: float): float {.stdcall,exportc,dynlib.} = 
