@@ -45,7 +45,7 @@ proc calc_effective_rainfall*(rainfall: float, cmd: float, d: float, d2: float, 
     return e_rainfall
 
 
-proc calc_ET_from_T*(e: float, T: float, interim_cmd: float, f: float, d: float): 
+proc calc_ET_from_T*(e: float, T: float, Mf: float, f: float, d: float): 
      float {.stdcall,exportc,dynlib.} =
     #[ Calculate evapotranspiration based on temperature data.
 
@@ -57,7 +57,7 @@ proc calc_ET_from_T*(e: float, T: float, interim_cmd: float, f: float, d: float)
         ----------
         e: float, temperature to PET conversion factor (a stress threshold)
         T: float or None, temperature in degrees C
-        interim_cmd: float, Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
+        Mf: float, Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
         f: float, multiplication factor on `d`
         d: float, flow threshold factor
         
@@ -66,7 +66,7 @@ proc calc_ET_from_T*(e: float, T: float, interim_cmd: float, f: float, d: float)
         float : estimate of ET from temperature
     ]#
     let param_g: float = f * d
-    var et: float = e * T * exp(2.0 * (1.0 - (interim_cmd / param_g))) 
+    var et: float = e * T * exp(2.0 * (1.0 - (Mf / param_g))) 
 
     # temperature can be negative, so we have a min cap of 0.0
     return max(0.0, et)
