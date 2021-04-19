@@ -21,9 +21,16 @@ proc calc_effective_rainfall*(rainfall: float, cmd: float, d: float, d2: float, 
         References
         ----------
         .. [1] Croke, B.F.W., Jakeman, A.J. 2004
-            A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
-            Environmental Modelling & Software, 19(1), pp. 1–5. 
-            doi: 10.1016/j.envsoft.2003.09.001.
+               A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
+               Environmental Modelling & Software, 19(1), pp. 1–5. 
+               doi: 10.1016/j.envsoft.2003.09.001
+        
+        .. [2] Croke, B.F.W., Jakeman, A.J. 2005
+               Corrigendum to "A Catchment Moisture Deficit module for the IHACRES 
+               rainfall-runoff model [Environ. Model. Softw. 19 (1) (2004) 1–5]"
+               Environmental Modelling & Software, 20(7), p. 997.
+               doi: https://doi.org/10.1016/j.envsoft.2004.11.004
+
     ]#
     let d2: float = d * d2
     var e_rainfall: float
