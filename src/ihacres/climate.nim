@@ -72,7 +72,7 @@ proc calc_ET_from_T*(e: float, T: float, Mf: float, f: float, d: float):
     return max(0.0, et)
 
 
-proc calc_ET*(e: float, evap: float, interim_cmd: float, f: float, d: float): 
+proc calc_ET*(e: float, evap: float, Mf: float, f: float, d: float): 
      float {.stdcall,exportc,dynlib.} =
     #[ Calculate evapotranspiration.
 
@@ -80,7 +80,7 @@ proc calc_ET*(e: float, evap: float, interim_cmd: float, f: float, d: float):
         ----------
         e: float, temperature to PET conversion factor (a stress threshold)
         evap: float, evaporation for given time step.
-        interim_cmd: float, Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
+        Mf: float, Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
         f: float, calibrated parameter that acts as a multiplication factor on `d`
         d: float, flow threshold factor
 
@@ -91,8 +91,8 @@ proc calc_ET*(e: float, evap: float, interim_cmd: float, f: float, d: float):
     let param_g: float = f * d
     var et: float = e * evap
 
-    if interim_cmd > param_g:
-        et = et * exp((1.0 - interim_cmd/param_g)*2.0)
+    if Mf > param_g:
+        et = et * exp((1.0 - Mf/param_g)*2.0)
 
     if et < 0.0:
         et = 0.0
