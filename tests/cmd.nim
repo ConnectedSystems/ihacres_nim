@@ -32,6 +32,12 @@ suite "Catchment Moisture Deficit":
         check (e_rainfall.classify != fcNaN) and (e_rainfall.classify != fcInf)
         check (recharge.classify != fcNaN) and (recharge.classify != fcInf)
 
+        (current_store, rain) = (103.467364, 79.6848605)
+        (Mf, e_rainfall, recharge) = calc_ft_interim(current_store, rain, d, d2, alpha)
+        check (Mf.classify != fcNaN) and (Mf.classify != fcInf)
+        check (e_rainfall.classify != fcNaN) and (e_rainfall.classify != fcInf)
+        check (recharge.classify != fcNaN) and (recharge.classify != fcInf)
+
     test "CMD expected value":
         var
             cmd, et, e_rain, recharge, rain, n_cmd: float
