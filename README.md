@@ -15,7 +15,7 @@ Releases compile a dynamic library (downloads can be found [here](https://github
 
 For local development/testing, run from the project root:
 
-`nim c --app:lib --opt:speed -d:release --outdir:./lib ./src/ihacres.nim`
+`nim c --app:lib -d:release --outdir:./lib ./src/ihacres.nim`
 
 
 ## Tests
