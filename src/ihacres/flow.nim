@@ -4,59 +4,71 @@ import strformat
 
 
 proc calc_flow*(tau: float, flow: float, v: float, e_rainfall: float): float {.stdcall,exportc,dynlib.} = 
-    #[ Common function to calculate quick and slow flows.
+    #[  Common function to calculate quick and slow flows using
+        Unit Hydrographs with exponential components.
+
+        Linear routing used to convert effective rainfall into streamflow 
+        for a given time step.
+
+        References
+        ----------
+        .. [1] https://wiki.ewater.org.au/display/SD45/IHACRES-CMD+-+SRG
         
         Parameters
         ----------
         tau        : `tau` value for flow
         flow       : proportional quick or slow flow in ML/day
         v          : `v` parameter in the literature
-        e_rainfall : effective rainfall in mm (`E` parameter in the literature)
+        e_rainfall : effective rainfall in mm (`U` parameter in the literature)
             
         Returns
         -------
         float, adjusted quick or slow flow in ML/day
     ]#
     
-    # convert from 'tau' and 'v' to 'alpha' and 'beta'
+    # convert `tau` to alpha
     let alpha: float = exp(-1.0 / tau)
-    let beta: float = v * (1.0 - alpha)
+    var flow: float = (-alpha * flow) + (1.0 - alpha) * (v * e_rainfall)
 
-    var flow: float = (-alpha * flow) + (1.0 - alpha) * (beta * e_rainfall)
-
-    return flow
+    return max(0.0, flow)
 
 
 
-proc calc_flows*(prev_flows: (float, float), v_s: float, 
-                e_rainfall: float, tau_q: float, tau_s: float):
+proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float, 
+                e_rainfall: float, area: float, tau_q: float, tau_s: float):
                 (float, float, float)
                 {.stdcall,exportc,dynlib.} =
-    #[ Calculate quick and slow flow, and outflow.
-        Calculates flows for current time step based on previous 
-        flows and current effective rainfall.
-        
-        Parameters
-        ----------
-        prev_flows : previous quick and slow flow in ML/day
-        v_s        : proportional amount that goes to slow flow. $v_{s}$ <= 1.0
-        e_rainfall : current and previous effective rainfall
-        tau_q      : Time constant, quick flow $\tau$ value
-        tau_s      : Time constant slow flow $\tau$ value
-                     Represents the time required for the quickflow and slowflow
-                     responses to fall to $1/e$ of their initial values 
-                     after an impulse of rainfall.
-        
-        Returns
-        -------
-        quickflow, slowflow, outflow in ML/day
+    #[ Calculate quick and slow flow, and outflow using a Unit Hydrograph 
+       composed of exponential components.
+
+       Calculates flows for current time step based on previous 
+       flows and current effective rainfall.
+
+       References
+       ----------
+       .. [1] https://wiki.ewater.org.au/display/SD45/IHACRES-CMD+-+SRG
+
+       Parameters
+       ----------
+       prev_quick : previous quick flow in ML/day
+       prev_slow  : previous slow flow in ML/day
+       v_s        : proportional amount that goes to slow flow. $v_{s}$ <= 1.0
+       e_rainfall : effective rainfall for $t$
+       tau_q      : Time constant, quick flow $\tau$ value
+       tau_s      : Time constant slow flow $\tau$ value
+                       Represents the time required for the quickflow and slowflow
+                       responses to fall to $1/e$ of their initial values 
+                       after an impulse of rainfall.
+
+       Returns
+       -------
+       quickflow, slowflow, outflow in ML/day
     ]#
 
     let v_q: float = 1.0 - v_s  # proportional quick flow
-    var prev_quick: float = prev_flows[0]
-    var prev_slow: float = prev_flows[1]
-    var quick:float = calc_flow(tau_q, prev_quick, v_q, e_rainfall)
-    var slow: float = calc_flow(tau_s, prev_slow, v_s, e_rainfall)
+    let areal_rainfall: float = e_rainfall * area
+    var quick:float = calc_flow(tau_q, prev_quick, v_q, areal_rainfall)
+    var slow: float = calc_flow(tau_s, prev_slow, v_s, areal_rainfall)
     var outflow: float = (quick + slow)
 
     return (quick, slow, outflow)
@@ -66,8 +78,7 @@ proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
               irrig_ext: float, gw_exchange: float = 0.0):
               (float, float)
               {.stdcall,exportc,dynlib.} = 
-    #[ Linear routing used to convert effective rainfall into streamflow 
-        for a given time step.
+    #[ Routing method 
         
         Parameters
         ----------
