@@ -2,8 +2,8 @@ from math import arctan, exp, log, PI, tan, pow, ln
 
 
 proc calc_cmd*(prev_cmd: float, rainfall: float, et: float, 
-             effective_rainfall: float, recharge: float): 
-             float {.stdcall,exportc,dynlib.} =
+               effective_rainfall: float, recharge: float): 
+               float {.stdcall,exportc,dynlib.} =
     #[ Calculate Catchment Moisture Deficit.
     
         Min value of CMD is 0.0 and is in represented in mm depth.
@@ -15,7 +15,7 @@ proc calc_cmd*(prev_cmd: float, rainfall: float, et: float,
     return max(0.0, cmd)
 
 
-proc calc_interim_cmd*(cmd: float, param_d: float, rainfall: float): 
+proc calc_linear_interim_cmd*(cmd: float, param_d: float, rainfall: float): 
      float {.stdcall,exportc,dynlib.} =
     #[ Calculate interim CMD (M_{f}) in its linear form.
     
@@ -53,7 +53,7 @@ proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float):
         Parameters
         ----------
         cmd: float, current Catchment Moisture Deficit (M_{k})
-        param_d: float, model parameter factor `d`
+        param_d: float, model parameter `d`
         rainfall: float, rainfall for current time step in mm
         
         Returns
