@@ -30,6 +30,31 @@ type
         level*: seq[float]
 
 
+type
+    ExpuhNode* = ref object of NetworkNode
+        area*: float  # area in km^2
+
+        d*: float
+        d2*: float
+        e*: float
+        f*: float
+        tau_s*: float
+        tau_q*: float
+        storage_coef*: float
+        alpha*: float
+
+        level_params*: array[9, float]
+
+        storage*: seq[float]
+        quickflow*: seq[float]
+        slowflow*: seq[float]
+        outflow*: seq[float]
+        effective_rainfall*: seq[float]
+        et*: seq[float]
+        inflow*: seq[float]
+        level*: seq[float]
+
+
 proc set_calib_params*(s: StreamNode, d, d2, e, f: float) =
     s.d = d
     s.d2 = d2
