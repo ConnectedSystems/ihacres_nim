@@ -1,5 +1,6 @@
 import math
 
+
 proc calc_effective_rainfall*(rainfall: float, cmd: float, d: float, d2: float, n: float=0.1): 
      float {.stdcall,exportc,dynlib.} = 
     #[ Estimate effective rainfall.
@@ -42,7 +43,7 @@ proc calc_effective_rainfall*(rainfall: float, cmd: float, d: float, d2: float, 
         let f2: float = min(1.0, cmd / d2)
         e_rainfall = rainfall * ((1.0 - n) * (1.0 - f1) + (n * (1.0 - f2)))
 
-    return e_rainfall
+    return max(0.0, e_rainfall)
 
 
 proc calc_ET_from_T*(e: float, T: float, Mf: float, f: float, d: float): 
@@ -63,12 +64,16 @@ proc calc_ET_from_T*(e: float, T: float, Mf: float, f: float, d: float):
         
         Returns
         -------
-        float : estimate of ET from temperature
+        float : estimate of ET from temperature (for catchment area)
     ]#
-    let param_g: float = f * d
-    var et: float = e * T * exp(2.0 * (1.0 - (Mf / param_g))) 
 
     # temperature can be negative, so we have a min cap of 0.0
+    if T <= 0.0:
+        return 0.0
+
+    let param_g: float = f * d
+    var et: float = e * T * min(1.0, exp(2.0 * (1.0 - (Mf / param_g))) )
+
     return max(0.0, et)
 
 
@@ -92,9 +97,6 @@ proc calc_ET*(e: float, evap: float, Mf: float, f: float, d: float):
     var et: float = e * evap
 
     if Mf > param_g:
-        et = et * exp((1.0 - Mf/param_g)*2.0)
+        et = et * min(1.0, exp((1.0 - Mf/param_g)*2.0))
 
-    if et < 0.0:
-        et = 0.0
-
-    return et
+    return max(0.0, et)
