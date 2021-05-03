@@ -6,7 +6,7 @@ proc calc_cmd*(prev_cmd: float, rainfall: float, et: float,
                float {.stdcall,exportc,dynlib.} =
     #[ Calculate Catchment Moisture Deficit.
     
-        Min value of CMD is 0.0 and is in represented in mm depth.
+        Min value of CMD is 0.0 and is represented in mm depth.
         A value of 0 indicates that the catchment is fully saturated.
         A value greater than 0 means that there is a moisture deficit.
     ]#

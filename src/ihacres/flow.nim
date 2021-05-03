@@ -3,35 +3,33 @@ import defines
 import strformat
 
 
-proc calc_flow*(tau: float, flow: float, v: float, e_rainfall: float): float {.stdcall,exportc,dynlib.} = 
-    #[  Common function to calculate quick and slow flows using
-        Unit Hydrographs with exponential components.
-
-        Linear routing used to convert effective rainfall into streamflow 
-        for a given time step.
-
-        References
-        ----------
-        .. [1] https://wiki.ewater.org.au/display/SD45/IHACRES-CMD+-+SRG
-        
-        Parameters
-        ----------
-        tau        : `tau` value for flow
-        flow       : proportional quick or slow flow in ML/day
-        v          : `v` parameter in the literature
-        e_rainfall : effective rainfall in mm (`U` parameter in the literature)
-            
-        Returns
-        -------
-        float, adjusted quick or slow flow in ML/day
-    ]#
-    
-    # convert `tau` to alpha
+proc convert_taus(tau: float, v: float): (float, float) =
     let alpha: float = exp(-1.0 / tau)
-    var flow: float = (-alpha * flow) + (1.0 - alpha) * (v * e_rainfall)
+    let beta: float = v * (1.0 - alpha)
 
-    return max(0.0, flow)
+    return (alpha, beta)
 
+
+proc calc_slow(tau: float, prev_slow: float, v: float, e_rainfall: float): float =
+    # convert `tau` to alpha
+    var alpha, beta, slow: float
+
+    (alpha, beta) = convert_taus(tau, v)
+    slow = (beta * e_rainfall) + alpha * prev_slow
+
+    return slow
+
+
+proc calc_quick(tau: float, prev_quick: float, v: float, e_rainfall: float): float =
+    #[  Recursive filtering
+
+    ]#
+    var alpha, beta, quick: float
+
+    (alpha, beta) = convert_taus(tau, v)
+    quick = (beta * e_rainfall) * alpha
+
+    return quick
 
 
 proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float, 
@@ -43,6 +41,8 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
 
        Calculates flows for current time step based on previous 
        flows and current effective rainfall.
+
+       Assumes components are in parallel.
 
        References
        ----------
@@ -67,8 +67,8 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
 
     let v_q: float = 1.0 - v_s  # proportional quick flow
     let areal_rainfall: float = e_rainfall * area
-    var quick:float = calc_flow(tau_q, prev_quick, v_q, areal_rainfall)
-    var slow: float = calc_flow(tau_s, prev_slow, v_s, areal_rainfall)
+    var quick: float = calc_quick(tau_q, prev_quick, v_q, areal_rainfall)
+    var slow: float = calc_slow(tau_s, prev_slow, v_s, areal_rainfall)
     var outflow: float = (quick + slow)
 
     return (quick, slow, outflow)
