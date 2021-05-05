@@ -53,7 +53,7 @@ proc run*(s_node: StreamNode, rain: float, evap: float, inflow: float, ext: floa
     return (outflow, level)
 
 
-proc run_expuh*(s_node: ExpuhNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange::Float64=0.0, loss::Float64=0.0): 
+proc run_expuh*(s_node: ExpuhNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange: float=0.0, loss: float=0.0): 
      (float, float) =
     #[ Run node to calculate outflow and update state.
  
@@ -87,13 +87,17 @@ proc run_expuh*(s_node: ExpuhNode, rain: float, evap: float, inflow: float, ext:
     mf = calc_trig_interim_cmd(current_store, s_node.d, e_rainfall)
 
     var et: float = calc_ET(s_node.e, evap, mf, s_node.f, s_node.d)
-    var cmd: float = calc_cmd(current_store, rain, et, e_rainfall, loss)
+    var cmd: float = calc_cmd(mf, rain, et, e_rainfall, loss)
 
     s_node.inflow.add(inflow)
 
-    var prev_flows = (s_node.quickflow[-1], s_node.slowflow[-1])
-    (quick_store, slow_store, outflow) = calc_flows(prev_flows, s_node.v_s, e_rainfall, 
-                                                    s_node.tau_q, s_node.tau_s)
+    # var prev_flows = (s_node.quickflow[-1], s_node.slowflow[-1])
+    (quick_store, slow_store, outflow) = calc_flows(s_node.quickflow[-1], 
+                                                    s_node.slowflow[-1], 
+                                                    s_node.v_s, 
+                                                    e_rainfall, 
+                                                    s_node.tau_q, 
+                                                    s_node.tau_s)
 
     (cmd, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
 
