@@ -23,7 +23,7 @@ proc calc_linear_interim_cmd*(cmd: float, param_d: float, rainfall: float):
         
         Parameters
         ----------
-        cmd: float, current Catchment Moisture Deficit (M_{k})
+        cmd: float, previous Catchment Moisture Deficit (M_{k-1})
         param_d: float, model parameter factor `d`
         rainfall: float, rainfall for current time step in mm
         
@@ -52,7 +52,7 @@ proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float):
         
         Parameters
         ----------
-        cmd: float, current Catchment Moisture Deficit (M_{k})
+        cmd: float, previous Catchment Moisture Deficit (M_{k-1})
         param_d: float, model parameter `d`
         rainfall: float, rainfall for current time step in mm
         
@@ -82,7 +82,7 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
     
         Parameters
         ----------
-        cmd: float, Catchment Moisture Deficit
+        cmd: float, previous Catchment Moisture Deficit (M_{k-1})
         rain: float, rainfall for time step in mm
         d: float, flow threshold value
         d2: float, scaling factor applied to `d`

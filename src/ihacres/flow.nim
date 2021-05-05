@@ -52,7 +52,7 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
        ----------
        prev_quick : previous quick flow in ML/day
        prev_slow  : previous slow flow in ML/day
-       v_s        : proportional amount that goes to slow flow. $v_{s}$ <= 1.0
+       v_s        : proportional amount that goes to slow flow. $v_{s} <= 1.0$
        e_rainfall : effective rainfall for $t$
        tau_q      : Time constant, quick flow $\tau$ value
        tau_s      : Time constant slow flow $\tau$ value
