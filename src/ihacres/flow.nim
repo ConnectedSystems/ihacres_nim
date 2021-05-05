@@ -17,7 +17,7 @@ proc calc_slow(tau: float, prev_slow: float, v: float, e_rainfall: float): float
     (alpha, beta) = convert_taus(tau, v)
     slow = (beta * e_rainfall) + alpha * prev_slow
 
-    return slow
+    return max(0.0, slow)
 
 
 proc calc_quick(tau: float, prev_quick: float, v: float, e_rainfall: float): float =
@@ -29,7 +29,7 @@ proc calc_quick(tau: float, prev_quick: float, v: float, e_rainfall: float): flo
     (alpha, beta) = convert_taus(tau, v)
     quick = (beta * e_rainfall) * alpha
 
-    return quick
+    return max(0.0, quick)
 
 
 proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float, 
