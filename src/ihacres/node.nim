@@ -41,7 +41,6 @@ type
         tau_s*: float
         tau_q*: float
         storage_coef*: float
-        alpha*: float
 
         level_params*: array[9, float]
 
