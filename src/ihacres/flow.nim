@@ -4,38 +4,30 @@ import strformat
 
 
 proc convert_taus(tau: float, v: float): (float, float) =
+    #[ Convert $\tau$ to $\alpha$ and $\beta$ ]#
     let alpha: float = exp(-1.0 / tau)
     let beta: float = v * (1.0 - alpha)
 
     return (alpha, beta)
 
 
-proc calc_slow(tau: float, prev_slow: float, v: float, e_rainfall: float): float =
-    # convert `tau` to alpha
-    var alpha, beta, slow: float
+proc calc_stores(tau: float, prev_store: float, v: float, e_rainfall: float): float =
+    var alpha, beta, store: float
 
     (alpha, beta) = convert_taus(tau, v)
-    slow = (beta * e_rainfall) + alpha * prev_slow
+    store = (beta * e_rainfall) + alpha * prev_store
 
-    return max(0.0, slow)
-
-
-proc calc_quick(tau: float, prev_quick: float, v: float, e_rainfall: float): float =
-    #[  Recursive filtering
-
-    ]#
-    var alpha, beta, quick: float
-
-    (alpha, beta) = convert_taus(tau, v)
-    quick = (beta * e_rainfall) * alpha
-
-    return max(0.0, quick)
+    return max(0.0, store)
 
 
+# armax formulation is the most generic but pain in the ass to apply.
+# Should optimize those.
+
+# redo to allow `n` stores
 proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float, 
-                e_rainfall: float, area: float, tau_q: float, tau_s: float):
-                (float, float, float)
-                {.stdcall,exportc,dynlib.} =
+                 e_rainfall: float, area: float, tau_q: float, tau_s: float):
+                 (float, float, float)
+                 {.stdcall,exportc,dynlib.} =
     #[ Calculate quick and slow flow, and outflow using a Unit Hydrograph 
        composed of exponential components.
 
@@ -64,11 +56,10 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
        -------
        quickflow, slowflow, outflow in ML/day
     ]#
-
     let v_q: float = 1.0 - v_s  # proportional quick flow
     let areal_rainfall: float = e_rainfall * area
-    var quick: float = calc_quick(tau_q, prev_quick, v_q, areal_rainfall)
-    var slow: float = calc_slow(tau_s, prev_slow, v_s, areal_rainfall)
+    var quick: float = calc_stores(tau_q, prev_quick, v_q, areal_rainfall)
+    var slow: float = calc_stores(tau_s, prev_slow, v_s, areal_rainfall)
     var outflow: float = (quick + slow)
 
     return (quick, slow, outflow)
