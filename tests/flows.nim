@@ -1,4 +1,5 @@
 import unittest
+import math
 
 import ihacres/flow
 
@@ -20,12 +21,12 @@ suite "Flows":
         prev_slow = 100.0
 
         (quick_store, slow_store, outflow) = calc_ft_flows(prev_quick, prev_slow, e_rain, recharge, area, a, b, loss)
-
-        check quick_store == (1.0 / (1.0 + a) * (prev_quick + (e_rain * area)))
+        
+        check quick_store == exp(-a) * (prev_quick + (e_rain * area))
 
         var b2 = 1.0
         var check_val = prev_slow + (recharge * area) - (loss * b2)
-        check_val = 1.0 / (1.0 + b) * check_val
+        check_val = exp(-b) * check_val
         check slow_store == check_val
 
         # Use values that trigger alternate calculation
@@ -38,9 +39,9 @@ suite "Flows":
 
         (quick_store, slow_store, outflow) = calc_ft_flows(prev_quick, prev_slow, e_rain, recharge, area, a, b, loss)
 
-        check quick_store == (1.0 / (1.0 + a) * (prev_quick + (e_rain * area)))
+        check quick_store == exp(-a) * (prev_quick + (e_rain * area))
 
         b2 = 1.0
         check_val = prev_slow + (recharge * area) - (loss * b2)
-        check_val = 1.0 / (1.0 + b) * check_val
+        check_val = exp(-b) * check_val
         check slow_store == check_val

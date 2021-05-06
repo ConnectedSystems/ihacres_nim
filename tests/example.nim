@@ -8,7 +8,7 @@ import ihacres/stream_run
 
 suite "Test Run":
     test "Node Run":
-        var test_node = StreamNode(
+        var test_node = BilinearNode(
             area:100, 
             d: 0.1, d2: 0.1, e: 0.1, f: 0.1, 
             a: 54.35,
@@ -23,7 +23,7 @@ suite "Test Run":
         echo test_node.run(rain=5.0, evap=1.0, inflow=50.0, ext=25.0, gw_exchange=0.0, loss=0.0)
     
     test "No NaN":
-        var test_node = StreamNode(
+        var test_node = BilinearNode(
             area:100, 
             d: 0.1, d2: 0.1, e: 0.1, f: 0.1, 
             a: 54.35,
