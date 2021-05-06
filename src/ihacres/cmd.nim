@@ -19,17 +19,30 @@ proc calc_linear_interim_cmd*(cmd: float, param_d: float, rainfall: float):
      float {.stdcall,exportc,dynlib.} =
     #[ Calculate interim CMD (M_{f}) in its linear form.
     
-        Based on HydroMad implementation.
-        
+        Based on HydroMad implementation and details in references.
+
+        References
+        ----------
+        .. [1] Croke, B.F.W., Jakeman, A.J. 2004
+               A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
+               Environmental Modelling & Software, 19(1), pp. 1–5. 
+               doi: 10.1016/j.envsoft.2003.09.001
+
+        .. [2] Croke, B.F.W., Jakeman, A.J. 2005
+               Corrigendum to "A Catchment Moisture Deficit module for the IHACRES 
+               rainfall-runoff model [Environ. Model. Softw. 19 (1) (2004) 1–5]"
+               Environmental Modelling & Software, 20(7), p. 997.
+               doi: 10.1016/j.envsoft.2004.11.004
+
         Parameters
         ----------
-        cmd: float, previous Catchment Moisture Deficit (M_{k-1})
-        param_d: float, model parameter factor `d`
-        rainfall: float, rainfall for current time step in mm
+        cmd: previous Catchment Moisture Deficit (M_{k-1})
+        param_d: model parameter factor `d`
+        rainfall: rainfall for current time step in mm
         
         Returns
         ----------
-        float, interim CMD (M_{f})
+        interim CMD (M_{f})
     ]#
     var Mf: float
     if cmd < param_d:
@@ -48,7 +61,7 @@ proc calc_trig_interim_cmd*(cmd: float, param_d: float, rainfall: float):
      float {.stdcall,exportc,dynlib.} =
     #[ Calculate interim CMD (M_{f}) in its trigonometric form.
 
-        Based on HydroMad implementation.
+        Based on HydroMad implementation and details in references.
         
         Parameters
         ----------
