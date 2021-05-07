@@ -148,19 +148,21 @@ proc calc_ft_flows*(prev_quick: float, prev_slow: float,
     var a2: float = 0.5
     var quick_store, slow_store, outflow, c1: float
 
-    var tmp_calc: float = prev_quick + (e_rain * area) - (a2*loss)
+    var tmp_calc: float = max(0.0, prev_quick + (e_rain * area) - (a2*loss))
     if (tmp_calc > 0.0):
         c1 = exp(-a)
         quick_store = c1 * tmp_calc
-        outflow = (1.0 - c1) * quick_store
+        outflow = (1.0 - c1) * tmp_calc
     else:
+        quick_store = tmp_calc
+        outflow = 0.0
+
+        # Modifiy a2 for outflow calculation
+        # reminder: tmp_calc can be negative
         if loss > 0.0:
             a2 = max(0.0, min(1.0, tmp_calc))
         else:
             a2 = 0.0
-
-        quick_store = tmp_calc
-        outflow = 0.0
     # End if
 
     assert outflow >= 0.0, fmt"Calculating quick store: Outflow cannot be negative: {outflow}"
@@ -169,8 +171,8 @@ proc calc_ft_flows*(prev_quick: float, prev_slow: float,
     slow_store = prev_slow + (recharge * area) - (b2 * loss)
     if (slow_store > 0.0):
         c1 = exp(-b)
-        slow_store = c1 * slow_store
         outflow = outflow + (1.0 - c1) * slow_store
+        slow_store = c1*slow_store
     # End if
 
     assert outflow >= 0.0, fmt"Calculating slow store: Outflow cannot be negative: {outflow}"
