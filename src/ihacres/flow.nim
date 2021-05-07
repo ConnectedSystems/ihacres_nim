@@ -20,9 +20,6 @@ proc calc_stores(tau: float, prev_store: float, v: float, e_rainfall: float): fl
     return max(0.0, store)
 
 
-# armax formulation is the most generic but pain in the ass to apply.
-# Should optimize those.
-
 # redo to allow `n` stores
 proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float, 
                  e_rainfall: float, area: float, tau_q: float, tau_s: float):
@@ -37,19 +34,19 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
        Assumes components are in parallel.
 
        References
-    ----------
-    .. [1] https://wiki.ewater.org.au/display/SD45/IHACRES-CMD+-+SRG
+        ----------
+        .. [1] https://wiki.ewater.org.au/display/SD45/IHACRES-CMD+-+SRG
 
-    .. [2] Croke, B.F.W., Jakeman, A.J. 2004
-               A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
-               Environmental Modelling & Software, 19(1), pp. 1–5. 
-               doi: 10.1016/j.envsoft.2003.09.001
+        .. [2] Croke, B.F.W., Jakeman, A.J. 2004
+                A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
+                Environmental Modelling & Software, 19(1), pp. 1–5. 
+                doi: 10.1016/j.envsoft.2003.09.001
 
-    .. [3] Croke, B.F.W., Jakeman, A.J. 2005
-            Corrigendum to "A Catchment Moisture Deficit module for the IHACRES 
-            rainfall-runoff model [Environ. Model. Softw. 19 (1) (2004) 1–5]"
-            Environmental Modelling & Software, 20(7), p. 997.
-            doi: 10.1016/j.envsoft.2004.11.004
+        .. [3] Croke, B.F.W., Jakeman, A.J. 2005
+                Corrigendum to "A Catchment Moisture Deficit module for the IHACRES 
+                rainfall-runoff model [Environ. Model. Softw. 19 (1) (2004) 1–5]"
+                Environmental Modelling & Software, 20(7), p. 997.
+                doi: 10.1016/j.envsoft.2004.11.004
 
        Parameters
        ----------
