@@ -1,6 +1,18 @@
 from math import arctan, exp, log, PI, tan, pow, ln
 
 
+proc `~=`(a, b: float, tolerance: float = 1e-10): bool =
+    #[
+        Check if "a" and "b" are close.
+        We use a relative tolerance to compare the values.
+
+        Note: later versions of Nim may have an almostEqual() proc
+        to be imported from std/math
+    ]#
+  ## 
+  result = abs(a - b) < max(abs(a), abs(b)) * tolerance
+
+
 proc calc_cmd*(prev_cmd: float, rainfall: float, et: float, 
                effective_rainfall: float, recharge: float): 
                float {.stdcall,exportc,dynlib.} =
@@ -112,9 +124,11 @@ proc calc_ft_interim*(cmd: float, rain: float, d: float, d2: float, alpha: float
     var tmp_cmd: float = cmd
     var e_rain: float = 0.0
     var recharge: float = 0.0
-    if rain == 0.0:
+
+    if rain ~= 0.0:
         return (cmd, e_rain, recharge)
     # End if
+
 
     if tmp_cmd > (d2 + rain):
         # CMD never reaches d2, so all rain is effective
