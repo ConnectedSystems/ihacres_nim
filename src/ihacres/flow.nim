@@ -137,8 +137,8 @@ proc calc_ft_flows*(prev_quick: float, prev_slow: float,
         e_rain     : effective rainfall in mm
         recharge   : recharge amount in mm
         area       : catchment area in km^2
-        a          : `a` factor controlling quickflow rate
-        b          : `b` factor controlling slowflow rate
+        a          : quickflow storage coefficient, inverse of $tau_q$ such that $a == (1/tau_q)$
+        b          : slowflow storage coefficient, inverse of $tau_s$ such that $b == (1/tau_s)$
         loss       : losses in mm depth
         
         Returns
