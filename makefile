@@ -3,4 +3,4 @@ build:
 	nim c --app:lib -d:release --outdir:./lib ./src/ihacres.nim
 
 docs:
-    nim doc --project --outdir=./htmldocs --index:on src/ihacres.nim
+    nim doc --project --outdir=./docs --index:on src/ihacres.nim

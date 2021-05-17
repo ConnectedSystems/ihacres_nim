@@ -30,7 +30,7 @@ Tests are invoked with the `testament` tool.
 
 Documentation is generated from source with the following:
 
-`nim doc --project --outdir=./htmldocs --index:on src/ihacres.nim`
+`nim doc --project --outdir=./docs --index:on src/ihacres.nim`
 
 ## Examples
 
