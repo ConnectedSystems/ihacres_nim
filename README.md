@@ -26,6 +26,12 @@ Tests are invoked with the `testament` tool.
 `testament pattern "tests/*.nim"`
 
 
+## Documentation
+
+Documentation is generated from source with the following:
+
+`nim doc --project --outdir=./htmldocs --index:on src/ihacres.nim`
+
 ## Examples
 
 ### Julia
