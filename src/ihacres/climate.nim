@@ -41,16 +41,16 @@ proc calc_effective_rainfall*(rainfall, cmd, d, d2: float, n: float=0.1):
     return max(0.0, e_rainfall)
 
 
-proc calc_ET*(e: float, evap: float, Mf: float, f: float, d: float):
+proc calc_ET*(e, evap, Mf, f, d: float):
      float {.stdcall,exportc,dynlib.} =
     ## Calculate evapotranspiration.
     ##
     ## :Parameters:
-    ##     - e: float, temperature to PET conversion factor (a stress threshold)
-    ##     - evap: float, evaporation for given time step.
-    ##     - Mf: float, Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
-    ##     - f: float, calibrated parameter that acts as a multiplication factor on `d`
-    ##     - d: float, flow threshold factor
+    ##     - e    : temperature to PET conversion factor (a stress threshold)
+    ##     - evap : evaporation for given time step.
+    ##     - Mf   : Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
+    ##     - f    : calibrated parameter that acts as a multiplication factor on `d`
+    ##     - d    : flow threshold factor
     ##
     ## :Results:
     ##     estimate of ET
@@ -63,7 +63,7 @@ proc calc_ET*(e: float, evap: float, Mf: float, f: float, d: float):
     return max(0.0, et)
 
 
-proc calc_ET_from_T*(e: float, T: float, Mf: float, f: float, d: float):
+proc calc_ET_from_T*(e, T, Mf, f, d: float):
      float {.stdcall,exportc,dynlib.} =
     ## Calculate evapotranspiration based on temperature data.
     ##
@@ -72,11 +72,11 @@ proc calc_ET_from_T*(e: float, T: float, Mf: float, f: float, d: float):
     ## water availability for plant transpiration.
     ##
     ## :Parameters:
-    ##     - e  : float, temperature to PET conversion factor (a stress threshold)
-    ##     - T  : float or None, temperature in degrees C
-    ##     - Mf : float, Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
-    ##     - f  : float, multiplication factor on `d`
-    ##     - d  : float, flow threshold factor
+    ##     - e  : temperature to PET conversion factor (a stress threshold)
+    ##     - T  : temperature in degrees C
+    ##     - Mf : Catchment Moisture Deficit prior to accounting for ET losses (`M_{f}`)
+    ##     - f  : multiplication factor on `d`
+    ##     - d  : flow threshold factor
     ##
     ## :Returns:
     ##     estimate of ET from temperature (for catchment area)

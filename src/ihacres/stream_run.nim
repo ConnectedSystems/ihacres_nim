@@ -8,21 +8,18 @@ import ihacres/cmd
 
 proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange=0.0, loss=0.0):
      (float, float) =
-    #[ Run node to calculate outflow and update state.
-
-        Parameters
-        ----------
-        timestep: int, time step
-        rain: float, rainfall
-        evap: float, evapotranspiration
-        extractions: float, irrigation and other water extractions
-        gw_exchange: float, flux in ML - positive is contribution, negative is infiltration
-        loss: float,
-
-        Returns
-        ----------
-        tuple, outflow from node, level
-    ]#
+    ## Run node to calculate outflow and update state.
+    ##
+    ## :Parameters:
+    ##     - timestep    : time step
+    ##     - rain        :  rainfall
+    ##     - evap        : evapotranspiration
+    ##     - extractions : irrigation and other water extractions
+    ##     - gw_exchange : flux in ML - positive is contribution, negative is infiltration
+    ##     - loss        : volume loss
+    ##
+    ## :Returns:
+    ##    outflow from node, level
 
     # other extractions are ignored for stream nodes, so only extract irrigation ext.
     var
@@ -67,9 +64,8 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
     ##     - gw_exchange: float, flux in ML - positive is contribution, negative is infiltration
     ##     - loss: float,
     ## 
-    ## Returns
-    ## ----------
-    ## tuple, outflow from node, level
+    ## :Returns:
+    ##     outflow from node, level
 
     # other extractions are ignored for stream nodes, so only extract irrigation ext.
     var
@@ -90,7 +86,6 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
 
     s_node.inflow.add(inflow)
 
-    # var prev_flows = (s_node.quickflow[-1], s_node.slowflow[-1])
     (quick_store, slow_store, outflow) = calc_flows(s_node.quickflow[-1],
                                                     s_node.slowflow[-1],
                                                     s_node.v_s,

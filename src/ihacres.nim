@@ -6,7 +6,7 @@
 ## `IHACRES_nim` is an implementation of the IHACRES rainfall-runoff model written in the Nim programming language.
 ## 
 ## Prior implementations (see list in "Other implementations" below) either do not have the source code available,
-## or ties their use to a specific computing environment. Others are embedded as part of a modelling suite, and is
+## or ties their use to a specific computing environment. Others are embedded as part of a modelling suite, and are
 ## not directly accessible or reusable. In the usual case, only partial support for functionality desirable within 
 ## an integrated context is provided, such as interactions across socio-environmental systems at requisite time 
 ## steps.

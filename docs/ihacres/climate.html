@@ -96,12 +96,12 @@ function main() {
   <ul class="simple simple-toc-section">
       <ul class="simple nested-toc-section">calc_ET_from_T
       <li><a class="reference" href="#calc_ET_from_T%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"
-    title="calc_ET_from_T(e: float; T: float; Mf: float; f: float; d: float): float">calc_ET_from_T,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
+    title="calc_ET_from_T(e, T, Mf, f, d: float): float">calc_ET_from_T,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">calc_ET
       <li><a class="reference" href="#calc_ET%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"
-    title="calc_ET(e: float; evap: float; Mf: float; f: float; d: float): float">calc_ET,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
+    title="calc_ET(e, evap, Mf, f, d: float): float">calc_ET,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">calc_effective_rainfall
@@ -150,15 +150,15 @@ Estimate effective rainfall.<table class="docinfo" frame="void" rules="none"><co
 
 </dd>
 <a id="calc_ET,float,float,float,float,float"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#calc_ET%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ET</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">evap</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">Mf</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">f</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">d</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
-    <span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#calc_ET%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ET</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">,</span> <span class="Identifier">evap</span><span class="Other">,</span> <span class="Identifier">Mf</span><span class="Other">,</span> <span class="Identifier">f</span><span class="Other">,</span> <span class="Identifier">d</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span>
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Calculate evapotranspiration.<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>e: float, temperature to PET conversion factor (a stress threshold)</li>
-<li>evap: float, evaporation for given time step.</li>
-<li>Mf: float, Catchment Moisture Deficit prior to accounting for ET losses (<tt class="docutils literal"><span class="pre">M_{f}</span></tt>)</li>
-<li>f: float, calibrated parameter that acts as a multiplication factor on <tt class="docutils literal"><span class="pre">d</span></tt></li>
-<li>d: float, flow threshold factor</li>
+Calculate evapotranspiration.<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>e    : temperature to PET conversion factor (a stress threshold)</li>
+<li>evap : evaporation for given time step.</li>
+<li>Mf   : Catchment Moisture Deficit prior to accounting for ET losses (<tt class="docutils literal"><span class="pre">M_{f}</span></tt>)</li>
+<li>f    : calibrated parameter that acts as a multiplication factor on <tt class="docutils literal"><span class="pre">d</span></tt></li>
+<li>d    : flow threshold factor</li>
 </ul>
 </td></tr>
 <tr><th class="docinfo-name">Results:</th><td>estimate of ET</td></tr>
@@ -166,17 +166,17 @@ Calculate evapotranspiration.<table class="docinfo" frame="void" rules="none"><c
 
 </dd>
 <a id="calc_ET_from_T,float,float,float,float,float"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#calc_ET_from_T%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ET_from_T</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">Mf</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">f</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">d</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
-    <span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#calc_ET_from_T%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ET_from_T</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">,</span> <span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">Mf</span><span class="Other">,</span> <span class="Identifier">f</span><span class="Other">,</span> <span class="Identifier">d</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span>
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 <p>Calculate evapotranspiration based on temperature data.</p>
 <p>Parameters <tt class="docutils literal"><span class="pre">f</span></tt> and <tt class="docutils literal"><span class="pre">d</span></tt> are used to calculate <tt class="docutils literal"><span class="pre">g</span></tt>, the value of the CMD which the ET rate will begin to decline due to insufficient water availability for plant transpiration.</p>
-<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>e  : float, temperature to PET conversion factor (a stress threshold)</li>
-<li>T  : float or None, temperature in degrees C</li>
-<li>Mf : float, Catchment Moisture Deficit prior to accounting for ET losses (<tt class="docutils literal"><span class="pre">M_{f}</span></tt>)</li>
-<li>f  : float, multiplication factor on <tt class="docutils literal"><span class="pre">d</span></tt></li>
-<li>d  : float, flow threshold factor</li>
+<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>e  : temperature to PET conversion factor (a stress threshold)</li>
+<li>T  : temperature in degrees C</li>
+<li>Mf : Catchment Moisture Deficit prior to accounting for ET losses (<tt class="docutils literal"><span class="pre">M_{f}</span></tt>)</li>
+<li>f  : multiplication factor on <tt class="docutils literal"><span class="pre">d</span></tt></li>
+<li>d  : flow threshold factor</li>
 </ul>
 </td></tr>
 <tr><th class="docinfo-name">Returns:</th><td>estimate of ET from temperature (for catchment area)</td></tr>
@@ -193,7 +193,7 @@ Calculate evapotranspiration.<table class="docinfo" frame="void" rules="none"><c
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2021-05-17 08:50:55 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2021-05-17 22:14:58 UTC</small>
       </div>
     </div>
   </div>
