@@ -1,0 +1,3 @@
+calc_effective_rainfall	ihacres/climate.html#calc_effective_rainfall,float,float,float,float,float	climate: calc_effective_rainfall(rainfall, cmd, d, d2: float; n: float = 0.1): float	
+calc_ET	ihacres/climate.html#calc_ET,float,float,float,float,float	climate: calc_ET(e: float; evap: float; Mf: float; f: float; d: float): float	
+calc_ET_from_T	ihacres/climate.html#calc_ET_from_T,float,float,float,float,float	climate: calc_ET_from_T(e: float; T: float; Mf: float; f: float; d: float): float	
