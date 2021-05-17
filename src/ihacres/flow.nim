@@ -4,7 +4,7 @@ import strformat
 
 
 proc convert_taus(tau: float, v: float): (float, float) =
-    #[ Convert $\tau$ to $\alpha$ and $\beta$ ]#
+    ## Convert $\tau$ to $\alpha$ and $\beta$
     let alpha: float = exp(-1.0 / tau)
     let beta: float = v * (1.0 - alpha)
 
@@ -12,6 +12,7 @@ proc convert_taus(tau: float, v: float): (float, float) =
 
 
 proc calc_stores(tau: float, prev_store: float, v: float, e_rainfall: float): float =
+    ## Calculate flow stores.
     var alpha, beta, store: float
 
     (alpha, beta) = convert_taus(tau, v)
@@ -21,49 +22,46 @@ proc calc_stores(tau: float, prev_store: float, v: float, e_rainfall: float): fl
 
 
 # redo to allow `n` stores
-proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float, 
+proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
                  e_rainfall: float, area: float, tau_q: float, tau_s: float):
                  (float, float, float)
                  {.stdcall,exportc,dynlib.} =
-    #[ Calculate quick and slow flow, and outflow using a Unit Hydrograph 
-       composed of exponential components.
-
-       Calculates flows for current time step based on previous 
-       flows and current effective rainfall.
-
-       Assumes components are in parallel.
-
-       References
-        ----------
-        .. [1] https://wiki.ewater.org.au/display/SD45/IHACRES-CMD+-+SRG
-
-        .. [2] Croke, B.F.W., Jakeman, A.J. 2004
-                A catchment moisture deficit module for the IHACRES rainfall-runoff model, 
-                Environmental Modelling & Software, 19(1), pp. 1–5. 
-                doi: 10.1016/j.envsoft.2003.09.001
-
-        .. [3] Croke, B.F.W., Jakeman, A.J. 2005
-                Corrigendum to "A Catchment Moisture Deficit module for the IHACRES 
-                rainfall-runoff model [Environ. Model. Softw. 19 (1) (2004) 1–5]"
-                Environmental Modelling & Software, 20(7), p. 997.
-                doi: 10.1016/j.envsoft.2004.11.004
-
-       Parameters
-       ----------
-       prev_quick : previous quick flow in ML/day
-       prev_slow  : previous slow flow in ML/day
-       v_s        : proportional amount that goes to slow flow. $v_{s} <= 1.0$
-       e_rainfall : effective rainfall for $t$
-       tau_q      : Time constant, quick flow $\tau$ value
-       tau_s      : Time constant slow flow $\tau$ value
-                       Represents the time required for the quickflow and slowflow
-                       responses to fall to $1/e$ of their initial values 
-                       after an impulse of rainfall.
-
-       Returns
-       -------
-       quickflow, slowflow, outflow in ML/day
-    ]#
+    ## Calculate quick and slow flow, and outflow using a Unit Hydrograph
+    ## composed of exponential components.
+    ##
+    ## Calculates flows for current time step based on previous
+    ## flows and current effective rainfall.
+    ##
+    ## Assumes components are in parallel.
+    ##
+    ## :References:
+    ## 
+    ##     https://wiki.ewater.org.au/display/SD45/IHACRES-CMD+-+SRG
+    ##
+    ##     Croke, B.F.W., Jakeman, A.J. 2004
+    ##         A catchment moisture deficit module for the IHACRES rainfall-runoff model,
+    ##         Environmental Modelling & Software, 19(1), pp. 1–5.
+    ##         doi: 10.1016/j.envsoft.2003.09.001
+    ##
+    ##     Croke, B.F.W., Jakeman, A.J. 2005
+    ##         Corrigendum to "A Catchment Moisture Deficit module for the IHACRES
+    ##         rainfall-runoff model [Environ. Model. Softw. 19 (1) (2004) 1–5]"
+    ##         Environmental Modelling & Software, 20(7), p. 997.
+    ##         doi: 10.1016/j.envsoft.2004.11.004
+    ##
+    ## :Parameters:
+    ##     - prev_quick : previous quick flow in ML/day
+    ##     - prev_slow  : previous slow flow in ML/day
+    ##     - v_s        : proportional amount that goes to slow flow. $v_{s} <= 1.0$
+    ##     - e_rainfall : effective rainfall for $t$
+    ##     - tau_q      : Time constant, quick flow $\tau$ value
+    ##     - tau_s      : Time constant slow flow $\tau$ value
+    ##                    Represents the time required for the quickflow and slowflow
+    ##                    responses to fall to $1/e$ of their initial values
+    ##                    after an impulse of rainfall.
+    ##
+    ## :Returns:
+    ##     quickflow, slowflow, outflow in ML/day
     let v_q: float = 1.0 - v_s  # proportional quick flow
     let areal_rainfall: float = e_rainfall * area
     var quick: float = calc_stores(tau_q, prev_quick, v_q, areal_rainfall)
@@ -73,25 +71,22 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
     return (quick, slow, outflow)
 
 
-proc routing*(volume: float, storage_coef: float, inflow: float, flow: float, 
+proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
               irrig_ext: float, gw_exchange: float = 0.0):
               (float, float)
-              {.stdcall,exportc,dynlib.} = 
-    #[ Routing method 
-        
-        Parameters
-        ----------
-        volume       : representing catchment moisture deficit in mm
-        storage_coef : storage factor
-        inflow       : incoming streamflow (flow from previous node)
-        flow         : flow for the node (local flow)
-        irrig_ext    : volume of irrigation extraction in ML
-        gw_exchange  : groundwater flux. Defaults to 0.0
-        
-        Returns
-        -------
-        volume and streamflow in ML/day
-    ]#
+              {.stdcall,exportc,dynlib.} =
+    ## Routing method
+    ##
+    ## :Parameters:
+    ##     - volume       : representing catchment moisture deficit in mm
+    ##     - storage_coef : storage factor
+    ##     - inflow       : incoming streamflow (flow from previous node)
+    ##     - flow         : flow for the node (local flow)
+    ##     - irrig_ext    : volume of irrigation extraction in ML
+    ##     - gw_exchange  : groundwater flux. Defaults to 0.0
+    ##
+    ## :Returns:
+    ##     volume and streamflow in ML/day
     var threshold: float = volume + (inflow + flow + gw_exchange) - irrig_ext
     var new_vol: float  # new volume
     var c1, outflow: float
@@ -107,44 +102,37 @@ proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
     return (new_vol, outflow)
 
 
-proc calc_outflow*(flow: float, extractions: float): float {.stdcall,exportc,dynlib.} = 
-    #[ Calculate streamflow of node taking into account extractions
-
-        Parameters
-        ----------
-        flow        : unmodified sum of quickflow and slowflow in ML/day
-        extractions : water extractions that occurred in ML/day
-        
-        Returns
-        -------
-        flow - extractions, minimum possible is 0.0
-    ]#
+proc calc_outflow*(flow, extractions: float): float {.stdcall,exportc,dynlib.} =
+    ## Calculate streamflow of node taking into account extractions
+    ##
+    ## :Parameters:
+    ##     - flow        : unmodified sum of quickflow and slowflow in ML/day
+    ##     - extractions : water extractions that occurred in ML/day
+    ##
+    ## :Returns:
+    ##     (flow - extractions), minimum possible is 0.0
     return max(0.0, flow - extractions)
 
 
-proc calc_ft_flows*(prev_quick: float, prev_slow: float,
-                    e_rain: float, recharge: float, 
-                    area: float, a: float, b: float, 
+proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
                     loss: float = 0.0):
                     (float, float, float)
                     {.stdcall,exportc,dynlib.} =
-    #[ Fortran port of flow calculation.
-    
-        Parameters
-        ----------
-        prev_quick : previous quickflow storage
-        prev_slow  : previous slowflow storage
-        e_rain     : effective rainfall in mm
-        recharge   : recharge amount in mm
-        area       : catchment area in km^2
-        a          : quickflow storage coefficient, inverse of $tau_q$ such that $a == (1/tau_q)$
-        b          : slowflow storage coefficient, inverse of $tau_s$ such that $b == (1/tau_s)$
-        loss       : losses in mm depth
-        
-        Returns
-        -------
-        quick store, slow store, outflow
-    ]#
+    ## Fortran port of flow calculation.
+    ##
+    ## :Parameters:
+    ##     - prev_quick : previous quickflow storage
+    ##     - prev_slow  : previous slowflow storage
+    ##     - e_rain     : effective rainfall in mm
+    ##     - recharge   : recharge amount in mm
+    ##     - area       : catchment area in km^2
+    ##     - a          : quickflow storage coefficient, inverse of :math:`tau_q` such that :math:`a == (1/tau_q)`
+    ##     - b          : slowflow storage coefficient, inverse of :math:`tau_s` such that :math:`b == (1/tau_s)`
+    ##     - loss       : losses in mm depth
+    ##
+    ## :Returns:
+    ##     quick store, slow store, outflow
+
     var a2: float = 0.5
     var quick_store, slow_store, outflow, c1: float
 
@@ -183,7 +171,7 @@ proc calc_ft_flows*(prev_quick: float, prev_slow: float,
 proc calc_ft_level*(outflow: float, level_params: ptr array[9, float]):float {.stdcall,exportc,dynlib.} =
 
     (p1, p2, p3, p4, p5, p6, p7, p8, CTF) := level_params
-    
+
     var level: float
     level = exp(p1) * pow(outflow, p2) * 1.0 / (1.0 + pow(pow((outflow / p3), p4), (p5/p4)) * exp(p6 / (1.0+exp(-p7*p8)) * pow(outflow, p7)))
     level = max(level, 0.0)

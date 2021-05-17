@@ -1,3 +1,5 @@
+## Example node implementations
+
 type
     IHACRESNode* = ref object of RootObj ## abstract base class for an expression
         name*: string
@@ -35,6 +37,7 @@ type
 
 
 proc set_calib_params*(s: IHACRESNode, d, d2, e, f: float) =
+    ## Helper function to set parameters during calibration. 
     s.d = d
     s.d2 = d2
     s.e = e
