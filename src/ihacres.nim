@@ -6,13 +6,14 @@
 ## `IHACRES_nim` is an implementation of the IHACRES rainfall-runoff model written in the Nim programming language.
 ## 
 ## Prior implementations (see list in "Other implementations" below) either do not have the source code available,
-## or ties their use to a specific computing environment. Others are embedded as part of a modelling suite, or 
-## only partially support functionality desirable within an integrated context, such as interactions across
-## socio-environmental systems at requisite time steps.
+## or ties their use to a specific computing environment. Others are embedded as part of a modelling suite, and is
+## not directly accessible or reusable. In other cases, only partial support for functionality desirable within an 
+## integrated context is provided, such as interactions across socio-environmental systems at requisite time steps.
 ## 
 ## To address these shortcomings this package provides a common suite of functions with which the model may be
 ## applied, and is accessible from any language which has a C Foreign Function Interface. The code is open-source 
-## to allow reuse and experimentation.
+## to allow open reuse and experimentation.
+## 
 ## 
 ## Publications on the IHACRES model
 ## ---------------------------------
