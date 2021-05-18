@@ -5,8 +5,9 @@
 An experimental implementation of the IHACRES rainfall-runoff model written in 
 [nim-lang](https://nim-lang.org/).
 
-This package provides a consistent stable set of functions for development and 
-experimentation across language ecosystems.
+`IHACRES_nim` provides functions which may be composed to represent different formulations of the IHACRES_CMD model. These functions are intended for use and experimentation across language ecosystems.
+
+The [primer](primer.md) provides more details on the model itself.
 
 
 ## Compilation
@@ -21,7 +22,6 @@ For local development/testing, run from the project root:
 ## Tests
 
 Tests can be found under the `tests` directory, and are invoked with the `testament` tool.
-Tests are invoked with the `testament` tool.
 
 `testament pattern "tests/*.nim"`
 
@@ -31,6 +31,7 @@ Tests are invoked with the `testament` tool.
 Documentation is generated from source with the following:
 
 `nim doc --project --outdir=./docs --index:on src/ihacres.nim`
+
 
 ## Examples
 
