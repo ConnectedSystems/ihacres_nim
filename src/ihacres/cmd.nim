@@ -1,3 +1,5 @@
+## Non-linear loss module functions
+
 from math import arctan, exp, log, PI, tan, pow, ln
 
 
@@ -72,7 +74,7 @@ proc calc_trig_interim_cmd*(cmd, param_d, rainfall: float):
     ##      - rainfall :  rainfall for current time step in mm
     ## 
     ## :Returns:
-    ##     float, interim CMD (M_{f})
+    ##     interim CMD (M_{f})
     var Mf: float
     if cmd < param_d:
         Mf = 1.0 / tan((cmd / param_d) * (PI / 2.0))

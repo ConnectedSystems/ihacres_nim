@@ -1,3 +1,5 @@
+## Functions related to estimating ET and U (evapotranspiration and effective rainfall)
+
 import math
 
 

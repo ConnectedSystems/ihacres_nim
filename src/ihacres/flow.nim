@@ -1,3 +1,5 @@
+## Unit Hydrograph related functions
+
 import math
 import defines
 import strformat
@@ -5,6 +7,10 @@ import strformat
 
 proc convert_taus(tau: float, v: float): (float, float) =
     ## Convert $\tau$ to $\alpha$ and $\beta$
+    ## 
+    ## :Parameters:
+    ##     - tau : time constant ``\tau``
+    ##     - v   : proportion of flow ``v`` (between 0 and 1)
     let alpha: float = exp(-1.0 / tau)
     let beta: float = v * (1.0 - alpha)
 
@@ -26,8 +32,7 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
                  e_rainfall: float, area: float, tau_q: float, tau_s: float):
                  (float, float, float)
                  {.stdcall,exportc,dynlib.} =
-    ## Calculate quick and slow flow, and outflow using a Unit Hydrograph
-    ## composed of exponential components.
+    ## Calculate quick and slow flow, and outflow using a linear routing module.
     ##
     ## Calculates flows for current time step based on previous
     ## flows and current effective rainfall.
@@ -75,7 +80,7 @@ proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
               irrig_ext: float, gw_exchange: float = 0.0):
               (float, float)
               {.stdcall,exportc,dynlib.} =
-    ## Routing method
+    ## Stream routing.
     ##
     ## :Parameters:
     ##     - volume       : representing catchment moisture deficit in mm
@@ -118,7 +123,7 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
                     loss: float = 0.0):
                     (float, float, float)
                     {.stdcall,exportc,dynlib.} =
-    ## Fortran port of flow calculation.
+    ## Unit Hydrograph module ported from Fortran.
     ##
     ## :Parameters:
     ##     - prev_quick : previous quickflow storage
@@ -134,13 +139,16 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
     ##     quick store, slow store, outflow
 
     var a2: float = 0.5
-    var quick_store, slow_store, outflow, c1: float
+    var quick_store, slow_store, outflow, alpha, beta: float
 
     var tmp_calc: float = max(0.0, prev_quick + (e_rain * area) - (a2*loss))
     if (tmp_calc > 0.0):
-        c1 = exp(-a)
-        quick_store = c1 * tmp_calc
-        outflow = (1.0 - c1) * tmp_calc
+        #  this is equivalent to the conversion in `convert_taus()`
+        alpha = exp(-a)
+        beta = (1.0 - alpha) * tmp_calc
+
+        quick_store = alpha * tmp_calc
+        outflow = beta
     else:
         quick_store = tmp_calc
         outflow = 0.0
@@ -158,9 +166,10 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
     let b2: float = 1.0 - a2
     slow_store = prev_slow + (recharge * area) - (b2 * loss)
     if (slow_store > 0.0):
-        c1 = exp(-b)
-        outflow = outflow + (1.0 - c1) * slow_store
-        slow_store = c1*slow_store
+        alpha = exp(-b)
+        beta = (1.0 - alpha) * slow_store
+        outflow = outflow + beta
+        slow_store = alpha * slow_store
     # End if
 
     assert outflow >= 0.0, fmt"Calculating slow store: Outflow cannot be negative: {outflow}"
