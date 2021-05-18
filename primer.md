@@ -106,7 +106,7 @@ Here,
  - green functions indicate those relevant to the non-linear loss module
  - beige functions is the relevant unit hydrograph function
 
-Use of any component function may be replaced with an equivalent, for example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/docs/ihacres.html) for details.
+Use of any component function may be replaced with an equivalent, for example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
 
 An example, in the procedural style, is shown below in the Python language:
 
