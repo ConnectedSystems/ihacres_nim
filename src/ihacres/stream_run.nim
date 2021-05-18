@@ -29,10 +29,11 @@ proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: fl
         quick_store: float
         slow_store: float
         outflow: float
+        vol: float
 
     var arr_len = s_node.storage.len() - 1
     let current_store = s_node.storage[arr_len]
-    (mf, e_rainfall, recharge) = calc_ft_interim(current_store, rain, s_node.d,
+    (mf, e_rainfall, recharge) = calc_ft_interim_cmd(current_store, rain, s_node.d,
                                                  s_node.d2, s_node.alpha)
 
     var et: float = calc_ET(s_node.e, evap, mf, s_node.f, s_node.d)
@@ -43,7 +44,7 @@ proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: fl
                                                         e_rainfall, recharge, s_node.area,
                                                         s_node.a, s_node.b, loss=loss)
 
-    (cmd, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
+    (vol, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
 
     var level: float = calc_ft_level(outflow, s_node.level_params.addr)
 
@@ -74,6 +75,7 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
         quick_store: float
         slow_store: float
         outflow: float
+        vol: float
 
     var arr_len = s_node.storage.len() - 1
     let current_store = s_node.storage[arr_len]
@@ -94,7 +96,7 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
                                                     s_node.tau_q,
                                                     s_node.tau_s)
 
-    (cmd, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
+    (vol, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
 
     var level: float = calc_ft_level(outflow, s_node.level_params.addr)
 

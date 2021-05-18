@@ -87,7 +87,7 @@ proc calc_trig_interim_cmd*(cmd, param_d, rainfall: float):
 # End calc_trig_interim_cmd()
 
 
-proc calc_ft_interim*(cmd, rain, d, d2, alpha: float): 
+proc calc_ft_interim_cmd*(cmd, rain, d, d2, alpha: float): 
      (float, float, float) {.stdcall,exportc,dynlib.} =
     ## Direct port of original Fortran implementation to calculate interim CMD (`M_{f}`).
     ##
@@ -126,12 +126,7 @@ proc calc_ft_interim*(cmd, rain, d, d2, alpha: float):
             tmp_rain = rain
         # End if
 
-        var eps: float
-        var depth_to_d: float
-        var lam: float
-        var d1a: float
-        var epsilon: float
-        var gamma: float
+        var eps, depth_to_d, lam, d1a, epsilon, gamma: float
 
         d1a = d * (2.0 - exp(-pow((rain / 50.0), 2)))
         if tmp_cmd > d1a:
