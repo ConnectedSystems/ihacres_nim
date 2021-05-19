@@ -8,15 +8,15 @@ The model can be conceptualized as taking the following structure:
 graph LR
 
   rainfall["Rainfall (P[t])"]
-  rainfall --> nl_loss[Non-linear loss module];
-  et["Evapotranspiration (ET[t])"] --> nl_loss[Non-linear loss module];
+  rainfall --> nl_loss["Catchment Moisture Deficit module"];
+  T["Temperature (T)"] --> nl_loss;
   nl_loss --> uh[Unit Hydrograph];
 
   uh -->|"U[t](1 - v[s])"| Streamflow;
   uh -->|"U[t]v[s]"| Streamflow;
 
   classDef variable fill:lightblue
-  class rainfall,et variable
+  class rainfall,T variable
 
   classDef nonlinear fill:lightgreen
   class nl_loss nonlinear
@@ -104,11 +104,11 @@ Here,
  - rounded boxes represent functions
  - blue boxes represent input factors
  - green functions indicate those relevant to the non-linear loss module
- - beige functions is the relevant unit hydrograph function
+ - the beige function is the relevant unit hydrograph function
 
-Use of any component function may be replaced with an equivalent, for example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
+Use of any component function may be replaced with an equivalent. For example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
 
-An example, in the procedural style, is shown below in the Python language:
+An example, in the procedural style, is shown below for the Python language:
 
 ```python
 from ctypes import cdll
