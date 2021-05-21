@@ -49,7 +49,7 @@ An eight parameter, bilinear, implementation replaces the above parameters with 
 |-----------|---------------|-----------------------------------------------------------------	 |
 | $a$       | see note below   | Time constant value controlling how fast quickflow recedes      |
 | $b$       | see note below   | Time constant value that governs the speed of slowflow recession|
-| $\alpha$  | $0 < v_s \le 1$  | Partitioning factor separating slow and quick flow contributions|
+| $\alpha$  | $0 < alpha \le 1$  | Partitioning factor separating slow and quick flow contributions|
 | $s$       | $0.1 < s \le 10$ | storage factor |
 
 
