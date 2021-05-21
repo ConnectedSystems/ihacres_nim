@@ -12,8 +12,8 @@ graph LR
   T["Temperature (T)"] --> nl_loss;
   nl_loss --> uh[Unit Hydrograph];
 
-  uh -->|"U[t](1 - v[s])"| Streamflow;
-  uh -->|"U[t]v[s]"| Streamflow;
+  uh -->|Quickflow| Streamflow;
+  uh -->|Slowflow| Streamflow;
 
   classDef variable fill:lightblue
   class rainfall,T variable
