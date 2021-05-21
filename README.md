@@ -35,30 +35,9 @@ Documentation is generated from source with the following:
 
 ## Examples
 
-### Julia
-
-Julia pre-v1.5.3
-
-```julia
-ccall((:calc_outflow, "./lib/ihacres.so"), Cdouble,(Cdouble, Cdouble), 1.0, 1.0)
-```
-
-Julia v1.5.3 onwards can leverage the provided base `@ccall` macro.
-
-```julia
-const IHACRES = "./lib/ihacres.so"
-@ccall IHACRES.calc_outflow(10.0::Cdouble, 8.0::Cdouble)::Cdouble
-```
+Usage examples may be found [here](https://connectedsystems.github.io/ihacres_nim/usage.html)
 
 
-### Python
-
-```python
-from ctypes import cdll
-
-IHACRES = cdll.LoadLibrary("./lib/ihacres.so")
-IHACRES.calc_outflow(1.0, 1.0)
-```
 
 References
 ----------
