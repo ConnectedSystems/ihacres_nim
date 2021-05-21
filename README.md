@@ -7,7 +7,7 @@ An experimental implementation of the IHACRES rainfall-runoff model written in
 
 `IHACRES_nim` provides functions which may be composed to represent different formulations of the IHACRES_CMD model. These functions are intended for use and experimentation across language ecosystems.
 
-The [primer](primer.md) provides more details on the model itself.
+The [primer]([primer.md](https://connectedsystems.github.io/ihacres_nim/primer.html)) provides more details on the model itself.
 
 
 ## Compilation
@@ -28,9 +28,19 @@ Tests can be found under the `tests` directory, and are invoked with the `testam
 
 ## Documentation
 
-Documentation is generated from source with the following:
+API documentation is generated from source with the following:
 
 `nim doc --project --outdir=./docs --index:on src/ihacres.nim`
+
+
+User documentation is generated using [nimib](https://github.com/pietroppeter/nimib)
+
+**TODO:** auto-generation of documentation.
+
+`nim r docs/index.nim`
+`nim r docs/primer.nim`
+`nim r docs/usage.nim`
+`nim r docs/publications.nim`
 
 
 ## Examples
@@ -56,3 +66,5 @@ References
       Computation of the instantaneous unit hydrograph and identifiable component flows with application to two small upland catchments
       Journal of Hydrology, 117(1), pp. 275-300.
       doi: 10.1016/0022-1694(90)90097-H
+
+More publications may be found [here](https://connectedsystems.github.io/ihacres_nim/publications.html)
