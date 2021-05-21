@@ -1,3 +1,7 @@
 nimcache/
 
 .vscode/
+
+nim-extensions/
+
+tests/__pycache__/

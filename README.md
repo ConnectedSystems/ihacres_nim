@@ -28,10 +28,9 @@ Tests can be found under the `tests` directory, and are invoked with the `testam
 
 ## Documentation
 
-API documentation is generated from source with the following:
+The User Documentation may be found [here](https://connectedsystems.github.io/ihacres_nim)
 
-`nim doc --project --outdir=./docs --index:on src/ihacres.nim`
-
+API Documentation may be found [here](https://connectedsystems.github.io/ihacres_nim/ihacres.html)
 
 User documentation is generated using [nimib](https://github.com/pietroppeter/nimib)
 
@@ -42,10 +41,17 @@ User documentation is generated using [nimib](https://github.com/pietroppeter/ni
 `nim r docs/usage.nim`
 `nim r docs/publications.nim`
 
+API documentation is generated from source with the following:
+
+`nim doc --project --outdir=./docs --index:on src/ihacres.nim`
+
 
 ## Examples
 
 Usage examples may be found [here](https://connectedsystems.github.io/ihacres_nim/usage.html)
+
+Use of this package can be found in the [Streamfall.jl](https://github.com/ConnectedSystems/Streamfall.jl) package
+[here](https://github.com/ConnectedSystems/Streamfall.jl/blob/d0558990c4c1ffce6f14e914d854ab2b83282867/src/IHACRESNode.jl#L186).
 
 
 
