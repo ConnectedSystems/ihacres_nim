@@ -36,8 +36,8 @@ A seven parameter implementation can be achieved with additional parameters:
 
 | Parameter | Bounds             	| Description                            	                          |
 |-----------|--------------------	|-----------------------------------------------------------------	|
-| $\tau_q$  | $0.5 \le d \le 10$ 	| Time constant value controlling how fast quickflow recedes      	|
-| $\tau_s$  | $10 < d_2 \le 350$  | Time constant value that governs the speed of slowflow recession 	|
+| $\tau_q$  | $0.5 \le \tau_q \le 10$ 	| Time constant value controlling how fast quickflow recedes      	|
+| $\tau_s$  | $10 \le \tau_s \le 350$  | Time constant value that governs the speed of slowflow recession 	|
 | $v_s$     | $0 < v_s \le 1$     | Partitioning factor separating slow and quick flow contributions 	|
 
 Use of the seven parameters allows linear and trigonometric implementations of the Catchment Moisture 
