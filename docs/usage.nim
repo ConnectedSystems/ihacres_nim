@@ -129,8 +129,7 @@ run.catchment_area = 100.0
 
 
 # Initial conditions
-cmd, rainfall, evaporation = 214.6561105573191, 76.6251447, 6.22
-quickflow, slowflow = 0, 0
+cmd, quickflow, slowflow = 214.65, 0, 0
 
 # Assume these are all 0.0
 inflow = 0
@@ -144,7 +143,7 @@ evaporation_ts = [2.0, 6.5, 7.0, 5.0, 1.0]
 outflow = [None] * len(rainfall_ts)
 
 for i in range(len(outflow)):
-    progress = run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchange, extraction)
+    progress = run(cmd, rainfall_ts[i], evaporation_ts[i], inflow, quickflow, slowflow, loss, gw_exchange, extraction)
     quickflow, slowflow, cmd = progress["state"]
     outflow[i] = progress["flow"][1]
 
@@ -154,7 +153,7 @@ print(outflow)
 The output should be:
 
 ```
-    [2673.079788519708, 3128.2662749539195, 3505.4202255215077, 3818.5465178864956, 4079.1271026927366]
+    [2383.4230043465745, 275.47845958611646, 169.1862742473543, 169.04216776327462, 8999.191317478977]
 ```
 """
 
