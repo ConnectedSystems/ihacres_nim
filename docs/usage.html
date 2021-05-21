@@ -114,7 +114,7 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
                                          catchment_area, a, b, loss)
 
     # if node routes to another node
-    volume, outflow = flow.routing(cmd, run.s, inflow, outflow, extraction, gw_exchange)
+    volume, outflow = flow.routing(cmd, s, inflow, outflow, extraction, gw_exchange)
 
     return {
         &quot;flow&quot;: (volume, outflow),
@@ -125,15 +125,15 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
 # including functions. We assign the model parameters to the function
 # such that the function itself represents a node in a stream network.
 # Of course, you could (should?) define a Class instead.
-run.d = 200.0
-run.d2 = 2.0
-run.e = 0.1
-run.f = 0.1
-run.a = 54.35
-run.b = 0.012
-run.alpha = 0.727
-run.s = 2.5
-run.catchment_area = 100.0
+run.d = 200.0  # flow threshold
+run.d2 = 2.0   # flow threshold, multiplier applied to `d`
+run.e = 0.1    # temperature to PET conversion factor
+run.f = 0.1    # plant stress threshold factor (applied to `d`). Determines effective rainfall.
+run.a = 54.35  # quickflow scaling factor
+run.b = 0.012  # slowflow scaling factor
+run.alpha = 0.727   #  effective rainfall scaling factor
+run.s = 2.5  # groundwater store factor
+run.catchment_area = 100.0  # area in km^2
 
 
 # Initial conditions
@@ -279,7 +279,7 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
                                          catchment_area, a, b, loss)
 
     # if node routes to another node
-    volume, outflow = flow.routing(cmd, run.s, inflow, outflow, extraction, gw_exchange)
+    volume, outflow = flow.routing(cmd, s, inflow, outflow, extraction, gw_exchange)
 
     return {
         &quot;flow&quot;: (volume, outflow),
@@ -290,15 +290,15 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
 # including functions. We assign the model parameters to the function
 # such that the function itself represents a node in a stream network.
 # Of course, you could (should?) define a Class instead.
-run.d = 200.0
-run.d2 = 2.0
-run.e = 0.1
-run.f = 0.1
-run.a = 54.35
-run.b = 0.012
-run.alpha = 0.727
-run.s = 2.5
-run.catchment_area = 100.0
+run.d = 200.0  # flow threshold
+run.d2 = 2.0   # flow threshold, multiplier applied to `d`
+run.e = 0.1    # temperature to PET conversion factor
+run.f = 0.1    # plant stress threshold factor (applied to `d`). Determines effective rainfall.
+run.a = 54.35  # quickflow scaling factor
+run.b = 0.012  # slowflow scaling factor
+run.alpha = 0.727   #  effective rainfall scaling factor
+run.s = 2.5  # groundwater store factor
+run.catchment_area = 100.0  # area in km^2
 
 
 # Initial conditions
