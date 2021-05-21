@@ -16,7 +16,7 @@ Releases compile a dynamic library (downloads can be found [here](https://github
 
 For local development/testing, run from the project root:
 
-`nim c --app:lib -d:release --outdir:./lib ./src/ihacres.nim`
+`nim c --app:lib -d:release --outdir:./lib ./ihacres/ihacres.nim`
 
 
 ## Tests
@@ -43,7 +43,7 @@ User documentation is generated using [nimib](https://github.com/pietroppeter/ni
 
 API documentation is generated from source with the following:
 
-`nim doc --project --outdir=./docs --index:on src/ihacres.nim`
+`nim doc --project --outdir=./docs --index:on ihacres/ihacres.nim`
 
 
 ## Examples

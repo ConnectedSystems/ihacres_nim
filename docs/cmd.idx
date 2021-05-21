@@ -1,0 +1,4 @@
+calc_cmd	cmd.html#calc_cmd,float,float,float,float,float	cmd: calc_cmd(prev_cmd, rainfall, et, effective_rainfall, recharge: float): float	
+calc_linear_interim_cmd	cmd.html#calc_linear_interim_cmd,float,float,float	cmd: calc_linear_interim_cmd(cmd, param_d, rainfall: float): float	
+calc_trig_interim_cmd	cmd.html#calc_trig_interim_cmd,float,float,float	cmd: calc_trig_interim_cmd(cmd, param_d, rainfall: float): float	
+calc_ft_interim_cmd	cmd.html#calc_ft_interim_cmd,float,float,float,float,float	cmd: calc_ft_interim_cmd(cmd, rain, d, d2, alpha: float): (float, float, float)	
