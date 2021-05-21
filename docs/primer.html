@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>primer.nim</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐳</text></svg>">
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link rel='stylesheet' href='https://unpkg.com/normalize.css/'>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css">
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/pietroppeter/nimib/assets/atom-one-light.css'>
+  <style>
+.nb-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nb-small {
+  font-size: 0.8rem;
+}
+button.nb-small {
+  float: right;
+  padding: 2px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+section#source {
+  display:none
+}
+</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous" onload="renderMathInElement(document.body,{delimiters:[{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false}]});"></script>
+</head>
+<body>
+<header>
+<div class="nb-box">
+  <span><a href=".">🏡</a></span>
+  <span><code>primer.nim</code></span>
+  <span><a href="https://github.com/ConnectedSystems/ihacres_nim"><svg aria-hidden="true" width="1.2em" height="1.2em" style="vertical-align: middle;" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59c.4.07.55-.17.55-.38c0-.19-.01-.82-.01-1.49c-2.01.37-2.53-.49-2.69-.94c-.09-.23-.48-.94-.82-1.13c-.28-.15-.68-.52-.01-.53c.63-.01 1.08.58 1.23.82c.72 1.21 1.87.87 2.33.66c.07-.52.28-.87.51-1.07c-1.78-.2-3.64-.89-3.64-3.95c0-.87.31-1.59.82-2.15c-.08-.2-.36-1.02.08-2.12c0 0 .67-.21 2.2.82c.64-.18 1.32-.27 2-.27c.68 0 1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82c.44 1.1.16 1.92.08 2.12c.51.56.82 1.27.82 2.15c0 3.07-1.87 3.75-3.65 3.95c.29.25.54.73.54 1.48c0 1.07-.01 1.93-.01 2.2c0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" fill="#000"></path></svg></a></span>
+</div>
+<hr>
+</header><main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<h2>Primer</h2>
+<p>IHACRES converts rainfall and temperature data into estimations of runoff at catchment scale.</p>
+<p>The model can be conceptualized as taking the following structure:</p>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcblxuICByYWluZmFsbFtcIlJhaW5mYWxsIChQW3RdKVwiXVxuICByYWluZmFsbCAtLT4gbmxfbG9zc1tcIkNhdGNobWVudCBNb2lzdHVyZSBEZWZpY2l0IG1vZHVsZVwiXVxuICBUW1wiVGVtcGVyYXR1cmUgKFQpXCJdIC0tPiBubF9sb3NzXG4gIG5sX2xvc3MgLS0-IHVoW1VuaXQgSHlkcm9ncmFwaF1cblxuICB1aCAtLT58UXVpY2tmbG93fCBTdHJlYW1mbG93XG4gIHVoIC0tPnxTbG93Zmxvd3wgU3RyZWFtZmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIHJhaW5mYWxsLFQgdmFyaWFibGVcblxuICBjbGFzc0RlZiBub25saW5lYXIgZmlsbDpsaWdodGdyZWVuXG4gIGNsYXNzIG5sX2xvc3Mgbm9ubGluZWFyXG5cbiAgY2xhc3NEZWYgbVVIIGZpbGw6YmVpZ2VcbiAgY2xhc3MgdWggbVVIIiwibWVybWFpZCI6e30sInVwZGF0ZUVkaXRvciI6ZmFsc2V9"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcblxuICByYWluZmFsbFtcIlJhaW5mYWxsIChQW3RdKVwiXVxuICByYWluZmFsbCAtLT4gbmxfbG9zc1tcIkNhdGNobWVudCBNb2lzdHVyZSBEZWZpY2l0IG1vZHVsZVwiXVxuICBUW1wiVGVtcGVyYXR1cmUgKFQpXCJdIC0tPiBubF9sb3NzXG4gIG5sX2xvc3MgLS0-IHVoW1VuaXQgSHlkcm9ncmFwaF1cblxuICB1aCAtLT58UXVpY2tmbG93fCBTdHJlYW1mbG93XG4gIHVoIC0tPnxTbG93Zmxvd3wgU3RyZWFtZmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIHJhaW5mYWxsLFQgdmFyaWFibGVcblxuICBjbGFzc0RlZiBub25saW5lYXIgZmlsbDpsaWdodGdyZWVuXG4gIGNsYXNzIG5sX2xvc3Mgbm9ubGluZWFyXG5cbiAgY2xhc3NEZWYgbVVIIGZpbGw6YmVpZ2VcbiAgY2xhc3MgdWggbVVIIiwibWVybWFpZCI6e30sInVwZGF0ZUVkaXRvciI6ZmFsc2V9" alt="" /></a></p>
+<p><code>IHACRES_nim</code> provides functions which may be composed to represent different formulations of the IHACRES_CMD model.</p>
+<p>All formulations require the following four parameters (with usual bounds)</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Bounds</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$d$</td>
+<td>$10 \le d \le 550$</td>
+<td>flow threshold</td>
+</tr>
+<tr>
+<td>$d_2$</td>
+<td>$0 &lt; d_2 \le 10$</td>
+<td>multiplicative factor applied to $d$</td>
+</tr>
+<tr>
+<td>$e$</td>
+<td>$0.1 \le e \le 1.5$</td>
+<td>Temperature to PET conversion factor</td>
+</tr>
+<tr>
+<td>$f$</td>
+<td>$0.01 \le f \le 3$</td>
+<td>Plant stress threshold, applied to $d$</td>
+</tr></tbody></table>
+<p>A six parameter implementation (as in IHACRES Classic) can be achieved by fixing $d_2 = 2.0$, with the following additional parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Bounds</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$\tau_q$</td>
+<td>$0.5 \le d \le 10$</td>
+<td>Time constant value controlling how fast quickflow recedes</td>
+</tr>
+<tr>
+<td>$\tau_s$</td>
+<td>$10 &lt; d_2 \le 350$</td>
+<td>Time constant value that governs the speed of slowflow recession</td>
+</tr>
+<tr>
+<td>$v_s$</td>
+<td>$0 &lt; v_s \le 1$</td>
+<td>Partitioning factor separating slow and quick flow contributions</td>
+</tr></tbody></table>
+<p>An eight parameter, bilinear, implementation replaces the above parameters with the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Bounds</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$a$</td>
+<td>see note below</td>
+<td>Time constant value controlling how fast quickflow recedes</td>
+</tr>
+<tr>
+<td>$b$</td>
+<td>see note below</td>
+<td>Time constant value that governs the speed of slowflow recession</td>
+</tr>
+<tr>
+<td>$\alpha$</td>
+<td>$0 &lt; v_s \le 1$</td>
+<td>Partitioning factor separating slow and quick flow contributions</td>
+</tr>
+<tr>
+<td>$s$</td>
+<td>$0.1 &lt; s \le 10$</td>
+<td>storage factor</td>
+</tr></tbody></table>
+<p>Note: Appropriate values of $a$ and $b$ can be context specific. Nevertheless, to give some guidance, these values can be set between 0.1 and 10.0 for $a$ and between 0.001 and 0.1 for $b$.</p>
+<p>Delving into the implementation, the flow between parameters (light blue) and functions (rounded boxes) can be seen in the diagram below.</p>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcbiAgbWtbXCJDTUQgKE1ba10pXCJdIC0tPiBjYWxjX2NtZChjYWxjX2NtZClcbiAgbWsgLS0-IGludGVyaW0oXCJjYWxjX2Z0X2ludGVyaW1fY21kXCIpXG5cbiAgcmFpbltcIlJhaW5mYWxsIChQW3RdKVwiXSAtLT4gaW50ZXJpbVxuICBcbiAgcmFpbiAtLT4gY2FsY19jbWRcbiAgRVtcIkV2YXBvcmF0aW9uIChFKVwiXSAtLT4gRVQoXCJjYWxjX0VUXCIpIC0tPiBjYWxjX2NtZFxuICBpbnRlcmltIC0tPnxcIkludGVyaW0gQ01EIChNW2ZdKVwifCBFVFxuXG4gIGludGVyaW0gLS0-fFwiZWZmZWN0aXZlIHJhaW5mYWxsIChVW3RdKVwifGNhbGNfY21kXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCBjYWxjX2NtZCAtLT4gY21kX291dFtcIkNNRCAoTVtrKzFdKVwiXVxuICBcbiAgaW50ZXJpbSAtLT58XCJlZmZlY3RpdmUgcmFpbmZhbGwgKFVbdF0pXCJ8IHVoKGNhbGNfZnRfZmxvd3MpXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCB1aFxuXG4gIHFzW1wiUXVpY2tmbG93IChWW3EsdC0xXSlcIl0gLS0-IHVoXG4gIHNzW1wiU2xvd2Zsb3cgKFZbcyx0LTFdKVwiXSAtLT4gdWhcbiAgbG9zc1tcIkxvc3MgKExbdF0pXCJdIC0tPiB1aFxuXG4gIHVoIC0tPnxcIlF1aWNrZmxvd1t0XVwifCBzZmxvd1tcIlN0cmVhbWZsb3cgKFFba10pXCJdXG4gIHVoIC0tPnxcIlNsb3dmbG93W3RdXCJ8IHNmbG93W1wiU3RyZWFtZmxvdyAoUVtrXSlcIl1cblxuICBzZmxvdyAtLT4gcm91dGluZyhyb3V0aW5nKVxuICBleHRbZXh0cmFjdGlvbl0gLS0-IHJvdXRpbmdcbiAgZ3dbZ3JvdW5kd2F0ZXIgZXhjaGFuZ2VdIC0tPiByb3V0aW5nXG4gIHNjb2VmW1wic3RvcmFnZSBmYWN0b3IgKHMpXCJdIC0tPiByb3V0aW5nXG5cbiAgcm91dGluZyAtLT4gT3V0Zmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIG1rLEUscmFpbixxcyxzcyxsb3NzLGV4dCxndyxzY29lZiB2YXJpYWJsZVxuXG4gIGNsYXNzRGVmIG5vbmxpbmVhciBmaWxsOmxpZ2h0Z3JlZW5cbiAgY2xhc3MgaW50ZXJpbSxFVCxjYWxjX2NtZCBub25saW5lYXJcblxuICBjbGFzc0RlZiBtVUggZmlsbDpiZWlnZVxuICBjbGFzcyB1aCBtVUgiLCJtZXJtYWlkIjp7fSwidXBkYXRlRWRpdG9yIjpmYWxzZX0"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcbiAgbWtbXCJDTUQgKE1ba10pXCJdIC0tPiBjYWxjX2NtZChjYWxjX2NtZClcbiAgbWsgLS0-IGludGVyaW0oXCJjYWxjX2Z0X2ludGVyaW1fY21kXCIpXG5cbiAgcmFpbltcIlJhaW5mYWxsIChQW3RdKVwiXSAtLT4gaW50ZXJpbVxuICBcbiAgcmFpbiAtLT4gY2FsY19jbWRcbiAgRVtcIkV2YXBvcmF0aW9uIChFKVwiXSAtLT4gRVQoXCJjYWxjX0VUXCIpIC0tPiBjYWxjX2NtZFxuICBpbnRlcmltIC0tPnxcIkludGVyaW0gQ01EIChNW2ZdKVwifCBFVFxuXG4gIGludGVyaW0gLS0-fFwiZWZmZWN0aXZlIHJhaW5mYWxsIChVW3RdKVwifGNhbGNfY21kXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCBjYWxjX2NtZCAtLT4gY21kX291dFtcIkNNRCAoTVtrKzFdKVwiXVxuICBcbiAgaW50ZXJpbSAtLT58XCJlZmZlY3RpdmUgcmFpbmZhbGwgKFVbdF0pXCJ8IHVoKGNhbGNfZnRfZmxvd3MpXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCB1aFxuXG4gIHFzW1wiUXVpY2tmbG93IChWW3EsdC0xXSlcIl0gLS0-IHVoXG4gIHNzW1wiU2xvd2Zsb3cgKFZbcyx0LTFdKVwiXSAtLT4gdWhcbiAgbG9zc1tcIkxvc3MgKExbdF0pXCJdIC0tPiB1aFxuXG4gIHVoIC0tPnxcIlF1aWNrZmxvd1t0XVwifCBzZmxvd1tcIlN0cmVhbWZsb3cgKFFba10pXCJdXG4gIHVoIC0tPnxcIlNsb3dmbG93W3RdXCJ8IHNmbG93W1wiU3RyZWFtZmxvdyAoUVtrXSlcIl1cblxuICBzZmxvdyAtLT4gcm91dGluZyhyb3V0aW5nKVxuICBleHRbZXh0cmFjdGlvbl0gLS0-IHJvdXRpbmdcbiAgZ3dbZ3JvdW5kd2F0ZXIgZXhjaGFuZ2VdIC0tPiByb3V0aW5nXG4gIHNjb2VmW1wic3RvcmFnZSBmYWN0b3IgKHMpXCJdIC0tPiByb3V0aW5nXG5cbiAgcm91dGluZyAtLT4gT3V0Zmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIG1rLEUscmFpbixxcyxzcyxsb3NzLGV4dCxndyxzY29lZiB2YXJpYWJsZVxuXG4gIGNsYXNzRGVmIG5vbmxpbmVhciBmaWxsOmxpZ2h0Z3JlZW5cbiAgY2xhc3MgaW50ZXJpbSxFVCxjYWxjX2NtZCBub25saW5lYXJcblxuICBjbGFzc0RlZiBtVUggZmlsbDpiZWlnZVxuICBjbGFzcyB1aCBtVUgiLCJtZXJtYWlkIjp7fSwidXBkYXRlRWRpdG9yIjpmYWxzZX0" alt="" /></a></p>
+<p>Here,</p>
+<ul>
+<li>rounded boxes represent functions</li>
+<li>blue boxes represent input factors</li>
+<li>green functions indicate those relevant to the non-linear loss module</li>
+<li>the beige function is the relevant unit hydrograph function</li>
+</ul>
+<p>Use of any component function may be replaced with an equivalent. For example, <code>calc_ft_interim_cmd</code> may be replaced by any other <code>calc_*_interim_cmd</code> function, so long as the correct parameters are passed in. See <a href="https://connectedsystems.github.io/ihacres_nim/ihacres.html">documentation</a> for details.</p>
+<p>An implementation example for the Python language, can be found <a href="usage.html">here</a>.</p>
+
+</main>
+<footer>
+<hr>
+<div class="nb-box">
+  <span><span class="nb-small">made with <a href="https://pietroppeter.github.io/nimib/">nimib 🐳</a></span></span>
+  <span></span>
+  <span><button class="nb-small" id="show" onclick="toggleSourceDisplay()">Show Source</button></span>
+</div>
+</footer>
+<section id="source">
+<pre><code class="nim hljs"><span class="hljs-keyword">import</span> strformat, strutils
+<span class="hljs-keyword">import</span> nimib
+
+nbInit
+
+nbDoc.useLatex
+
+nbText: <span class="hljs-string">&quot;&quot;&quot;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js&quot;&gt;&lt;/script&gt;
+
+## Primer
+
+IHACRES converts rainfall and temperature data into estimations of runoff at catchment scale.
+
+The model can be conceptualized as taking the following structure:
+
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcblxuICByYWluZmFsbFtcIlJhaW5mYWxsIChQW3RdKVwiXVxuICByYWluZmFsbCAtLT4gbmxfbG9zc1tcIkNhdGNobWVudCBNb2lzdHVyZSBEZWZpY2l0IG1vZHVsZVwiXVxuICBUW1wiVGVtcGVyYXR1cmUgKFQpXCJdIC0tPiBubF9sb3NzXG4gIG5sX2xvc3MgLS0-IHVoW1VuaXQgSHlkcm9ncmFwaF1cblxuICB1aCAtLT58UXVpY2tmbG93fCBTdHJlYW1mbG93XG4gIHVoIC0tPnxTbG93Zmxvd3wgU3RyZWFtZmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIHJhaW5mYWxsLFQgdmFyaWFibGVcblxuICBjbGFzc0RlZiBub25saW5lYXIgZmlsbDpsaWdodGdyZWVuXG4gIGNsYXNzIG5sX2xvc3Mgbm9ubGluZWFyXG5cbiAgY2xhc3NEZWYgbVVIIGZpbGw6YmVpZ2VcbiAgY2xhc3MgdWggbVVIIiwibWVybWFpZCI6e30sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcblxuICByYWluZmFsbFtcIlJhaW5mYWxsIChQW3RdKVwiXVxuICByYWluZmFsbCAtLT4gbmxfbG9zc1tcIkNhdGNobWVudCBNb2lzdHVyZSBEZWZpY2l0IG1vZHVsZVwiXVxuICBUW1wiVGVtcGVyYXR1cmUgKFQpXCJdIC0tPiBubF9sb3NzXG4gIG5sX2xvc3MgLS0-IHVoW1VuaXQgSHlkcm9ncmFwaF1cblxuICB1aCAtLT58UXVpY2tmbG93fCBTdHJlYW1mbG93XG4gIHVoIC0tPnxTbG93Zmxvd3wgU3RyZWFtZmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIHJhaW5mYWxsLFQgdmFyaWFibGVcblxuICBjbGFzc0RlZiBub25saW5lYXIgZmlsbDpsaWdodGdyZWVuXG4gIGNsYXNzIG5sX2xvc3Mgbm9ubGluZWFyXG5cbiAgY2xhc3NEZWYgbVVIIGZpbGw6YmVpZ2VcbiAgY2xhc3MgdWggbVVIIiwibWVybWFpZCI6e30sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
+
+
+`IHACRES_nim` provides functions which may be composed to represent different formulations of the IHACRES_CMD model.
+
+All formulations require the following four parameters (with usual bounds)
+
+| Parameter 	| Bounds             	| Description                            	|
+|-----------	|--------------------	|----------------------------------------	|
+| $d$       	| $10 \le d \le 550$ 	| flow threshold                         	|
+| $d_2$     	| $0 &lt; d_2 \le 10$    | multiplicative factor applied to $d$   	|
+| $e$       	| $0.1 \le e \le 1.5$ | Temperature to PET conversion factor   	|
+| $f$       	| $0.01 \le f \le 3$ 	| Plant stress threshold, applied to $d$ 	|
+
+
+A six parameter implementation (as in IHACRES Classic) can be achieved by fixing $d_2 = 2.0$, with the following additional parameters:
+
+| Parameter | Bounds             	| Description                            	                          |
+|-----------|--------------------	|-----------------------------------------------------------------	|
+| $\tau_q$  | $0.5 \le d \le 10$ 	| Time constant value controlling how fast quickflow recedes      	|
+| $\tau_s$  | $10 &lt; d_2 \le 350$  | Time constant value that governs the speed of slowflow recession 	|
+| $v_s$     | $0 &lt; v_s \le 1$     | Partitioning factor separating slow and quick flow contributions 	|
+
+An eight parameter, bilinear, implementation replaces the above parameters with the following:
+
+| Parameter 	| Bounds        | Description                            	                          |
+|-----------	|---------------|-----------------------------------------------------------------	|
+| $a$      | see note below   | Time constant value controlling how fast quickflow recedes      	|
+| $b$      | see note below   | Time constant value that governs the speed of slowflow recession 	|
+| $\alpha$ | $0 &lt; v_s \le 1$  | Partitioning factor separating slow and quick flow contributions 	|
+| $s$      | $0.1 &lt; s \le 10$ | storage factor |
+
+
+Note: Appropriate values of $a$ and $b$ can be context specific. Nevertheless, to give some guidance, these values can be set between 0.1 and 10.0 for $a$ and between 0.001 and 0.1 for $b$.
+
+Delving into the implementation, the flow between parameters (light blue) and functions (rounded boxes) can be seen in the diagram below.
+
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcbiAgbWtbXCJDTUQgKE1ba10pXCJdIC0tPiBjYWxjX2NtZChjYWxjX2NtZClcbiAgbWsgLS0-IGludGVyaW0oXCJjYWxjX2Z0X2ludGVyaW1fY21kXCIpXG5cbiAgcmFpbltcIlJhaW5mYWxsIChQW3RdKVwiXSAtLT4gaW50ZXJpbVxuICBcbiAgcmFpbiAtLT4gY2FsY19jbWRcbiAgRVtcIkV2YXBvcmF0aW9uIChFKVwiXSAtLT4gRVQoXCJjYWxjX0VUXCIpIC0tPiBjYWxjX2NtZFxuICBpbnRlcmltIC0tPnxcIkludGVyaW0gQ01EIChNW2ZdKVwifCBFVFxuXG4gIGludGVyaW0gLS0-fFwiZWZmZWN0aXZlIHJhaW5mYWxsIChVW3RdKVwifGNhbGNfY21kXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCBjYWxjX2NtZCAtLT4gY21kX291dFtcIkNNRCAoTVtrKzFdKVwiXVxuICBcbiAgaW50ZXJpbSAtLT58XCJlZmZlY3RpdmUgcmFpbmZhbGwgKFVbdF0pXCJ8IHVoKGNhbGNfZnRfZmxvd3MpXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCB1aFxuXG4gIHFzW1wiUXVpY2tmbG93IChWW3EsdC0xXSlcIl0gLS0-IHVoXG4gIHNzW1wiU2xvd2Zsb3cgKFZbcyx0LTFdKVwiXSAtLT4gdWhcbiAgbG9zc1tcIkxvc3MgKExbdF0pXCJdIC0tPiB1aFxuXG4gIHVoIC0tPnxcIlF1aWNrZmxvd1t0XVwifCBzZmxvd1tcIlN0cmVhbWZsb3cgKFFba10pXCJdXG4gIHVoIC0tPnxcIlNsb3dmbG93W3RdXCJ8IHNmbG93W1wiU3RyZWFtZmxvdyAoUVtrXSlcIl1cblxuICBzZmxvdyAtLT4gcm91dGluZyhyb3V0aW5nKVxuICBleHRbZXh0cmFjdGlvbl0gLS0-IHJvdXRpbmdcbiAgZ3dbZ3JvdW5kd2F0ZXIgZXhjaGFuZ2VdIC0tPiByb3V0aW5nXG4gIHNjb2VmW1wic3RvcmFnZSBmYWN0b3IgKHMpXCJdIC0tPiByb3V0aW5nXG5cbiAgcm91dGluZyAtLT4gT3V0Zmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIG1rLEUscmFpbixxcyxzcyxsb3NzLGV4dCxndyxzY29lZiB2YXJpYWJsZVxuXG4gIGNsYXNzRGVmIG5vbmxpbmVhciBmaWxsOmxpZ2h0Z3JlZW5cbiAgY2xhc3MgaW50ZXJpbSxFVCxjYWxjX2NtZCBub25saW5lYXJcblxuICBjbGFzc0RlZiBtVUggZmlsbDpiZWlnZVxuICBjbGFzcyB1aCBtVUgiLCJtZXJtYWlkIjp7fSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcbiAgbWtbXCJDTUQgKE1ba10pXCJdIC0tPiBjYWxjX2NtZChjYWxjX2NtZClcbiAgbWsgLS0-IGludGVyaW0oXCJjYWxjX2Z0X2ludGVyaW1fY21kXCIpXG5cbiAgcmFpbltcIlJhaW5mYWxsIChQW3RdKVwiXSAtLT4gaW50ZXJpbVxuICBcbiAgcmFpbiAtLT4gY2FsY19jbWRcbiAgRVtcIkV2YXBvcmF0aW9uIChFKVwiXSAtLT4gRVQoXCJjYWxjX0VUXCIpIC0tPiBjYWxjX2NtZFxuICBpbnRlcmltIC0tPnxcIkludGVyaW0gQ01EIChNW2ZdKVwifCBFVFxuXG4gIGludGVyaW0gLS0-fFwiZWZmZWN0aXZlIHJhaW5mYWxsIChVW3RdKVwifGNhbGNfY21kXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCBjYWxjX2NtZCAtLT4gY21kX291dFtcIkNNRCAoTVtrKzFdKVwiXVxuICBcbiAgaW50ZXJpbSAtLT58XCJlZmZlY3RpdmUgcmFpbmZhbGwgKFVbdF0pXCJ8IHVoKGNhbGNfZnRfZmxvd3MpXG4gIGludGVyaW0gLS0-IHxcInJlY2hhcmdlIChyKVwifCB1aFxuXG4gIHFzW1wiUXVpY2tmbG93IChWW3EsdC0xXSlcIl0gLS0-IHVoXG4gIHNzW1wiU2xvd2Zsb3cgKFZbcyx0LTFdKVwiXSAtLT4gdWhcbiAgbG9zc1tcIkxvc3MgKExbdF0pXCJdIC0tPiB1aFxuXG4gIHVoIC0tPnxcIlF1aWNrZmxvd1t0XVwifCBzZmxvd1tcIlN0cmVhbWZsb3cgKFFba10pXCJdXG4gIHVoIC0tPnxcIlNsb3dmbG93W3RdXCJ8IHNmbG93W1wiU3RyZWFtZmxvdyAoUVtrXSlcIl1cblxuICBzZmxvdyAtLT4gcm91dGluZyhyb3V0aW5nKVxuICBleHRbZXh0cmFjdGlvbl0gLS0-IHJvdXRpbmdcbiAgZ3dbZ3JvdW5kd2F0ZXIgZXhjaGFuZ2VdIC0tPiByb3V0aW5nXG4gIHNjb2VmW1wic3RvcmFnZSBmYWN0b3IgKHMpXCJdIC0tPiByb3V0aW5nXG5cbiAgcm91dGluZyAtLT4gT3V0Zmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIG1rLEUscmFpbixxcyxzcyxsb3NzLGV4dCxndyxzY29lZiB2YXJpYWJsZVxuXG4gIGNsYXNzRGVmIG5vbmxpbmVhciBmaWxsOmxpZ2h0Z3JlZW5cbiAgY2xhc3MgaW50ZXJpbSxFVCxjYWxjX2NtZCBub25saW5lYXJcblxuICBjbGFzc0RlZiBtVUggZmlsbDpiZWlnZVxuICBjbGFzcyB1aCBtVUgiLCJtZXJtYWlkIjp7fSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)
+
+
+Here, 
+ - rounded boxes represent functions
+ - blue boxes represent input factors
+ - green functions indicate those relevant to the non-linear loss module
+ - the beige function is the relevant unit hydrograph function
+
+Use of any component function may be replaced with an equivalent. For example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
+
+An implementation example for the Python language, can be found [here](usage.html).
+
+
+&quot;&quot;&quot;</span>
+
+nbSave</code></pre>
+</section><script>
+function toggleSourceDisplay() {
+  var btn = document.getElementById("show")
+  var source = document.getElementById("source");
+  if (btn.innerHTML=="Show Source") {
+    btn.innerHTML = "Hide Source";
+    source.style.display = "block";
+  } else {
+    btn.innerHTML = "Show Source";
+    source.style.display = "none";
+  }
+}
+</script></body>
+</html>
