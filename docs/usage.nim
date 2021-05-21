@@ -21,14 +21,18 @@ nbText: """
 Use of this package can be found in the [Streamfall.jl](https://github.com/ConnectedSystems/Streamfall.jl) package
 [here](https://github.com/ConnectedSystems/Streamfall.jl/blob/d0558990c4c1ffce6f14e914d854ab2b83282867/src/IHACRESNode.jl#L186).
 
+Examples of direct function calls through Julia's `ccall` method is shown below.
 
-Julia pre-v1.5.3
+**Julia pre-v1.5.3**
 
 ```julia
 ccall((:calc_outflow, "./lib/ihacres.so"), Cdouble,(Cdouble, Cdouble), 1.0, 1.0)
 ```
 
-Julia v1.5.3 onwards can leverage the provided base `@ccall` macro.
+**Julia v1.5.3 onwards**
+
+These versions include a `@ccall` macro which simplifies usage.
+Note: if on Windows, replace `.so` with `.dll`.
 
 ```julia
 const IHACRES = "./lib/ihacres.so"
