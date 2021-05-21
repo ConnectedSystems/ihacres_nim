@@ -1,8 +1,7 @@
 import unittest
-import sequtils
 import math
 
-import ihacres/cmd
+import ../ihacres/cmd
 
 
 proc `~=`(a, b: float, tolerance: float = 1e-10): bool =

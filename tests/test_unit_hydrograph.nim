@@ -1,7 +1,7 @@
 import unittest
 import math
 
-import ihacres/flow
+import ../ihacres/flow
 
 
 suite "Flows":

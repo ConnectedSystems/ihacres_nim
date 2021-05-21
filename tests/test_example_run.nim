@@ -2,8 +2,8 @@ import unittest
 import math
 import strformat
 
-import ihacres/node
-import ihacres/stream_run
+import ../ihacres/node
+import ../ihacres/stream_run
 
 
 suite "Test Run":
