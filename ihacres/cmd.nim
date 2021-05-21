@@ -1,6 +1,7 @@
 ## Non-linear loss module functions
 
 from math import arctan, exp, log, PI, tan, pow, ln
+import nimpy
 
 
 proc `~=`(a, b: float, tolerance: float = 1e-10): bool =
@@ -13,7 +14,7 @@ proc `~=`(a, b: float, tolerance: float = 1e-10): bool =
 
 
 proc calc_cmd*(prev_cmd, rainfall, et, effective_rainfall, recharge: float):
-               float {.stdcall,exportc,dynlib.} =
+               float {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate Catchment Moisture Deficit.
     ## 
     ## Min value of CMD is 0.0 and is represented in mm depth.
@@ -25,7 +26,7 @@ proc calc_cmd*(prev_cmd, rainfall, et, effective_rainfall, recharge: float):
 
 
 proc calc_linear_interim_cmd*(cmd, param_d, rainfall: float): 
-     float {.stdcall,exportc,dynlib.} =
+     float {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate interim CMD (:math:`M_{f}`) in its linear form.
     ##
     ## Based on HydroMad implementation and details in references.
@@ -63,7 +64,7 @@ proc calc_linear_interim_cmd*(cmd, param_d, rainfall: float):
 
 
 proc calc_trig_interim_cmd*(cmd, param_d, rainfall: float): 
-     float {.stdcall,exportc,dynlib.} =
+     float {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate interim CMD (M_{f}) in its trigonometric form.
     ## 
     ## Based on HydroMad implementation and details in references.
@@ -90,7 +91,7 @@ proc calc_trig_interim_cmd*(cmd, param_d, rainfall: float):
 
 
 proc calc_ft_interim_cmd*(cmd, rain, d, d2, alpha: float): 
-     (float, float, float) {.stdcall,exportc,dynlib.} =
+     (float, float, float) {.stdcall,exportc,dynlib,exportpy.} =
     ## Direct port of original Fortran implementation to calculate interim CMD (`M_{f}`).
     ##
     ## Calculates estimates of effective rainfall and recharge as a by-product.
@@ -139,7 +140,7 @@ proc calc_ft_interim_cmd*(cmd, rain, d, d2, alpha: float):
             depth_to_d = eps * ln((alpha + tmp_cmd / eps) / (alpha + d1a / eps))
 
             if depth_to_d >= tmp_rain:
-                lam = exp(tmp_rain * (1.0 - alpha) / d2)
+                lam = exp(tmp_rain * (1.0 - alpha) / d2)  # lambda
                 epsilon = alpha * eps
 
                 Mf = tmp_cmd / lam - epsilon * (1.0 - 1.0 / lam)

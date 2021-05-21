@@ -1,9 +1,9 @@
 ## Example functions for running a stream network.
 
-import ihacres/node
-import ihacres/flow
-import ihacres/climate
-import ihacres/cmd
+import node
+import flow
+import climate
+import cmd
 
 
 proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange=0.0, loss=0.0):
@@ -46,7 +46,7 @@ proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: fl
 
     (vol, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
 
-    var level: float = calc_ft_level(outflow, s_node.level_params.addr)
+    var level: float = calc_ft_level(outflow, s_node.level_params)
 
     s_node.update_state(cmd, e_rainfall, et, quick_store, slow_store, outflow, level)
 
@@ -98,7 +98,7 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
 
     (vol, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
 
-    var level: float = calc_ft_level(outflow, s_node.level_params.addr)
+    var level: float = calc_ft_level(outflow, s_node.level_params)
 
     s_node.update_state(cmd, e_rainfall, et, quick_store, slow_store, outflow, level)
 

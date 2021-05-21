@@ -1,5 +1,9 @@
 ## Example node implementations
 
+
+import nimpy
+
+
 type
     IHACRESNode* = ref object of RootObj ## abstract base class for an expression
         name*: string
@@ -36,7 +40,8 @@ type
         v_s*: float
 
 
-proc set_calib_params*(s: IHACRESNode, d, d2, e, f: float) =
+proc set_calib_params*(s: IHACRESNode, d, d2, e, f: float) 
+     {.stdcall,exportc,dynlib,exportpy.} =
     ## Helper function to set parameters during calibration. 
     s.d = d
     s.d2 = d2
@@ -44,7 +49,9 @@ proc set_calib_params*(s: IHACRESNode, d, d2, e, f: float) =
     s.f = f
 
 
-proc update_state*(s: IHACRESNode, storage, e_rainfall, et, qflow_store, sflow_store, outflow, level: float) =
+proc update_state*(s: IHACRESNode, storage, e_rainfall, et, qflow_store, sflow_store, outflow, level: float) 
+     {.stdcall,exportc,dynlib,exportpy.} =
+    ## Add given values to their respective record arrays for node `s`.
     s.storage.add(storage)
     s.effective_rainfall.add(e_rainfall)
     s.et.add(et)

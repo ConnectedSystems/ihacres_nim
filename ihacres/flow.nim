@@ -3,6 +3,7 @@
 import math
 import defines
 import strformat
+import nimpy
 
 
 proc convert_taus(tau: float, v: float): (float, float) =
@@ -31,7 +32,7 @@ proc calc_stores(tau: float, prev_store: float, v: float, e_rainfall: float): fl
 proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
                  e_rainfall: float, area: float, tau_q: float, tau_s: float):
                  (float, float, float)
-                 {.stdcall,exportc,dynlib.} =
+                 {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate quick and slow flow, and outflow using a linear routing module.
     ##
     ## Calculates flows for current time step based on previous
@@ -79,8 +80,9 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
 proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
               irrig_ext: float, gw_exchange: float = 0.0):
               (float, float)
-              {.stdcall,exportc,dynlib.} =
+              {.stdcall,exportc,dynlib,exportpy.} =
     ## Stream routing.
+    ## EXACT DETAILS TO BE CONFIRMED.
     ##
     ## :Parameters:
     ##     - volume       : representing catchment moisture deficit in mm
@@ -92,22 +94,25 @@ proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
     ##
     ## :Returns:
     ##     volume and streamflow in ML/day
-    var threshold: float = volume + (inflow + flow + gw_exchange) - irrig_ext
+    var gw_store: float = volume + (inflow + flow + gw_exchange) - irrig_ext
     var new_vol: float  # new volume
-    var c1, outflow: float
-    if (threshold > 0.0):
-        new_vol = 1.0 / (1.0 + storage_coef) * threshold
+    var c1, slowflow: float
+    if (gw_store > 0.0):
+        # Account for interaction with groundwater system
+        new_vol = 1.0 / (1.0 + storage_coef) * gw_store
         c1 = exp(-storage_coef)
-        outflow = (1.0 - c1) * threshold
+        slowflow = (1.0 - c1) * gw_store
     else:
-        new_vol = threshold
-        outflow = 0.0
+        # Groundwater level is below stream, so no baseflow occurs
+        new_vol = gw_store
+        slowflow = 0.0
     # End if
 
-    return (new_vol, outflow)
+    return (new_vol, slowflow)
 
 
-proc calc_outflow*(flow, extractions: float): float {.stdcall,exportc,dynlib.} =
+proc calc_outflow*(flow: float, extractions: float): float 
+                  {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate streamflow of node taking into account extractions
     ##
     ## :Parameters:
@@ -122,7 +127,7 @@ proc calc_outflow*(flow, extractions: float): float {.stdcall,exportc,dynlib.} =
 proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
                     loss: float = 0.0):
                     (float, float, float)
-                    {.stdcall,exportc,dynlib.} =
+                    {.stdcall,exportc,dynlib,exportpy.} =
     ## Unit Hydrograph module ported from Fortran.
     ##
     ## :Parameters:
@@ -177,7 +182,8 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
     return (quick_store, slow_store, outflow)
 
 
-proc calc_ft_level*(outflow: float, level_params: ptr array[9, float]):float {.stdcall,exportc,dynlib.} =
+proc calc_ft_level*(outflow: float, level_params: array[9, float]):float 
+                   {.stdcall,exportc,dynlib,exportpy.} =
 
     (p1, p2, p3, p4, p5, p6, p7, p8, CTF) := level_params
 
