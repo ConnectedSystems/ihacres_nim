@@ -5,3 +5,5 @@ nimcache/
 nim-extensions/
 
 tests/__pycache__/
+
+ihacres/__pycache__/
