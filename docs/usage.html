@@ -7,7 +7,9 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <link rel='stylesheet' href='https://unpkg.com/normalize.css/'>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css">
-  <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/pietroppeter/nimib/assets/atom-one-light.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css">
+<script src="assets/highlight.pack.js"></script>
+<script>hljs.highlightAll();</script>
   <style>
 .nb-box {
   display: flex;
@@ -38,10 +40,10 @@ section#source {
 </div>
 <hr>
 </header><main>
-<script src="assets/highlight.pack.js"></script>
-<script>hljs.highlightAll();</script>
 <h2>Usage Examples</h2>
 <h3>Julia</h3>
+<p>Use of this package can be found in the <a href="https://github.com/ConnectedSystems/Streamfall.jl">Streamfall.jl</a> package
+<a href="https://github.com/ConnectedSystems/Streamfall.jl/blob/d0558990c4c1ffce6f14e914d854ab2b83282867/src/IHACRESNode.jl#L186">here</a>.</p>
 <p>Julia pre-v1.5.3</p>
 <pre><code class="language-julia">ccall((:calc_outflow, &quot;./lib/ihacres.so&quot;), Cdouble,(Cdouble, Cdouble), 1.0, 1.0)
 </code></pre>
@@ -71,7 +73,9 @@ $ nimporter compile
   ├─ ihacres/            &lt;- create this folder
   │  ├─ __pycache__/     &lt;- paste the copy of this folder
 </code></pre>
-<p>In Python:</p>
+<ol start="3">
+<li>Use in a python file</li>
+</ol>
 <pre><code class="language-python">import nimporter  # Required prior to any Nim module import
 
 from ihacres import climate
@@ -117,6 +121,7 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
 # Here we leverage the fact that everything in Python is an object
 # including functions. We assign the model parameters to the function
 # such that the function itself represents a node in a stream network.
+# Of course, you could (should?) define a Class instead.
 run.d = 200.0
 run.d2 = 2.0
 run.e = 0.1
@@ -170,17 +175,23 @@ print(outflow)
 
 nbInit
 
+nbDoc.context[<span class="hljs-string">&quot;highlight&quot;</span>] = <span class="hljs-string">&quot;&quot;&quot;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css&quot;&gt;
+&lt;script src=&quot;assets/highlight.pack.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;hljs.highlightAll();&lt;/script&gt;&quot;&quot;&quot;</span>
+
 <span class="hljs-keyword">let</span>
     index = read(<span class="hljs-string">&quot;index.nim&quot;</span>.<span class="hljs-type">RelativeFile</span>)
 
 nbText: <span class="hljs-string">&quot;&quot;&quot;
 
-&lt;script src=&quot;assets/highlight.pack.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;hljs.highlightAll();&lt;/script&gt;
-
 ## Usage Examples
 
 ### Julia
+
+Use of this package can be found in the [Streamfall.jl](https://github.com/ConnectedSystems/Streamfall.jl) package
+[here](https://github.com/ConnectedSystems/Streamfall.jl/blob/d0558990c4c1ffce6f14e914d854ab2b83282867/src/IHACRESNode.jl#L186).
+
 
 Julia pre-v1.5.3
 
@@ -224,7 +235,7 @@ $ nimporter compile
   │  ├─ __pycache__/     &lt;- paste the copy of this folder
 ```
 
-In Python:
+3. Use in a python file
 
 ```python
 import nimporter  # Required prior to any Nim module import
@@ -272,6 +283,7 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
 # Here we leverage the fact that everything in Python is an object
 # including functions. We assign the model parameters to the function
 # such that the function itself represents a node in a stream network.
+# Of course, you could (should?) define a Class instead.
 run.d = 200.0
 run.d2 = 2.0
 run.e = 0.1

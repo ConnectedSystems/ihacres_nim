@@ -4,17 +4,23 @@ import strformat, strutils
 
 nbInit
 
+nbDoc.context["highlight"] = """
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css">
+<script src="assets/highlight.pack.js"></script>
+<script>hljs.highlightAll();</script>"""
+
 let
     index = read("index.nim".RelativeFile)
 
 nbText: """
 
-<script src="assets/highlight.pack.js"></script>
-<script>hljs.highlightAll();</script>
-
 ## Usage Examples
 
 ### Julia
+
+Use of this package can be found in the [Streamfall.jl](https://github.com/ConnectedSystems/Streamfall.jl) package
+[here](https://github.com/ConnectedSystems/Streamfall.jl/blob/d0558990c4c1ffce6f14e914d854ab2b83282867/src/IHACRESNode.jl#L186).
+
 
 Julia pre-v1.5.3
 
@@ -58,7 +64,7 @@ $ nimporter compile
   │  ├─ __pycache__/     <- paste the copy of this folder
 ```
 
-In Python:
+3. Use in a python file
 
 ```python
 import nimporter  # Required prior to any Nim module import
@@ -106,6 +112,7 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
 # Here we leverage the fact that everything in Python is an object
 # including functions. We assign the model parameters to the function
 # such that the function itself represents a node in a stream network.
+# Of course, you could (should?) define a Class instead.
 run.d = 200.0
 run.d2 = 2.0
 run.e = 0.1
