@@ -118,7 +118,7 @@ function main() {
   </ul>
   <ul class="simple nested-toc-section">routing
       <li><a class="reference" href="#routing%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"
-    title="routing(volume: float; storage_coef: float; inflow: float; flow: float;
+    title="routing(gw_vol: float; storage_coef: float; inflow: float; flow: float;
         irrig_ext: float; gw_exchange: float = 0.0): (float, float)">routing,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
 
   </ul>
@@ -167,20 +167,23 @@ function main() {
 
 </dd>
 <a id="routing,float,float,float,float,float,float"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#routing%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">routing</span></a><span class="Other">(</span><span class="Identifier">volume</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">storage_coef</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">inflow</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">flow</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#routing%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">routing</span></a><span class="Other">(</span><span class="Identifier">gw_vol</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">storage_coef</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">inflow</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">flow</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span>
              <span class="Identifier">irrig_ext</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span> <span class="Identifier">gw_exchange</span><span class="Other">:</span> <span class="Identifier">float</span> <span class="Other">=</span> <span class="FloatNumber">0.0</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">float</span><span class="Other">,</span> <span class="Identifier">float</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Stream routing. EXACT DETAILS TO BE CONFIRMED.<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>volume       : representing catchment moisture deficit in mm</li>
-<li>storage_coef : storage factor</li>
+Stream routing, taking into account groundwater interactions and water extractions.<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>gw_vol       : groundwater store at t-1</li>
+<li>storage_coef : groundwater storage factor</li>
 <li>inflow       : incoming streamflow (flow from previous node)</li>
-<li>flow         : flow for the node (local flow)</li>
+<li>flow         : outflow for the node (local flow)</li>
 <li>irrig_ext    : volume of irrigation extraction in ML</li>
-<li>gw_exchange  : groundwater flux. Defaults to 0.0</li>
+<li><dl class="docutils"><dt>gw_exchange  : groundwater flux. Defaults to 0.0</dt>
+<dd>Negative values represent infiltration into aquifer</dd>
+</dl>
+</li>
 </ul>
 </td></tr>
-<tr><th class="docinfo-name">Returns:</th><td>volume and streamflow in ML/day</td></tr>
+<tr><th class="docinfo-name">Returns:</th><td>gw_store, and streamflow in ML/day</td></tr>
 </tbody></table>
 
 </dd>
@@ -235,7 +238,7 @@ Unit Hydrograph module ported from Fortran.<table class="docinfo" frame="void" r
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2021-05-21 05:53:07 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2021-05-22 04:18:04 UTC</small>
       </div>
     </div>
   </div>

@@ -77,38 +77,38 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
     return (quick, slow, outflow)
 
 
-proc routing*(volume: float, storage_coef: float, inflow: float, flow: float,
+proc routing*(gw_vol: float, storage_coef: float, inflow: float, flow: float,
               irrig_ext: float, gw_exchange: float = 0.0):
               (float, float)
               {.stdcall,exportc,dynlib,exportpy.} =
-    ## Stream routing.
-    ## EXACT DETAILS TO BE CONFIRMED.
+    ## Stream routing, taking into account groundwater interactions and water extractions.
     ##
     ## :Parameters:
-    ##     - volume       : representing catchment moisture deficit in mm
-    ##     - storage_coef : storage factor
+    ##     - gw_vol       : groundwater store at t-1
+    ##     - storage_coef : groundwater storage factor
     ##     - inflow       : incoming streamflow (flow from previous node)
-    ##     - flow         : flow for the node (local flow)
+    ##     - flow         : outflow for the node (local flow)
     ##     - irrig_ext    : volume of irrigation extraction in ML
     ##     - gw_exchange  : groundwater flux. Defaults to 0.0
+    ##                      Negative values represent infiltration into aquifer
     ##
     ## :Returns:
-    ##     volume and streamflow in ML/day
-    var gw_store: float = volume + (inflow + flow + gw_exchange) - irrig_ext
-    var new_vol: float  # new volume
-    var c1, slowflow: float
-    if (gw_store > 0.0):
+    ##     gw_store, and streamflow in ML/day
+    var tmp_gw_store: float = gw_vol + (inflow + flow + gw_exchange) - irrig_ext
+    var gw_store: float  # new groundwater storage volume
+    var c1, outflow: float
+    if (tmp_gw_store > 0.0):
         # Account for interaction with groundwater system
-        new_vol = 1.0 / (1.0 + storage_coef) * gw_store
+        gw_store = 1.0 / (1.0 + storage_coef) * tmp_gw_store
         c1 = exp(-storage_coef)
-        slowflow = (1.0 - c1) * gw_store
+        outflow = (1.0 - c1) * tmp_gw_store
     else:
         # Groundwater level is below stream, so no baseflow occurs
-        new_vol = gw_store
-        slowflow = 0.0
+        gw_store = tmp_gw_store
+        outflow = 0.0
     # End if
 
-    return (new_vol, slowflow)
+    return (gw_store, outflow)
 
 
 proc calc_outflow*(flow: float, extractions: float): float 
