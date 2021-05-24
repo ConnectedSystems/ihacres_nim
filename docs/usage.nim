@@ -80,23 +80,26 @@ from ihacres import cmd as ihacres_cmd
 nimporter.build_nim_extensions()  # Build Nim extension
 
 
-def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchange, extraction):
+def run_ihacres(cmd, rainfall, evaporation, inflow, quickflow, slowflow, 
+                loss, gw_state, gw_exchange, extraction):
     '''Example run function.
 
     Parameters
     ----------
     cmd : catchment moisture deficit, $M_{k}$ in the literature.
-    rainfall : precipitation (P)
-    evaporation : (E)
+    rainfall : precipitation ($P$)
+    evaporation : ($E$)
     inflow : flow from previous node
     quickflow : quickflow at previous time step, $(V_{q-1})$
     slowflow : slowflow at previous time step, $(V_{s-1})$
+    loss : loss, volume loss
+    gw_state : groundwater storage index at $t-1$
     gw_exchange : volume flux, interaction with groundwater
     extraction : volume extracted from stream
     '''
-    d, d2, e, f = run.d, run.d2, run.e, run.f
-    a, b, alpha, s = run.a, run.b, run.alpha, run.s
-    catchment_area = run.catchment_area
+    d, d2, e, f = run_ihacres.d, run_ihacres.d2, run_ihacres.e, run_ihacres.f
+    a, b, alpha, s = run_ihacres.a, run_ihacres.b, run_ihacres.alpha, run_ihacres.s
+    catchment_area = run_ihacres.catchment_area
 
     mf, U, r = ihacres_cmd.calc_ft_interim_cmd(cmd, rainfall, d, d2, alpha)
     ET = climate.calc_ET(e, evaporation, mf, f, d)
@@ -106,10 +109,10 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
                                          catchment_area, a, b, loss)
 
     # if node routes to another node
-    volume, outflow = flow.routing(cmd, s, inflow, outflow, extraction, gw_exchange)
+    gw_state, outflow = flow.routing(gw_state, s, inflow, outflow, extraction, gw_exchange)
 
     return {
-        "flow": (volume, outflow),
+        "flow": (gw_state, outflow),
         "state": (Vq, Vs, cmd)
     }
 
@@ -117,15 +120,15 @@ def run(cmd, rainfall, evaporation, inflow, quickflow, slowflow, loss, gw_exchan
 # including functions. We assign the model parameters to the function
 # such that the function itself represents a node in a stream network.
 # Of course, you could (should?) define a Class instead.
-run.d = 200.0  # flow threshold
-run.d2 = 2.0   # flow threshold, multiplier applied to `d`
-run.e = 0.1    # temperature to PET conversion factor
-run.f = 0.1    # plant stress threshold factor (applied to `d`). Determines effective rainfall.
-run.a = 54.35  # quickflow scaling factor
-run.b = 0.012  # slowflow scaling factor
-run.alpha = 0.727   #  effective rainfall scaling factor
-run.s = 2.5  # groundwater store factor
-run.catchment_area = 100.0  # area in km^2
+run_ihacres.d = 200.0  # flow threshold
+run_ihacres.d2 = 2.0   # flow threshold, multiplier applied to `d`
+run_ihacres.e = 0.1    # temperature to PET conversion factor
+run_ihacres.f = 0.1    # plant stress threshold factor (applied to `d`). Determines effective rainfall.
+run_ihacres.a = 54.35  # quickflow scaling factor
+run_ihacres.b = 0.012  # slowflow scaling factor
+run_ihacres.alpha = 0.727   #  effective rainfall scaling factor
+run_ihacres.s = 2.5  # groundwater store factor
+run_ihacres.catchment_area = 100.0  # area in km^2
 
 
 # Initial conditions
@@ -137,23 +140,31 @@ loss = 0
 gw_exchange = 0.0
 extraction = 0.0
 
-rainfall_ts = [70.0, 10.0, 0.0, 0.0, 200]
+rainfall_ts = [70.0, 10.0, 0.0, 0.0, 200.0]
 evaporation_ts = [2.0, 6.5, 7.0, 5.0, 1.0]
 
+# Set up arrays to record state
 outflow = [None] * len(rainfall_ts)
+gw_state = [None] * (len(rainfall_ts)+1)
+gw_state[0] = 0.0
 
+# Run model (this would be in its own function)
 for i in range(len(outflow)):
-    progress = run(cmd, rainfall_ts[i], evaporation_ts[i], inflow, quickflow, slowflow, loss, gw_exchange, extraction)
+    progress = run_ihacres(cmd, rainfall_ts[i], evaporation_ts[i], inflow, quickflow, slowflow, 
+                           loss, gw_state[i], gw_exchange, extraction)
     quickflow, slowflow, cmd = progress["state"]
-    outflow[i] = progress["flow"][1]
+    gw_state[i+1], outflow[i] = progress["flow"]
+
+# Remove initial gw state to line up records
+gw_state = gw_state[1:]
 
 print(outflow)
 ```
 
-The output should be:
+The streamflow output should be:
 
 ```
-    [2383.4230043465745, 275.47845958611646, 169.1862742473543, 169.04216776327462, 8999.191317478977]
+    [2219.61106301161, 752.5478564540413, 227.09475478084866, 76.8211905507675, 8925.85109370568]
 ```
 """
 
