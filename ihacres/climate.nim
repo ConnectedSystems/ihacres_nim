@@ -44,9 +44,9 @@ proc calc_effective_rainfall*(rainfall, cmd, d, d2: float, n: float=0.1): float
     return max(0.0, e_rainfall)
 
 
-proc calc_ET*(e, evap, Mf, f, d: float): float
+proc calc_ET_from_E(e, evap, Mf, f, d: float): float
      {.stdcall,exportc,dynlib,exportpy.} =
-    ## Calculate evapotranspiration.
+    ## Calculate evapotranspiration from evaporation.
     ##
     ## :Parameters:
     ##     - e    : temperature to PET conversion factor (a stress threshold)
@@ -64,6 +64,12 @@ proc calc_ET*(e, evap, Mf, f, d: float): float
         et = et * min(1.0, exp((1.0 - Mf/param_g)*2.0))
 
     return max(0.0, et)
+
+
+proc calc_ET*(e, evap, Mf, f, d: float): float
+     {.stdcall,exportc,dynlib,exportpy.} =
+    ## Deprecated function - call calc_ET_from_E instead.
+    return calc_ET_from_E(e, evap, Mf, f, d)
 
 
 proc calc_ET_from_T*(e, T, Mf, f, d: float): float
