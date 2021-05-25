@@ -65,6 +65,7 @@ is an index with a 0 value meaning &quot;completely wet&quot; (fully saturated) 
 recharge, which then influences how much runoff occurs after a rainfall event and the volume of
 streamflow in the days afterwards.</p>
 <h2>A more detailed overview</h2>
+<p>This section of the primer gives a more technical description of <code>IHACRES_nim</code>.</p>
 <p><code>IHACRES_nim</code> provides functions which may be composed to represent different formulations
 of the IHACRES model.</p>
 <p>All formulations available in <code>IHACRES_nim</code> require the following three parameters (with usual bounds):</p>
@@ -176,7 +177,8 @@ for an application of IHACRES_GW can be seen in the diagram below can be seen in
 <li>green functions indicate those relevant to the non-linear loss module</li>
 <li>the beige function is the relevant unit hydrograph function</li>
 </ul>
-<p>Use of any component function may be replaced with an equivalent. For example, <code>calc_ft_interim_cmd</code> may be replaced by any other <code>calc_*_interim_cmd</code> function, so long as the correct parameters are passed in. See <a href="https://connectedsystems.github.io/ihacres_nim/ihacres.html">documentation</a> for details.</p>
+<p>Use of any component function may be replaced with an equivalent. For example, <code>calc_ft_interim_cmd</code> may be replaced by any other <code>calc_*_interim_cmd</code> function,
+so long as the correct parameters are passed in. See <a href="https://connectedsystems.github.io/ihacres_nim/ihacres.html">documentation</a> for details.</p>
 <p>An implementation example for the Python language, can be found <a href="usage.html">here</a>.</p>
 <h2>The CMD module</h2>
 <p>The CMD module starts by producing an interim CMD value (a value that does not yet take into account $ET$),
@@ -352,6 +354,8 @@ streamflow in the days afterwards.
 
 ## A more detailed overview
 
+This section of the primer gives a more technical description of `IHACRES_nim`.
+
 `IHACRES_nim` provides functions which may be composed to represent different formulations 
 of the IHACRES model.
 
@@ -403,7 +407,8 @@ Here,
  - green functions indicate those relevant to the non-linear loss module
  - the beige function is the relevant unit hydrograph function
 
-Use of any component function may be replaced with an equivalent. For example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
+Use of any component function may be replaced with an equivalent. For example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, 
+so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
 
 An implementation example for the Python language, can be found [here](usage.html).
 

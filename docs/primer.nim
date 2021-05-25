@@ -46,6 +46,8 @@ streamflow in the days afterwards.
 
 ## A more detailed overview
 
+This section of the primer gives a more technical description of `IHACRES_nim`.
+
 `IHACRES_nim` provides functions which may be composed to represent different formulations 
 of the IHACRES model.
 
@@ -97,7 +99,8 @@ Here,
  - green functions indicate those relevant to the non-linear loss module
  - the beige function is the relevant unit hydrograph function
 
-Use of any component function may be replaced with an equivalent. For example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
+Use of any component function may be replaced with an equivalent. For example, `calc_ft_interim_cmd` may be replaced by any other `calc_*_interim_cmd` function, 
+so long as the correct parameters are passed in. See [documentation](https://connectedsystems.github.io/ihacres_nim/ihacres.html) for details.
 
 An implementation example for the Python language, can be found [here](usage.html).
 
