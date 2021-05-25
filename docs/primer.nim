@@ -10,53 +10,77 @@ nbText: """
 
 ## Primer
 
-IHACRES converts rainfall and temperature data into estimations of runoff at catchment scale.
+This section of the primer provides a simple to understand "plain English" summary of the IHACRES model.
+
+IHACRES provides estimations of streamflow at catchment scale by applying the conceptual model
+of a "leaky bucket".
 
 The model can be conceptualized as taking the following structure:
 
 [![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcblxuICByYWluZmFsbFtcIlJhaW5mYWxsIChQW3RdKVwiXVxuICByYWluZmFsbCAtLT4gbmxfbG9zc1tcIkNhdGNobWVudCBNb2lzdHVyZSBEZWZpY2l0IG1vZHVsZVwiXVxuICBUW1wiVGVtcGVyYXR1cmUgKFQpXCJdIC0tPiBubF9sb3NzXG4gIG5sX2xvc3MgLS0-IHVoW1VuaXQgSHlkcm9ncmFwaF1cblxuICB1aCAtLT58UXVpY2tmbG93fCBTdHJlYW1mbG93XG4gIHVoIC0tPnxTbG93Zmxvd3wgU3RyZWFtZmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIHJhaW5mYWxsLFQgdmFyaWFibGVcblxuICBjbGFzc0RlZiBub25saW5lYXIgZmlsbDpsaWdodGdyZWVuXG4gIGNsYXNzIG5sX2xvc3Mgbm9ubGluZWFyXG5cbiAgY2xhc3NEZWYgbVVIIGZpbGw6YmVpZ2VcbiAgY2xhc3MgdWggbVVIIiwibWVybWFpZCI6e30sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcblxuICByYWluZmFsbFtcIlJhaW5mYWxsIChQW3RdKVwiXVxuICByYWluZmFsbCAtLT4gbmxfbG9zc1tcIkNhdGNobWVudCBNb2lzdHVyZSBEZWZpY2l0IG1vZHVsZVwiXVxuICBUW1wiVGVtcGVyYXR1cmUgKFQpXCJdIC0tPiBubF9sb3NzXG4gIG5sX2xvc3MgLS0-IHVoW1VuaXQgSHlkcm9ncmFwaF1cblxuICB1aCAtLT58UXVpY2tmbG93fCBTdHJlYW1mbG93XG4gIHVoIC0tPnxTbG93Zmxvd3wgU3RyZWFtZmxvd1xuXG4gIGNsYXNzRGVmIHZhcmlhYmxlIGZpbGw6bGlnaHRibHVlXG4gIGNsYXNzIHJhaW5mYWxsLFQgdmFyaWFibGVcblxuICBjbGFzc0RlZiBub25saW5lYXIgZmlsbDpsaWdodGdyZWVuXG4gIGNsYXNzIG5sX2xvc3Mgbm9ubGluZWFyXG5cbiAgY2xhc3NEZWYgbVVIIGZpbGw6YmVpZ2VcbiAgY2xhc3MgdWggbVVIIiwibWVybWFpZCI6e30sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
 
 
-That is, daily rainfall and temperature are fed into the Catchment Moisture Deficit (CMD) module, which produces
+In brief, daily rainfall and temperature data are fed into the Catchment Moisture Deficit (CMD) 
+module, which produces estimates of catchment moisture deficit, effective rainfall and 
+recharge. The unit hydrograph module uses effective rainfall and recharge values to provide estimates of streamflow.
+Streamflow can be thought of as being made up of quickflow and slowflow (i.e., overland and baseflow 
+contribution to streamflow, respectively).
 
+Temperature is correlated with evapotranspiration, which is evaporation combined with how 
+much water plants use ("transpirate"). IHACRES uses temperature data to determine evapotranspiration levels.
+Evapotranspiration takes water away from the catchment (makes it drier) as water is taken up by 
+plants and evaporated into the air. Typically, the hotter it is, the higher evapotranspiration is.
 
-`IHACRES_nim` provides functions which may be composed to represent different formulations of the IHACRES_CMD model.
+This drying effect is counteracted by rainfall, which replenishes the water in the catchment.
+In this context, the proportion of rainfall that contributes to streamflow is referred to as 
+"effective rainfall". Some rainfall may "recharge" groundwater, and contribute to streamflow via baseflow.
 
-All formulations available in IHACRES_nim require the following four parameters (with usual bounds)
+The above processes control, in part, how wet the catchment is. This is represented by the CMD index, which
+is an index with a 0 value meaning "completely wet" (fully saturated) and values above 0 indicating how 
+"dry" a catchment is. How wet the catchment is determines the level of effective rainfall and 
+recharge, which then influences how much runoff occurs after a rainfall event and the volume of 
+streamflow in the days afterwards.
+
+## A more detailed overview
+
+`IHACRES_nim` provides functions which may be composed to represent different formulations 
+of the IHACRES model.
+
+All formulations available in `IHACRES_nim` require the following three parameters (with usual bounds):
 
 | Parameter 	| Bounds             	| Description                            	|
 |-----------	|--------------------	|----------------------------------------	|
 | $d$       	| $10 \le d \le 550$ 	| flow threshold                         	|
-| $d_2$     	| $0 < d_2 \le 10$    | multiplicative factor applied to $d$   	|
-| $e$       	| $0.1 \le e \le 1.5$ | Temperature to PET conversion factor   	|
+| $e$       	| $0.1 \le e \le 1.5$   | Temperature to PET conversion factor   	|
 | $f$       	| $0.01 \le f \le 3$ 	| Plant stress threshold, applied to $d$ 	|
 
 
-A seven parameter implementation can be achieved with additional parameters:
+A six parameter implementation can be achieved with additional parameters:
 
-| Parameter | Bounds             	| Description                            	                          |
-|-----------|--------------------	|-----------------------------------------------------------------	|
-| $\tau_q$  | $0.5 \le \tau_q \le 10$ 	| Time constant value controlling how fast quickflow recedes      	|
-| $\tau_s$  | $10 \le \tau_s \le 350$  | Time constant value that governs the speed of slowflow recession 	|
-| $v_s$     | $0 < v_s \le 1$     | Partitioning factor separating slow and quick flow contributions 	|
+| Parameter | Bounds             	  | Description                            	                        |
+|-----------|------------------------ | ----------------------------------------------------------------|
+| $\tau_q$  | $0.5 \le \tau_q \le 10$ | Time constant value controlling how fast quickflow recedes      |
+| $\tau_s$  | $10 \le \tau_s \le 350$ | Time constant value that governs the speed of slowflow recession|
+| $v_s$     | $0 < v_s \le 1$         | Partitioning factor separating slow and quick flow contributions|
 
-Use of the seven parameters allows linear and trigonometric implementations of the Catchment Moisture 
-Deficit module) to be applied.
+The bilinear implementation (detailed later below) adds an additional flow threshold parameter ($d_2$)
+and replaces the above $\tau$ and $v_s$ parameters.
 
-An eight parameter, bilinear, implementation replaces the above parameters with the following:
-
-| Parameter | Bounds        | Description                            	                         |
-|-----------|---------------|-----------------------------------------------------------------	 |
+| Parameter | Bounds           | Description                            	                     |
+|-----------|------------------|-----------------------------------------------------------------|
+| $d_2$     | $0 < d_2 \le 10$ | multiplicative factor applied to $d$   	                     |
 | $a$       | see note below   | Time constant value controlling how fast quickflow recedes      |
 | $b$       | see note below   | Time constant value that governs the speed of slowflow recession|
-| $\alpha$  | $0 < alpha \le 1$  | Partitioning factor separating slow and quick flow contributions|
-| $s$       | $0.1 < s \le 10$ | storage factor |
-
+| $\alpha$  | $0 < alpha \le 1$| Partitioning factor separating slow and quick flow contributions|
 
 Note: Appropriate values of $a$ and $b$ can be context specific. Nevertheless, to give some guidance, 
 these values can be set between 0.1 and 10.0 for $a$ and between 0.001 and 0.1 for $b$.
 
+An eighth parameter is also added to account for groundwater storage:
 
+| Parameter | Bounds             | Description                |
+|-----------|--------------------|--------------------------- |
+| $s$       | $1e-10 < s \le 10$ | groundwater storage factor |
 
 
 Delving into the implementation, the flow between parameters (light blue) and functions (rounded boxes) 
@@ -75,6 +99,101 @@ Use of any component function may be replaced with an equivalent. For example, `
 
 An implementation example for the Python language, can be found [here](usage.html).
 
+## The CMD module
+
+The CMD module starts by producing an interim CMD value (a value that does not yet take into account $ET$), 
+as well as effective rainfall ($U$) and recharge ($r$) estimates.
+
+There are different formulations available to do this. Those included in `IHACRES_nim` are the:
+
+    - linear
+    - trignometric
+    - bilinear
+
+The linear and trignometric formulations require the CMD value for the previous time step ($M_{k-1}$),
+the $d$ parameter, and the rainfall for the current time step ($P_k$). 
+The linear formulation is shown below.
+
+$$
+M_f = \begin{cases}
+M_{k-1} \cdot \exp(-P_k/d) & \text{if $M_{k-1} < d$} \\
+\exp((-P_k + M_{k-1} - d) / d) \cdot d & \text{if $M_{k-1} < (d + P_k)$} \\
+cmd - P_k & \text{otherwise}
+\end{cases}
+$$
+
+Further implementation details can be found in the API documentation for the [CMD module](cmd.html).
+
+Estimates of potential evapotranspiration ($ET$) are then derived from one of temperature or 
+evaporation data ($T$ or $E$). 
+
+If calculating from temperature ($T$):
+
+$$
+ET_k = \begin{cases}
+0 & \text{if $T_k \le 0$} \\
+    e \cdot T \cdot \min(1, \exp(1 - 2(M_{f}/g))) & \text{otherwise}
+\end{cases} \\\\
+\text{where } g = f \cdot d
+$$
+
+If calculating from evaporation ($E$):
+
+$$
+ET_k = \begin{cases}
+e \cdot E & \text{if $M_f \le h$} \\
+e \cdot E \cdot \min(1, \exp(2(1 - M_f/g))) & \text{otherwise}
+\end{cases}
+$$
+
+Implementation details are found in the [climate API documentation](climate.html).
+
+The updated CMD value for the current time step ($M_k$) is then calculated from the CMD value for
+the previous time step ($M_{k-1}$), $P_k$, $U_k$ and $r_k$:
+
+$$
+M_k = M_{k-1} + $ET_k$ + $U_k$ + $r_k$ - $P_k$
+$$
+
+## The Unit Hydrograph
+
+The linear approach implemented in `IHACRES_nim` assumes two stores in parallel.
+
+$v_q = 1 - v_s$
+
+$A_{u,k} = U_k \cdot A, \text{where $A$ is the catchment area in km^2}$
+
+$$
+Q_q = (\beta \cdot A_{u,k}) + (\alpha \cdot Q_{q,k-1}) \\
+\text{where } \\
+  \alpha = \exp(-1 /\tau_q) \\
+  \beta  = v_q(1 - \alpha)} \\\\
+
+Q_s = (\beta \cdot A_{u,k}) + (\alpha \cdot Q_{s,k-1}) \\
+\text{where } \\
+  \alpha = \exp(-1 /\tau_s) \\
+  \beta  = v_s(1 - \alpha)} \\\\
+
+Q_T = Q_q + Q_s 
+$$
+
+An additional routing module may be used to account for extractions, groundwater interactions, and other
+factors.
+
+Table of input variables
+
+| Parameter 	| Description         |
+|-----------	|-------------------- |
+| $P$       	| Rainfall            |
+| $T$       	| Temperature         |
+| $ET$       	| Evapotranspiration  |
+| $U$       	| Effective rainfall  |
+| $r$       	| Recharge            |
+| $M$           | Catchment moisture deficit |
+| $A$           | Catchment area in km^2 |
+| $Q_q$         | Quickflow |
+| $Q_s$         | Slowflow |
+| $Q_T$         | Streamflow |
 
 """
 

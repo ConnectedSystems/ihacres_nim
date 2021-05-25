@@ -60,7 +60,7 @@ proc calc_linear_interim_cmd*(cmd, param_d, rainfall: float):
     # End if
 
     return Mf
-# End calc_interim_cmd()
+# End calc_linear_interim_cmd()
 
 
 proc calc_trig_interim_cmd*(cmd, param_d, rainfall: float): 
@@ -104,7 +104,7 @@ proc calc_ft_interim_cmd*(cmd, rain, d, d2, alpha: float):
     ##     - alpha : scaling factor
     ## 
     ## :Returns:
-    ##     interim CMD value, effective rainfall, recharge (all in mm)
+    ##     interim CMD value, effective rainfall, recharge
     var Mf: float  # new CMD value
     var tmp_rain: float
 

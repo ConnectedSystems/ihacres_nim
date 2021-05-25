@@ -80,7 +80,7 @@ from ihacres import cmd as ihacres_cmd
 nimporter.build_nim_extensions()  # Build Nim extension
 
 
-def run_ihacres(cmd, rainfall, evaporation, inflow, quickflow, slowflow, 
+def run_ihacres(cmd, rainfall, evaporation, inflow, quickflow, slowflow,
                 loss, gw_state, gw_exchange, extraction):
     '''Example run function.
 
@@ -105,7 +105,7 @@ def run_ihacres(cmd, rainfall, evaporation, inflow, quickflow, slowflow,
     ET = climate.calc_ET(e, evaporation, mf, f, d)
     cmd = ihacres_cmd.calc_cmd(cmd, rainfall, ET, U, r)
 
-    Vq, Vs, outflow = flow.calc_ft_flows(quickflow, slowflow, U, r, 
+    Vq, Vs, outflow = flow.calc_ft_flows(quickflow, slowflow, U, r,
                                          catchment_area, a, b, loss)
 
     # if node routes to another node
@@ -140,6 +140,7 @@ loss = 0
 gw_exchange = 0.0
 extraction = 0.0
 
+# Ideally, these would be read in via Numpy or Pandas
 rainfall_ts = [70.0, 10.0, 0.0, 0.0, 200.0]
 evaporation_ts = [2.0, 6.5, 7.0, 5.0, 1.0]
 
@@ -150,7 +151,7 @@ gw_state[0] = 0.0
 
 # Run model (this would be in its own function)
 for i in range(len(outflow)):
-    progress = run_ihacres(cmd, rainfall_ts[i], evaporation_ts[i], inflow, quickflow, slowflow, 
+    progress = run_ihacres(cmd, rainfall_ts[i], evaporation_ts[i], inflow, quickflow, slowflow,
                            loss, gw_state[i], gw_exchange, extraction)
     quickflow, slowflow, cmd = progress["state"]
     gw_state[i+1], outflow[i] = progress["flow"]

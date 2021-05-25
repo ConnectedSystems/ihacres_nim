@@ -113,10 +113,10 @@ proc routing*(gw_vol: float, storage_coef: float, inflow: float, flow: float,
 
 proc calc_outflow*(flow: float, extractions: float): float 
                   {.stdcall,exportc,dynlib,exportpy.} =
-    ## Calculate streamflow of node taking into account extractions
+    ## Simple routing modifier to account for extractions.
     ##
     ## :Parameters:
-    ##     - flow        : unmodified sum of quickflow and slowflow in ML/day
+    ##     - flow        : sum of quickflow and slowflow in ML/day
     ##     - extractions : water extractions that occurred in ML/day
     ##
     ## :Returns:
@@ -138,7 +138,7 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
     ##     - area       : catchment area in km^2
     ##     - a          : quickflow storage coefficient, inverse of :math:`tau_q` such that :math:`a == (1/tau_q)`
     ##     - b          : slowflow storage coefficient, inverse of :math:`tau_s` such that :math:`b == (1/tau_s)`
-    ##     - loss       : losses in mm depth
+    ##     - loss       : losses not otherwise accounted for (e.g., direct evaporation), in mm depth
     ##
     ## :Returns:
     ##     quick store, slow store, outflow
@@ -158,7 +158,7 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
         quick_store = tmp_calc
         outflow = 0.0
 
-        # Modifiy a2 for outflow calculation
+        # Modify a2 for outflow calculation
         # reminder: tmp_calc can be negative
         if loss > 0.0:
             a2 = max(0.0, min(1.0, tmp_calc))
