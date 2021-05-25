@@ -145,7 +145,7 @@ and replaces the above $\tau$ and $v_s$ parameters.</p>
 </tr>
 <tr>
 <td>$\alpha$</td>
-<td>$0 &lt; alpha \le 1$</td>
+<td>$0 &lt; \alpha \le 1$</td>
 <td>Partitioning factor separating slow and quick flow contributions</td>
 </tr></tbody></table>
 <p>Note: Appropriate values of $a$ and $b$ can be context specific. Nevertheless, to give some guidance,
@@ -162,7 +162,7 @@ these values can be set between 0.1 and 10.0 for $a$ and between 0.001 and 0.1 f
 <tbody>
 <tr>
 <td>$s$</td>
-<td>$1e^(-10) &lt; s \le 10$</td>
+<td>$1\text{e-}10 &lt; s \le 10$</td>
 <td>groundwater storage factor</td>
 </tr></tbody></table>
 <p>Delving into the implementation, the flow between parameters (light blue) and functions (rounded boxes)
@@ -380,7 +380,7 @@ and replaces the above $\tau$ and $v_s$ parameters.
 | $d_2$     | $0 &lt; d_2 \le 10$ | multiplicative factor applied to $d$   	                     |
 | $a$       | see note below   | Time constant value controlling how fast quickflow recedes      |
 | $b$       | see note below   | Time constant value that governs the speed of slowflow recession|
-| $\alpha$  | $0 &lt; alpha \le 1$| Partitioning factor separating slow and quick flow contributions|
+| $\alpha$  | $0 &lt; \alpha \le 1$| Partitioning factor separating slow and quick flow contributions|
 
 Note: Appropriate values of $a$ and $b$ can be context specific. Nevertheless, to give some guidance, 
 these values can be set between 0.1 and 10.0 for $a$ and between 0.001 and 0.1 for $b$.
@@ -389,7 +389,7 @@ An eighth parameter is also added to account for groundwater storage:
 
 | Parameter | Bounds              | Description                |
 |-----------|---------------------|--------------------------- |
-| $s$       | $1e^(-10) &lt; s \le 10$ | groundwater storage factor |
+| $s$       | $1\text{e-}10 &lt; s \le 10$ | groundwater storage factor |
 
 
 Delving into the implementation, the flow between parameters (light blue) and functions (rounded boxes) 
