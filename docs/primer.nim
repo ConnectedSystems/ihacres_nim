@@ -120,7 +120,7 @@ $$
 M_f = \begin{cases} 
         M_{k-1} \cdot \exp(-P_k/d) & \text{if $M_{k-1} < d$} \\\\ 
         \exp((-P_k + M_{k-1} - d) / d) \cdot d & \text{if $M_{k-1} < (d + P_k)$} \\\\
-        cmd - P_k & \text{otherwise}
+        M_{k-1} - P_k & \text{otherwise}
       \end{cases}
 $$
 
@@ -195,7 +195,7 @@ $$Q_T = Q_q + Q_s$$
 An additional routing module may be used to account for extractions, groundwater interactions, and other
 factors.
 
-Table of input variables
+**Table of input variables**
 
 | Parameter 	| Description         |
 |-----------	|-------------------- |

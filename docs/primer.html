@@ -194,7 +194,7 @@ The linear formulation is shown below.</p>
 M_f = \begin{cases}
 M_{k-1} \cdot \exp(-P_k/d) &amp; \text{if $M_{k-1} &lt; d$} \\
 \exp((-P_k + M_{k-1} - d) / d) \cdot d &amp; \text{if $M_{k-1} &lt; (d + P_k)$} \\
-cmd - P_k &amp; \text{otherwise}
+M_{k-1} - P_k &amp; \text{otherwise}
 \end{cases}
 $$</p>
 <p>Further implementation details can be found in the API documentation for the <a href="cmd.html">CMD module</a>.</p>
@@ -244,7 +244,7 @@ $$</p>
 <p>$$Q_T = Q_q + Q_s$$</p>
 <p>An additional routing module may be used to account for extractions, groundwater interactions, and other
 factors.</p>
-<p>Table of input variables</p>
+<p><strong>Table of input variables</strong></p>
 <table>
 <thead>
 <tr>
@@ -426,7 +426,7 @@ $$
 M_f = \begin{cases} 
         M_{k-1} \cdot \exp(-P_k/d) &amp; \text{if $M_{k-1} &lt; d$} \\\\ 
         \exp((-P_k + M_{k-1} - d) / d) \cdot d &amp; \text{if $M_{k-1} &lt; (d + P_k)$} \\\\
-        cmd - P_k &amp; \text{otherwise}
+        M_{k-1} - P_k &amp; \text{otherwise}
       \end{cases}
 $$
 
@@ -501,7 +501,7 @@ $$Q_T = Q_q + Q_s$$
 An additional routing module may be used to account for extractions, groundwater interactions, and other
 factors.
 
-Table of input variables
+**Table of input variables**
 
 | Parameter 	| Description         |
 |-----------	|-------------------- |
