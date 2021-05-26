@@ -192,7 +192,7 @@ Stream routing, taking into account groundwater interactions and water extractio
     <span class="Identifier">dynlib</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Calculate streamflow of node taking into account extractions<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>flow        : unmodified sum of quickflow and slowflow in ML/day</li>
+Simple routing modifier to account for extractions.<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>flow        : sum of quickflow and slowflow in ML/day</li>
 <li>extractions : water extractions that occurred in ML/day</li>
 </ul>
 </td></tr>
@@ -211,9 +211,9 @@ Unit Hydrograph module ported from Fortran.<table class="docinfo" frame="void" r
 <li>e_rain     : effective rainfall in mm</li>
 <li>recharge   : recharge amount in mm</li>
 <li>area       : catchment area in km^2</li>
-<li>a          : quickflow storage coefficient, inverse of :math:<tt class="docutils literal"><span class="pre">tau_q</span></tt> such that :math:<tt class="docutils literal"><span class="pre">a == (1/tau_q)</span></tt></li>
-<li>b          : slowflow storage coefficient, inverse of :math:<tt class="docutils literal"><span class="pre">tau_s</span></tt> such that :math:<tt class="docutils literal"><span class="pre">b == (1/tau_s)</span></tt></li>
-<li>loss       : losses in mm depth</li>
+<li>a          : quickflow storage coefficient, inverse of :math:<tt class="docutils literal"><span class="pre">tau_q</span></tt> such that :math:<tt class="docutils literal"><span class="pre">a := (1/tau_q)</span></tt></li>
+<li>b          : slowflow storage coefficient, inverse of :math:<tt class="docutils literal"><span class="pre">tau_s</span></tt> such that :math:<tt class="docutils literal"><span class="pre">b := (1/tau_s)</span></tt></li>
+<li>loss       : losses not otherwise accounted for (e.g., direct evaporation), in mm depth</li>
 </ul>
 </td></tr>
 <tr><th class="docinfo-name">Returns:</th><td>quick store, slow store, outflow</td></tr>
@@ -238,7 +238,7 @@ Unit Hydrograph module ported from Fortran.<table class="docinfo" frame="void" r
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2021-05-24 01:03:58 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2021-05-26 05:16:27 UTC</small>
       </div>
     </div>
   </div>

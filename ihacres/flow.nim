@@ -99,8 +99,8 @@ proc routing*(gw_vol: float, storage_coef: float, inflow: float, flow: float,
     var c1, outflow: float
     if (tmp_gw_store > 0.0):
         # Account for interaction with groundwater system
-        gw_store = 1.0 / (1.0 + storage_coef) * tmp_gw_store
         c1 = exp(-storage_coef)
+        gw_store = c1 * tmp_gw_store
         outflow = (1.0 - c1) * tmp_gw_store
     else:
         # Groundwater level is below stream, so no baseflow occurs
@@ -136,8 +136,8 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
     ##     - e_rain     : effective rainfall in mm
     ##     - recharge   : recharge amount in mm
     ##     - area       : catchment area in km^2
-    ##     - a          : quickflow storage coefficient, inverse of :math:`tau_q` such that :math:`a == (1/tau_q)`
-    ##     - b          : slowflow storage coefficient, inverse of :math:`tau_s` such that :math:`b == (1/tau_s)`
+    ##     - a          : quickflow storage coefficient, inverse of :math:`tau_q` such that :math:`a := (1/tau_q)`
+    ##     - b          : slowflow storage coefficient, inverse of :math:`tau_s` such that :math:`b := (1/tau_s)`
     ##     - loss       : losses not otherwise accounted for (e.g., direct evaporation), in mm depth
     ##
     ## :Returns:
