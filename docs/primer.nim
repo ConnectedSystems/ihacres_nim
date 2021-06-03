@@ -24,9 +24,6 @@ The model can be conceptualized as taking the following structure:
 
 nbImage(url="assets/ihacres_conceptual_figure.png", caption="Conceptual figure of the IHACRES model")
 
-nbText: """
-In brief, daily rainfall and temperature data are feed into the
-"""
 
 nbText: """
 In brief, daily rainfall and temperature data are fed into the Catchment Moisture Deficit (CMD)
