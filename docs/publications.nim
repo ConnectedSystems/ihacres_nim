@@ -3,8 +3,8 @@ import nimib
 nbInit
 
 nbText: """
-Publications on the IHACRES model
----------------------------------
+## Publications on the IHACRES model
+
 Croke, B.F.W., Jakeman, A.J. (2004)
 	   "A catchment moisture deficit module for the IHACRES rainfall-runoff model",
     Environmental Modelling & Software, 19(1), pp. 1–5. 
@@ -24,10 +24,11 @@ Jakeman, A.J., Littlewood, I.G. and Whitehead, P.G. (1990).
     Computation of the instantaneous unit hydrograph and identifiable component flows with application to two small upland catchments. 
     Journal of Hydrology 117, 275-300.
     https://doi.org/10.1016/0022-1694(90)90097-H
-   
-   
-Other implementations
----------------------   
+
+
+
+## Other implementations
+
 Andrews, F.T., Croke, B.F.W. and Jakeman, A.J. (2011). 
     "An open software environment for hydrological model assessment and development",
     Environmental Modelling and Software, 26 (10) 1171-1185.
@@ -39,8 +40,8 @@ Croke, B.F.W., Andrews, F., Jakeman, A.J., Cuddy, S.M. and Luddy, A. (2006)
     https://doi.org/10.1016/j.envsoft.2005.07.003
 
 
-Applications of IHACRES model
------------------------------   
+## Applications of IHACRES model
+
 Croke, B.F.W. and Jakeman, A.J. (2008).
     Use of the IHACRES rainfall-runoff model in semi-arid regions. 
     In Hydrological Modelling in Arid and Semi-Arid Areas, Wheater, H., Sorooshian, S. and Sharma, K.D. (Eds), 
