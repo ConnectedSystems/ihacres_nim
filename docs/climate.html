@@ -104,6 +104,11 @@ function main() {
     title="calc_ET(e, evap, Mf, f, d: float): float">calc_ET,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
 
   </ul>
+  <ul class="simple nested-toc-section">calc_ET_from_E
+      <li><a class="reference" href="#calc_ET_from_E%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"
+    title="calc_ET_from_E(e, evap, Mf, f, d: float): float">calc_ET_from_E,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
+
+  </ul>
   <ul class="simple nested-toc-section">calc_effective_rainfall
       <li><a class="reference" href="#calc_effective_rainfall%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"
     title="calc_effective_rainfall(rainfall, cmd, d, d2: float; n: float = 0.1): float">calc_effective_rainfall,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
@@ -149,6 +154,22 @@ Estimate effective rainfall.<table class="docinfo" frame="void" rules="none"><co
 </tbody></table>
 
 </dd>
+<a id="calc_ET_from_E,float,float,float,float,float"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#calc_ET_from_E%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ET_from_E</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">,</span> <span class="Identifier">evap</span><span class="Other">,</span> <span class="Identifier">Mf</span><span class="Other">,</span> <span class="Identifier">f</span><span class="Other">,</span> <span class="Identifier">d</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span>
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Calculate evapotranspiration from evaporation.<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>e    : temperature to PET conversion factor (a stress threshold)</li>
+<li>evap : evaporation for given time step.</li>
+<li>Mf   : Catchment Moisture Deficit prior to accounting for ET losses (<tt class="docutils literal"><span class="pre">M_{f}</span></tt>)</li>
+<li>f    : calibrated parameter that acts as a multiplication factor on <tt class="docutils literal"><span class="pre">d</span></tt></li>
+<li>d    : flow threshold factor</li>
+</ul>
+</td></tr>
+<tr><th class="docinfo-name">Results:</th><td>estimate of ET</td></tr>
+</tbody></table>
+
+</dd>
 <a id="calc_ET,float,float,float,float,float"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#calc_ET%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ET</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">,</span> <span class="Identifier">evap</span><span class="Other">,</span> <span class="Identifier">Mf</span><span class="Other">,</span> <span class="Identifier">f</span><span class="Other">,</span> <span class="Identifier">d</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span>
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
@@ -185,7 +206,7 @@ Deprecated function - call calc_ET_from_E instead.
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2021-05-26 05:16:26 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2021-06-09 08:50:21 UTC</small>
       </div>
     </div>
   </div>

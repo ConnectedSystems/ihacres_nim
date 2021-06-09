@@ -1,3 +1,4 @@
 calc_effective_rainfall	climate.html#calc_effective_rainfall,float,float,float,float,float	climate: calc_effective_rainfall(rainfall, cmd, d, d2: float; n: float = 0.1): float	
+calc_ET_from_E	climate.html#calc_ET_from_E,float,float,float,float,float	climate: calc_ET_from_E(e, evap, Mf, f, d: float): float	
 calc_ET	climate.html#calc_ET,float,float,float,float,float	climate: calc_ET(e, evap, Mf, f, d: float): float	
 calc_ET_from_T	climate.html#calc_ET_from_T,float,float,float,float,float	climate: calc_ET_from_T(e, T, Mf, f, d: float): float	

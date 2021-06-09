@@ -44,7 +44,7 @@ proc calc_effective_rainfall*(rainfall, cmd, d, d2: float, n: float=0.1): float
     return max(0.0, e_rainfall)
 
 
-proc calc_ET_from_E(e, evap, Mf, f, d: float): float
+proc calc_ET_from_E*(e, evap, Mf, f, d: float): float
      {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate evapotranspiration from evaporation.
     ##
