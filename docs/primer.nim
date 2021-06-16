@@ -143,7 +143,7 @@ If calculating from temperature ($T$):
 $$
 ET_k = \begin{cases}
   0 & \text{if $T_k \le 0$} \\\\
-  e \cdot T_k \cdot \min(1, \exp(1 - 2(M_{f}/g))) & \text{otherwise, where } g = fd
+  e \cdot T_k \cdot \min(1, \exp(1 - 2(M_{f}/g))) & \text{otherwise, where } g := fd
 \end{cases}
 $$
 
@@ -151,7 +151,7 @@ If calculating from evaporation ($E$):
 
 $$
 ET_k = \begin{cases}
-  e \cdot E_k & \text{if $M_f \le h$} \\\\
+  e \cdot E_k & \text{if $M_f \le g$, where $g := fd$} \\\\
   e \cdot E_k \cdot \min(1, \exp(2(1 - M_f/g))) & \text{otherwise}
 \end{cases}
 $$
