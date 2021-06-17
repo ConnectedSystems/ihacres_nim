@@ -1,5 +1,5 @@
 calc_flows	flow.html#calc_flows,float,float,float,float,float,float,float	flow: calc_flows(prev_quick: float; prev_slow: float; v_s: float; e_rainfall: float;\n           area: float; tau_q: float; tau_s: float): (float, float, float)	
 routing	flow.html#routing,float,float,float,float,float,float	flow: routing(gw_vol: float; storage_coef: float; inflow: float; flow: float;\n        irrig_ext: float; gw_exchange: float = 0.0): (float, float)	
 calc_outflow	flow.html#calc_outflow,float,float	flow: calc_outflow(flow: float; extractions: float): float	
-calc_ft_flows	flow.html#calc_ft_flows,float,float,float,float,float,float,float,float	flow: calc_ft_flows(prev_quick, prev_slow, e_rain, recharge, area, a, b: float;\n              loss: float = 0.0): (float, float, float)	
+calc_ft_flows	flow.html#calc_ft_flows,float,float,float,float,float,float,float	flow: calc_ft_flows(prev_quick, prev_slow, e_rain, recharge, area, a, b: float): (\n    float, float, float)	
 calc_ft_level	flow.html#calc_ft_level,float,array[,float]	flow: calc_ft_level(outflow: float; level_params: array[9, float]): float	

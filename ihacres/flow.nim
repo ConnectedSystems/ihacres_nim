@@ -124,8 +124,7 @@ proc calc_outflow*(flow: float, extractions: float): float
     return max(0.0, flow - extractions)
 
 
-proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
-                    loss: float = 0.0):
+proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float):
                     (float, float, float)
                     {.stdcall,exportc,dynlib,exportpy.} =
     ## Unit Hydrograph module ported from Fortran.
@@ -138,15 +137,12 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
     ##     - area       : catchment area in km^2
     ##     - a          : quickflow storage coefficient, inverse of :math:`tau_q` such that :math:`a := (1/tau_q)`
     ##     - b          : slowflow storage coefficient, inverse of :math:`tau_s` such that :math:`b := (1/tau_s)`
-    ##     - loss       : losses not otherwise accounted for (e.g., direct evaporation), in mm depth
     ##
     ## :Returns:
     ##     quick store, slow store, outflow
-
-    var a2: float = 0.5
     var quick_store, slow_store, outflow, alpha, beta: float
 
-    var tmp_calc: float = max(0.0, prev_quick + (e_rain * area) - (a2*loss))
+    var tmp_calc: float = max(0.0, prev_quick + (e_rain * area))
     if (tmp_calc > 0.0):
         #  this is equivalent to the conversion in `convert_taus()`
         alpha = exp(-a)
@@ -157,19 +153,11 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float,
     else:
         quick_store = tmp_calc
         outflow = 0.0
-
-        # Modify a2 for outflow calculation
-        # reminder: tmp_calc can be negative
-        if loss > 0.0:
-            a2 = max(0.0, min(1.0, tmp_calc))
-        else:
-            a2 = 0.0
     # End if
 
     assert outflow >= 0.0, fmt"Calculating quick store: Outflow cannot be negative: {outflow}"
 
-    let b2: float = 1.0 - a2
-    slow_store = prev_slow + (recharge * area) - (b2 * loss)
+    slow_store = prev_slow + (recharge * area)
     if (slow_store > 0.0):
         alpha = exp(-b)
         beta = (1.0 - alpha) * slow_store

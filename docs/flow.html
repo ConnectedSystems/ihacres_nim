@@ -106,9 +106,9 @@ function main() {
 
   </ul>
   <ul class="simple nested-toc-section">calc_ft_flows
-      <li><a class="reference" href="#calc_ft_flows%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"
-    title="calc_ft_flows(prev_quick, prev_slow, e_rain, recharge, area, a, b: float;
-              loss: float = 0.0): (float, float, float)">calc_ft_flows,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
+      <li><a class="reference" href="#calc_ft_flows%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"
+    title="calc_ft_flows(prev_quick, prev_slow, e_rain, recharge, area, a, b: float): (
+    float, float, float)">calc_ft_flows,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float,<wbr>float</a></li>
 
   </ul>
   <ul class="simple nested-toc-section">calc_ft_level
@@ -200,10 +200,10 @@ Simple routing modifier to account for extractions.<table class="docinfo" frame=
 </tbody></table>
 
 </dd>
-<a id="calc_ft_flows,float,float,float,float,float,float,float,float"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#calc_ft_flows%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ft_flows</span></a><span class="Other">(</span><span class="Identifier">prev_quick</span><span class="Other">,</span> <span class="Identifier">prev_slow</span><span class="Other">,</span> <span class="Identifier">e_rain</span><span class="Other">,</span> <span class="Identifier">recharge</span><span class="Other">,</span> <span class="Identifier">area</span><span class="Other">,</span> <span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">;</span>
-                   <span class="Identifier">loss</span><span class="Other">:</span> <span class="Identifier">float</span> <span class="Other">=</span> <span class="FloatNumber">0.0</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">float</span><span class="Other">,</span> <span class="Identifier">float</span><span class="Other">,</span> <span class="Identifier">float</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span>
-    <span class="Identifier">dynlib</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="calc_ft_flows,float,float,float,float,float,float,float"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#calc_ft_flows%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat%2Cfloat"><span class="Identifier">calc_ft_flows</span></a><span class="Other">(</span><span class="Identifier">prev_quick</span><span class="Other">,</span> <span class="Identifier">prev_slow</span><span class="Other">,</span> <span class="Identifier">e_rain</span><span class="Other">,</span> <span class="Identifier">recharge</span><span class="Other">,</span> <span class="Identifier">area</span><span class="Other">,</span> <span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span>
+    <span class="Identifier">float</span><span class="Other">,</span> <span class="Identifier">float</span><span class="Other">,</span> <span class="Identifier">float</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">stdcall</span><span class="Other">,</span> <span class="Identifier">exportc</span><span class="Other">,</span> <span class="Identifier">dynlib</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+                           <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Unit Hydrograph module ported from Fortran.<table class="docinfo" frame="void" rules="none"><col class="docinfo-name" /><col class="docinfo-content" /><tbody valign="top"><tr><th class="docinfo-name">Parameters:</th><td><ul class="simple"><li>prev_quick : previous quickflow storage</li>
@@ -213,7 +213,6 @@ Unit Hydrograph module ported from Fortran.<table class="docinfo" frame="void" r
 <li>area       : catchment area in km^2</li>
 <li>a          : quickflow storage coefficient, inverse of :math:<tt class="docutils literal"><span class="pre">tau_q</span></tt> such that :math:<tt class="docutils literal"><span class="pre">a := (1/tau_q)</span></tt></li>
 <li>b          : slowflow storage coefficient, inverse of :math:<tt class="docutils literal"><span class="pre">tau_s</span></tt> such that :math:<tt class="docutils literal"><span class="pre">b := (1/tau_s)</span></tt></li>
-<li>loss       : losses not otherwise accounted for (e.g., direct evaporation), in mm depth</li>
 </ul>
 </td></tr>
 <tr><th class="docinfo-name">Returns:</th><td>quick store, slow store, outflow</td></tr>
@@ -238,7 +237,7 @@ Unit Hydrograph module ported from Fortran.<table class="docinfo" frame="void" r
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2021-06-09 11:43:21 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2021-06-17 03:34:18 UTC</small>
       </div>
     </div>
   </div>

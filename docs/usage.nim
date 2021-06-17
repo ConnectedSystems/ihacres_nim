@@ -80,7 +80,7 @@ nimporter.build_nim_extensions()  # Build Nim extension
 
 
 def run_ihacres(cmd, rainfall, evaporation, inflow, quickflow, slowflow,
-                loss, gw_state, gw_exchange, extraction):
+                gw_state, gw_exchange, extraction):
     '''Example run function.
 
     Parameters
@@ -91,7 +91,6 @@ def run_ihacres(cmd, rainfall, evaporation, inflow, quickflow, slowflow,
     inflow : flow from previous node
     quickflow : quickflow at previous time step, $(V_{q-1})$
     slowflow : slowflow at previous time step, $(V_{s-1})$
-    loss : loss, volume loss
     gw_state : groundwater storage index at $t-1$
     gw_exchange : volume flux, interaction with groundwater
     extraction : volume extracted from stream
@@ -105,7 +104,7 @@ def run_ihacres(cmd, rainfall, evaporation, inflow, quickflow, slowflow,
     cmd = ihacres_cmd.calc_cmd(cmd, rainfall, ET, U, r)
 
     Vq, Vs, outflow = flow.calc_ft_flows(quickflow, slowflow, U, r,
-                                         catchment_area, a, b, loss)
+                                         catchment_area, a, b)
 
     # if node routes to another node
     gw_state, outflow = flow.routing(gw_state, s, inflow, outflow, extraction, gw_exchange)
@@ -134,8 +133,7 @@ run_ihacres.catchment_area = 100.0  # area in km^2
 cmd, quickflow, slowflow = 214.65, 0, 0
 
 # Assume these are all 0.0
-inflow = 0
-loss = 0
+inflow = 0.0
 gw_exchange = 0.0
 extraction = 0.0
 
@@ -151,7 +149,7 @@ gw_state[0] = 0.0
 # Run model (this would be in its own function)
 for i in range(len(outflow)):
     progress = run_ihacres(cmd, rainfall_ts[i], evaporation_ts[i], inflow, quickflow, slowflow,
-                           loss, gw_state[i], gw_exchange, extraction)
+                           gw_state[i], gw_exchange, extraction)
     quickflow, slowflow, cmd = progress["state"]
     gw_state[i+1], outflow[i] = progress["flow"]
 

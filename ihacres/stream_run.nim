@@ -6,7 +6,7 @@ import climate
 import cmd
 
 
-proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange=0.0, loss=0.0):
+proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: float, gw_exchange: float = 0.0):
      (float, float) =
     ## Run node to calculate outflow and update state.
     ##
@@ -16,7 +16,6 @@ proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: fl
     ##     - evap        : evapotranspiration
     ##     - extractions : irrigation and other water extractions
     ##     - gw_exchange : flux in ML - positive is contribution, negative is infiltration
-    ##     - loss        : volume loss
     ##
     ## :Returns:
     ##    outflow from node, level
@@ -42,7 +41,7 @@ proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: fl
     s_node.inflow.add(inflow)
     (quick_store, slow_store, outflow) = calc_ft_flows(s_node.quickflow[arr_len], s_node.slowflow[arr_len],
                                                         e_rainfall, recharge, s_node.area,
-                                                        s_node.a, s_node.b, loss=loss)
+                                                        s_node.a, s_node.b)
 
     (vol, outflow) = routing(cmd, s_node.storage_coef, inflow, outflow, ext, gw_exchange)
 
@@ -53,7 +52,7 @@ proc run*(s_node: BilinearNode, rain: float, evap: float, inflow: float, ext: fl
     return (outflow, level)
 
 
-proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: float=0.0, loss: float=0.0):
+proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: float=0.0):
      (float, float) =
     ## Run node to calculate outflow and update state.
     ## 
@@ -63,7 +62,6 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
     ##     - evap: float, evapotranspiration
     ##     - extractions: float, irrigation and other water extractions
     ##     - gw_exchange: float, flux in ML - positive is contribution, negative is infiltration
-    ##     - loss: float,
     ## 
     ## :Returns:
     ##     outflow from node, level
@@ -76,6 +74,7 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
         slow_store: float
         outflow: float
         vol: float
+        recharge: float = 0.0
 
     var arr_len = s_node.storage.len() - 1
     let current_store = s_node.storage[arr_len]
@@ -84,7 +83,7 @@ proc run_expuh*(s_node: ExpuhNode, rain, evap, inflow, ext: float, gw_exchange: 
     mf = calc_trig_interim_cmd(current_store, s_node.d, e_rainfall)
 
     var et: float = calc_ET(s_node.e, evap, mf, s_node.f, s_node.d)
-    var cmd: float = calc_cmd(mf, rain, et, e_rainfall, loss)
+    var cmd: float = calc_cmd(mf, rain, et, e_rainfall, recharge)
 
     s_node.inflow.add(inflow)
 
