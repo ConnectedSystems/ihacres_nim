@@ -42,6 +42,7 @@ This User Guide consists of:
 - [Primer](primer.html) - a basic primer on the IHACRES module.
 - [Usage](usage.html) - some examples on how to compose IHACRES_nim functions together.
 - [API documentation](ihacres.html) - details of each function.
+- [Publications](publications.html) - list of publications covering the development and application of IHACRES
 """
 
 

@@ -32,6 +32,8 @@ The User Documentation may be found [here](https://connectedsystems.github.io/ih
 
 API Documentation may be found [here](https://connectedsystems.github.io/ihacres_nim/ihacres.html)
 
+Further information can be found in the publications listed [here](https://connectedsystems.github.io/ihacres_nim/publications.html)
+
 User documentation is generated using [nimib](https://github.com/pietroppeter/nimib)
 
 **TODO:** auto-generation of documentation.

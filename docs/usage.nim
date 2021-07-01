@@ -51,7 +51,7 @@ In future, a dedicated Python package may be made available.
 
 ```bash
 # In IHACRES_nim project directory
-$ nimble install nimporter
+$ pip install nimporter
 $ nimporter compile
 ```
 
