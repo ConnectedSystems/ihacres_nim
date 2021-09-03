@@ -1,10 +1,10 @@
 ## Functions related to estimating ET and U (evapotranspiration and effective rainfall)
-
+import nimpy
 import math
 
 
 proc calc_effective_rainfall*(rainfall, cmd, d, d2: float, n: float=0.1): float
-     {.stdcall,exportc,dynlib.} =
+     {.stdcall,exportc,dynlib,exportpy.} =
     ## Estimate effective rainfall.
     ##
     ## :References:
@@ -44,7 +44,7 @@ proc calc_effective_rainfall*(rainfall, cmd, d, d2: float, n: float=0.1): float
 
 
 proc calc_ET_from_E*(e, evap, Mf, f, d: float): float
-     {.stdcall,exportc,dynlib.} =
+     {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate evapotranspiration from evaporation.
     ##
     ## :Parameters:
@@ -66,13 +66,13 @@ proc calc_ET_from_E*(e, evap, Mf, f, d: float): float
 
 
 proc calc_ET*(e, evap, Mf, f, d: float): float
-     {.stdcall,exportc,dynlib.} =
+     {.stdcall,exportc,dynlib,exportpy.} =
     ## Deprecated function - call calc_ET_from_E instead.
     return calc_ET_from_E(e, evap, Mf, f, d)
 
 
 proc calc_ET_from_T*(e, T, Mf, f, d: float): float
-     {.stdcall,exportc,dynlib.} =
+     {.stdcall,exportc,dynlib,exportpy.} =
     ## Calculate evapotranspiration based on temperature data.
     ##
     ## Parameters `f` and `d` are used to calculate `g`, the value of the CMD

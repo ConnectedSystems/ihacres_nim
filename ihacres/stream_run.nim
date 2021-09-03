@@ -1,5 +1,4 @@
 ## Example functions for running a stream network.
-
 import node
 import flow
 import climate
