@@ -7,3 +7,5 @@ nim-extensions/
 tests/__pycache__/
 
 ihacres/__pycache__/
+
+*.pyd
