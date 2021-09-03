@@ -7,4 +7,5 @@ srcDir      = "ihacres"
 
 # Deps
 requires "nim >= 1.2.0"
+requires "nimpy >= 0.1.1"
 requires "defines >= 0.5.1"
