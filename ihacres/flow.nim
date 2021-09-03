@@ -3,7 +3,6 @@
 import math
 import defines
 import strformat
-import nimpy
 
 
 proc convert_taus(tau: float, v: float): (float, float) =
@@ -32,7 +31,7 @@ proc calc_stores(tau: float, prev_store: float, v: float, e_rainfall: float): fl
 proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
                  e_rainfall: float, area: float, tau_q: float, tau_s: float):
                  (float, float, float)
-                 {.stdcall,exportc,dynlib,exportpy.} =
+                 {.stdcall,exportc,dynlib.} =
     ## Calculate quick and slow flow, and outflow using a linear routing module.
     ##
     ## Calculates flows for current time step based on previous
@@ -80,7 +79,7 @@ proc calc_flows*(prev_quick: float, prev_slow: float, v_s: float,
 proc routing*(gw_vol: float, storage_coef: float, inflow: float, flow: float,
               irrig_ext: float, gw_exchange: float = 0.0):
               (float, float)
-              {.stdcall,exportc,dynlib,exportpy.} =
+              {.stdcall,exportc,dynlib.} =
     ## Stream routing, taking into account groundwater interactions and water extractions.
     ##
     ## :Parameters:
@@ -112,7 +111,7 @@ proc routing*(gw_vol: float, storage_coef: float, inflow: float, flow: float,
 
 
 proc calc_outflow*(flow: float, extractions: float): float 
-                  {.stdcall,exportc,dynlib,exportpy.} =
+                  {.stdcall,exportc,dynlib.} =
     ## Simple routing modifier to account for extractions.
     ##
     ## :Parameters:
@@ -126,7 +125,7 @@ proc calc_outflow*(flow: float, extractions: float): float
 
 proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float):
                     (float, float, float)
-                    {.stdcall,exportc,dynlib,exportpy.} =
+                    {.stdcall,exportc,dynlib.} =
     ## Unit Hydrograph module ported from Fortran.
     ##
     ## :Parameters:
@@ -171,7 +170,7 @@ proc calc_ft_flows*(prev_quick, prev_slow, e_rain, recharge, area, a, b: float):
 
 
 proc calc_ft_level*(outflow: float, level_params: array[9, float]):float 
-                   {.stdcall,exportc,dynlib,exportpy.} =
+                   {.stdcall,exportc,dynlib.} =
 
     (p1, p2, p3, p4, p5, p6, p7, p8, CTF) := level_params
 
