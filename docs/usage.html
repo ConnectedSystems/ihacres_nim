@@ -59,26 +59,20 @@ Note: if on Windows, replace <code>.so</code> with <code>.dll</code>.</p>
 <p>Instead, the most straightforward approach is to use the <code>nimporter</code> package.</p>
 <p>In future, a dedicated Python package may be made available.</p>
 <ol>
-<li>Generate <code>.pyd</code> files:</li>
+<li>Clone <code>ihacres_nim</code></li>
 </ol>
-<pre><code class="language-bash"># In IHACRES_nim project directory
-$ pip install nimporter
-$ nimporter compile
+<pre><code class="language-bash">$ git clone https://github.com/ConnectedSystems/ihacres_nim.git
 </code></pre>
 <ol start="2">
-<li>Create a <code>ihacres</code> directory in your Python project location, and move the <code>__pycache__</code> folder (created by the <code>nimporter compile</code> command above).</li>
+<li>Install <code>nimporter</code> and <code>ihacres-nim</code> as a Python package</li>
 </ol>
-<pre><code class="language-plaintext">  ihacres_nim/
-  ├─ ihacres/
-  │  ├─ __pycache__/     &lt;- copy this folder
-
-  YOUR_PYTHON_PROJECT/
-  ├─ ihacres/            &lt;- create this folder
-  │  ├─ __pycache__/     &lt;- paste the copy of this folder
+<pre><code class="language-bash">$ pip install nimporter
+$ pip install -e .
 </code></pre>
-<ol start="3">
-<li>Use in a python file</li>
-</ol>
+<p>Example usage is provided under <a href="https://github.com/ConnectedSystems/ihacres_nim/tree/main/tests">tests/py_example.py</a></p>
+<pre><code class="language-bash">$ python tests/py_example.py
+</code></pre>
+<p>The contents of <code>py_example.py</code> are shown below.</p>
 <pre><code class="language-python">import nimporter  # Required prior to any Nim module import
 
 from ihacres import climate
@@ -230,27 +224,28 @@ Instead, the most straightforward approach is to use the `nimporter` package.
 
 In future, a dedicated Python package may be made available.
 
-1. Generate `.pyd` files:
+1. Clone `ihacres_nim`
 
 ```bash
-# In IHACRES_nim project directory
+$ git clone https://github.com/ConnectedSystems/ihacres_nim.git
+```
+
+
+2. Install `nimporter` and `ihacres-nim` as a Python package
+
+```bash
 $ pip install nimporter
-$ nimporter compile
+$ pip install -e .
 ```
 
-2. Create a `ihacres` directory in your Python project location, and move the `__pycache__` folder (created by the `nimporter compile` command above).
+Example usage is provided under [tests/py_example.py](https://github.com/ConnectedSystems/ihacres_nim/tree/main/tests)
 
-```plaintext
-  ihacres_nim/
-  ├─ ihacres/
-  │  ├─ __pycache__/     &lt;- copy this folder
-
-  YOUR_PYTHON_PROJECT/
-  ├─ ihacres/            &lt;- create this folder
-  │  ├─ __pycache__/     &lt;- paste the copy of this folder
+```bash
+$ python tests/py_example.py
 ```
 
-3. Use in a python file
+The contents of `py_example.py` are shown below.
+
 
 ```python
 import nimporter  # Required prior to any Nim module import

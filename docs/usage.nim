@@ -47,27 +47,28 @@ Instead, the most straightforward approach is to use the `nimporter` package.
 
 In future, a dedicated Python package may be made available.
 
-1. Generate `.pyd` files:
+1. Clone `ihacres_nim`
 
 ```bash
-# In IHACRES_nim project directory
+$ git clone https://github.com/ConnectedSystems/ihacres_nim.git
+```
+
+
+2. Install `nimporter` and `ihacres-nim` as a Python package
+
+```bash
 $ pip install nimporter
-$ nimporter compile
+$ pip install -e .
 ```
 
-2. Create a `ihacres` directory in your Python project location, and move the `__pycache__` folder (created by the `nimporter compile` command above).
+Example usage is provided under [tests/py_example.py](https://github.com/ConnectedSystems/ihacres_nim/tree/main/tests)
 
-```plaintext
-  ihacres_nim/
-  ├─ ihacres/
-  │  ├─ __pycache__/     <- copy this folder
-
-  YOUR_PYTHON_PROJECT/
-  ├─ ihacres/            <- create this folder
-  │  ├─ __pycache__/     <- paste the copy of this folder
+```bash
+$ python tests/py_example.py
 ```
 
-3. Use in a python file
+The contents of `py_example.py` are shown below.
+
 
 ```python
 import nimporter  # Required prior to any Nim module import
