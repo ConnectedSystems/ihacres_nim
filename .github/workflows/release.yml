@@ -53,11 +53,11 @@ jobs:
           cp -r ${{ env.RELEASE_FILES }} "dist/$dirname/"
           ls ./dist/$dirname
           (
-            cd dist
+            cd dist/$dirname
             if [[ "${{ runner.os }}" == Windows ]]; then
-              7z a "$dirname.zip" $(ls $dirname)
+              7z a "$dirname.zip" .
             else
-              tar czf "$dirname.tar.gz" $(ls $dirname)
+              tar czf "$dirname.tar.gz" .
             fi
             ls -lah *.*
           )
