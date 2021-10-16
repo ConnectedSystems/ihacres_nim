@@ -65,9 +65,10 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: artifact-${{ matrix.os }}
+          run: cd dist/$dirname
           path: |
-            "./dist/$dirname.tar.gz"
-            "./dist/$dirname.zip"
+            *.tar.gz
+            *.zip
 
   create-release:
     runs-on: ubuntu-latest
