@@ -53,7 +53,7 @@ jobs:
           cp -r ${{ env.RELEASE_FILES }} "dist/$assets/"
           ls ./dist/$assets
           (
-            cd dist
+            cd dist/$assets
             if [[ "${{ runner.os }}" == Windows ]]; then
               7z a "$assets.zip" "$assets"
             else
