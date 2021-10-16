@@ -66,8 +66,8 @@ jobs:
         with:
           name: artifact-${{ matrix.os }}
           path: |
-            dist/*.tar.gz
-            dist/*.zip
+            dist/$dirname/*.tar.gz
+            dist/$dirname/*.zip
 
   create-release:
     runs-on: ubuntu-latest
