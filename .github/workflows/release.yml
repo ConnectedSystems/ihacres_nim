@@ -34,8 +34,8 @@ jobs:
         if: runner.os == 'Windows'
       - name: Create artifact
         run: |
-          assets="${{ env.APP_NAME }}_$(echo "${{ runner.os }}" | tr '[:upper:]' '[:lower:]')"
-          echo "$assets"
+          dirname="${{ env.APP_NAME }}_$(echo "${{ runner.os }}" | tr '[:upper:]' '[:lower:]')"
+          echo "Packaging $dirname"
 
           if [[ "${{ runner.os }}" == Windows ]]; then
               ext=".dll"
@@ -47,17 +47,17 @@ jobs:
 
           echo "compiling ihacres$ext..."
 
-          mkdir -p "dist/$assets"
-          nimble c ./ihacres/ihacres.nim -Y --app:lib -d:release --out:"./dist/$assets/ihacres$ext"
+          mkdir -p "dist/$dirname"
+          nimble c ./ihacres/ihacres.nim -Y --app:lib -d:release --out:"./dist/$dirname/ihacres$ext"
 
-          cp -r ${{ env.RELEASE_FILES }} "dist/$assets/"
-          ls ./dist/$assets
+          cp -r ${{ env.RELEASE_FILES }} "dist/$dirname/"
+          ls ./dist/$dirname
           (
-            cd dist/$assets
+            cd dist
             if [[ "${{ runner.os }}" == Windows ]]; then
-              7z a "$assets.zip" "$assets"
+              7z a "$dirname.zip" $(ls $dirname)
             else
-              tar czf "$assets.tar.gz" "$assets"
+              tar czf "$dirname.tar.gz" $(ls $dirname)
             fi
             ls -lah *.*
           )
