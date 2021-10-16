@@ -55,9 +55,9 @@ jobs:
           (
             cd dist/$dirname
             if [[ "${{ runner.os }}" == Windows ]]; then
-              7z a "$dirname.zip" .
+              7z a "$dirname.zip" *
             else
-              tar czf "$dirname.tar.gz" .
+              tar czf "$dirname.tar.gz" *
             fi
             ls -lah *.*
           )
