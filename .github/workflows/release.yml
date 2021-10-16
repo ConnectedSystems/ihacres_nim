@@ -56,8 +56,10 @@ jobs:
             cd dist/$dirname
             if [[ "${{ runner.os }}" == Windows ]]; then
               7z a "$dirname.zip" *
+              mv $dirname.zip ../$dirname.zip
             else
               tar czf "$dirname.tar.gz" *
+              mv $dirname.tar.gz ../$dirname.tar.gz
             fi
             ls -lah *.*
           )
@@ -65,10 +67,9 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: artifact-${{ matrix.os }}
-          run: cd dist/$dirname
           path: |
-            *.tar.gz
-            *.zip
+            dist/*.tar.gz
+            dist/*.zip
 
   create-release:
     runs-on: ubuntu-latest
